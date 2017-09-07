@@ -36,8 +36,6 @@ import {
   Index,
   DoWhile,
   WhileDoElse,
-  Funcion,
-  Call
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -55,19 +53,13 @@ export var ParserRules:NearleyRule[] = [
     {"name": "stmt", "symbols": [{"literal":"if"}, "exp", {"literal":"then"}, "stmt"], "postprocess": ([, cond, , thenBody]) => (new IfThen(cond, thenBody))},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"="}, "exp", {"literal":";"}], "postprocess": ([id, , exp, ]) => (new Assignment(id, exp))},
     {"name": "stmtelse$ebnf$1", "symbols": []},
-    {"name": "stmtelse$ebnf$1", "symbols": ["stmtelse$ebnf$1", "identifier"], "postprocess": (d) => d[0].concat([d[1]])},
-    {"name": "stmtelse", "symbols": ["identifier", {"literal":"("}, "stmtelse$ebnf$1", {"literal":")"}, "stmt"], "postprocess": ([name, , ids, , body]) => (new Funcion(name,ids,body))},
-    {"name": "stmtelse$ebnf$2", "symbols": []},
-    {"name": "stmtelse$ebnf$2", "symbols": ["stmtelse$ebnf$2", "stmt"], "postprocess": (d) => d[0].concat([d[1]])},
-    {"name": "stmtelse", "symbols": [{"literal":"{"}, "stmtelse$ebnf$2", {"literal":"}"}], "postprocess": ([, statements, ]) => (new Sequence(statements))},
+    {"name": "stmtelse$ebnf$1", "symbols": ["stmtelse$ebnf$1", "stmt"], "postprocess": (d) => d[0].concat([d[1]])},
+    {"name": "stmtelse", "symbols": [{"literal":"{"}, "stmtelse$ebnf$1", {"literal":"}"}], "postprocess": ([, statements, ]) => (new Sequence(statements))},
     {"name": "stmtelse", "symbols": [{"literal":"while"}, "exp", {"literal":"do"}, "stmt"], "postprocess": ([, cond, , body]) => (new WhileDo(cond, body))},
     {"name": "stmtelse", "symbols": [{"literal":"do"}, "stmt", {"literal":"while"}, "exp"], "postprocess": ([, body, , cond]) => (new DoWhile(cond, body))},
     {"name": "stmtelse", "symbols": [{"literal":"while"}, "exp", {"literal":"do"}, "stmt", {"literal":"else"}, "stmt"], "postprocess": ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody))},
     {"name": "stmtelse", "symbols": [{"literal":"if"}, "exp", {"literal":"then"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
     {"name": "exp", "symbols": ["exp", {"literal":"if"}, "exp", {"literal":"else"}, "exp"], "postprocess": ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse))},
-    {"name": "exp$ebnf$1", "symbols": []},
-    {"name": "exp$ebnf$1", "symbols": ["exp$ebnf$1", "identifier"], "postprocess": (d) => d[0].concat([d[1]])},
-    {"name": "exp", "symbols": ["identifier", {"literal":"("}, "exp$ebnf$1", {"literal":")"}], "postprocess": ([name, , ids,]) => (new Call(name,ids))},
     {"name": "exp", "symbols": [{"literal":"length"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp, ]) => (new Length(exp))},
     {"name": "exp", "symbols": ["exp", {"literal":"["}, "exp", {"literal":"]"}], "postprocess": ([str, ,ind, ]) => (new Index(str,ind))},
     {"name": "exp", "symbols": ["condisj"], "postprocess": id},

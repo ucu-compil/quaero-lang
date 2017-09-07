@@ -30,8 +30,6 @@ import {
   Index,
   DoWhile,
   WhileDoElse,
-  Funcion,
-  Call
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -52,7 +50,6 @@ stmt ->
 
 stmtelse ->
     identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | identifier "(" identifier:* ")" stmt  {% ([name, , ids, , body]) => (new Funcion(name,ids,body)) %}
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
   | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "do" stmt "while" exp                 {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
@@ -64,7 +61,6 @@ stmtelse ->
 
 exp ->
     exp "if" exp "else" exp           {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
-  | identifier "(" identifier:* ")"   {% ([name, , ids,]) => (new Call(name,ids)) %}
   | "length" "(" exp ")"              {% ([, , exp, ]) => (new Length(exp)) %}
   | exp "[" exp "]"                   {% ([str, ,ind, ]) => (new Index(str,ind)) %}
   | condisj                           {% id %}
