@@ -3,6 +3,7 @@
 @{%
 
 import {
+  Null,
   Addition,
   Assignment,
   CompareEqual,
@@ -95,6 +96,7 @@ neg ->
 
 value ->
     "(" exp ")"             {% ([, exp, ]) => (exp) %}
+  | "null"                  {% () => (new Null()) %}
   | number                  {% ([num]) => (new Numeral(+num)) %}
   | "true"                  {% () => (new TruthValue(true)) %}
   | "false"                 {% () => (new TruthValue(false)) %}

@@ -21,6 +21,7 @@ export * from './ExpCond';
 export * from './Length';
 export * from './TextLiteral';
 export * from './Index';
+export * from './Null';
 
 // BExp
 export * from './CompareEqual';
