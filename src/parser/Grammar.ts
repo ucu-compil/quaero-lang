@@ -9,6 +9,7 @@ declare var string:any;
 
 
 import {
+  Null,
   Addition,
   Assignment,
   CompareEqual,
@@ -50,7 +51,7 @@ export type NearleySymbol = string | {literal:any} | {test:(token:any) => boolea
 export var Lexer:Lexer|undefined = lexer;
 export var ParserRules:NearleyRule[] = [
     {"name": "stmt", "symbols": ["stmtelse"], "postprocess": id},
-    {"name": "stmt", "symbols": [{"literal":"if"}, "exp", {"literal":"then"}, "stmt"], "postprocess": ([, cond, , thenBody]) => (new IfThen(cond, thenBody))},
+    {"name": "stmt", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmt"], "postprocess": ([, , cond, , thenBody]) => (new IfThen(cond, thenBody))},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"="}, "exp", {"literal":";"}], "postprocess": ([id, , exp, ]) => (new Assignment(id, exp))},
     {"name": "stmtelse$ebnf$1", "symbols": []},
     {"name": "stmtelse$ebnf$1", "symbols": ["stmtelse$ebnf$1", "stmt"], "postprocess": (d) => d[0].concat([d[1]])},
@@ -58,7 +59,7 @@ export var ParserRules:NearleyRule[] = [
     {"name": "stmtelse", "symbols": [{"literal":"while"}, "exp", {"literal":"do"}, "stmt"], "postprocess": ([, cond, , body]) => (new WhileDo(cond, body))},
     {"name": "stmtelse", "symbols": [{"literal":"do"}, "stmt", {"literal":"while"}, "exp"], "postprocess": ([, body, , cond]) => (new DoWhile(cond, body))},
     {"name": "stmtelse", "symbols": [{"literal":"while"}, "exp", {"literal":"do"}, "stmt", {"literal":"else"}, "stmt"], "postprocess": ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody))},
-    {"name": "stmtelse", "symbols": [{"literal":"if"}, "exp", {"literal":"then"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
+    {"name": "stmtelse", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
     {"name": "exp", "symbols": ["exp", {"literal":"if"}, "exp", {"literal":"else"}, "exp"], "postprocess": ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse))},
     {"name": "exp", "symbols": [{"literal":"length"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp, ]) => (new Length(exp))},
     {"name": "exp", "symbols": ["exp", {"literal":"["}, "exp", {"literal":"]"}], "postprocess": ([str, ,ind, ]) => (new Index(str,ind))},
@@ -67,7 +68,7 @@ export var ParserRules:NearleyRule[] = [
     {"name": "condisj", "symbols": ["exp", {"literal":"||"}, "comp"], "postprocess": ([lhs, , rhs]) => (new Disjunction(lhs, rhs))},
     {"name": "condisj", "symbols": ["comp"], "postprocess": id},
     {"name": "comp", "symbols": ["comp", {"literal":"=="}, "addsub"], "postprocess": ([lhs, , rhs]) => (new CompareEqual(lhs, rhs))},
-    {"name": "comp", "symbols": ["comp", {"literal":"!="}, "addsub"], "postprocess": ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs))},
+    {"name": "comp", "symbols": ["comp", {"literal":"/="}, "addsub"], "postprocess": ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs))},
     {"name": "comp", "symbols": ["comp", {"literal":"<="}, "addsub"], "postprocess": ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs))},
     {"name": "comp", "symbols": ["comp", {"literal":"<"}, "addsub"], "postprocess": ([lhs, , rhs]) => (new CompareLess(lhs, rhs))},
     {"name": "comp", "symbols": ["comp", {"literal":">="}, "addsub"], "postprocess": ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs))},
@@ -82,6 +83,7 @@ export var ParserRules:NearleyRule[] = [
     {"name": "neg", "symbols": [{"literal":"!"}, "value"], "postprocess": ([, exp]) => (new Negation(exp))},
     {"name": "neg", "symbols": ["value"], "postprocess": id},
     {"name": "value", "symbols": [{"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, exp, ]) => (exp)},
+    {"name": "value", "symbols": [{"literal":"null"}], "postprocess": () => (new Null())},
     {"name": "value", "symbols": ["number"], "postprocess": ([num]) => (new Numeral(+num))},
     {"name": "value", "symbols": [{"literal":"true"}], "postprocess": () => (new TruthValue(true))},
     {"name": "value", "symbols": [{"literal":"false"}], "postprocess": () => (new TruthValue(false))},
