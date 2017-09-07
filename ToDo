@@ -1,0 +1,30 @@
+Expresiones:
+  listas
+  conjuntos
+  comparaciones con todos los tipos
+  cardinalidad
+  pertenencia
+  indizacion
+  indizacion abreviada
+  concat
+  union
+  interseccion
+  diferencia
+  exp cond
+  conj/lista por comprension
+
+
+Sentencias:
+  arreglar condicional
+  bucles
+  exp como sentencias
+
+Funciones:
+  funciones
+  print
+  div
+  mod
+  string
+  int
+  number
+  boolean
