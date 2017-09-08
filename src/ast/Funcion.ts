@@ -18,11 +18,11 @@ export class Funcion implements Stmt {
   }
 
   toString(): string {
-    return ``;//\`Assignment(${this.id}, ${this.exp.toString()})`;
+    return `Funcion(${this.name}, ${this.params}, ${this.body.toString()})`;
   }
 
   unparse(): string {
-    return ``;//`${this.name} = ${this.exp.unparse()}`;
+    return `${this.name}(${this.params}) ${this.body.unparse()}`;
   }
 
   evaluate(state: State): State {

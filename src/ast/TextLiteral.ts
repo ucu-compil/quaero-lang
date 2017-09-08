@@ -9,7 +9,7 @@ export class TextLiteral extends Exp {
 
   constructor(value: string) {
     super();
-    this.value = value;
+    this.value = JSON.parse(value);
   }
 
   toString(): string {

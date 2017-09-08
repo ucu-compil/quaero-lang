@@ -68,15 +68,11 @@ export var ParserRules:NearleyRule[] = [
     {"name": "stmtelse", "symbols": [{"literal":"while"}, "exp", {"literal":"do"}, "stmt"], "postprocess": ([, cond, , body]) => (new WhileDo(cond, body))},
     {"name": "stmtelse", "symbols": [{"literal":"do"}, "stmt", {"literal":"while"}, "exp"], "postprocess": ([, body, , cond]) => (new DoWhile(cond, body))},
     {"name": "stmtelse", "symbols": [{"literal":"while"}, "exp", {"literal":"do"}, "stmt", {"literal":"else"}, "stmt"], "postprocess": ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody))},
-<<<<<<< HEAD
-    {"name": "stmtelse", "symbols": [{"literal":"if"}, "exp", {"literal":"then"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
     {"name": "stmtelse", "symbols": [{"literal":"return"}, "exp", {"literal":";"}], "postprocess": ([, exp,]) => (new Return(exp))},
     {"name": "stmtelse", "symbols": [{"literal":"print"}, {"literal":"("}, "exp", {"literal":")"}, {"literal":";"}], "postprocess": ([, , exp, ,]) => (new Print(exp))},
+    {"name": "stmtelse", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
     {"name": "lista_id", "symbols": ["identifier"], "postprocess": ([id]) => ([id])},
     {"name": "lista_id", "symbols": ["lista_id", {"literal":","}, "identifier"], "postprocess": ([lista, ,id]) => { lista.push(id); return lista; }},
-=======
-    {"name": "stmtelse", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
->>>>>>> master
     {"name": "exp", "symbols": ["exp", {"literal":"if"}, "exp", {"literal":"else"}, "exp"], "postprocess": ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse))},
     {"name": "exp", "symbols": ["identifier", {"literal":"("}, "lista_params", {"literal":")"}], "postprocess": ([name, , ids,]) => (new Call(name,ids))},
     {"name": "exp", "symbols": ["exp", {"literal":"["}, "exp", {"literal":"]"}], "postprocess": ([str, ,ind, ]) => (new Index(str,ind))},

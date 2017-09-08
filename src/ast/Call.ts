@@ -16,11 +16,11 @@ export class Call extends Exp {
   }
 
   toString(): string {
-    return ``;//`Addition(${this.lhs.toString()}, ${this.rhs.toString()})`;
+    return `Call(${this.name}, ${this.params})`;
   }
 
   unparse(): string {
-    return ``;//`(${this.lhs.unparse()} + ${this.rhs.unparse()})`;
+    return `${this.name}(${this.params})`;
   }
 
   evaluate(state: State): any {
