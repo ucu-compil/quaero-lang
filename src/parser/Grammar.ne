@@ -55,7 +55,7 @@ const lexer = new MyLexer(tokens);
 
 stmt ->
     stmtelse                              {% id %}
-  | "if" exp "then" stmt                  {% ([, cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
+  | "if" "(" exp ")" stmt                 {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
 
 stmtelse ->
     identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
@@ -64,9 +64,9 @@ stmtelse ->
   | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "do" stmt "while" exp                 {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
   | "while" exp "do" stmt "else" stmt     {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
-  | "if" exp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "return" exp ";"                      {% ([, exp,]) => (new Return(exp)) %}
   | "print" "(" exp ")" ";"               {% ([, , exp, ,]) => (new Print(exp)) %}
+  | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
 
 lista_id ->
     identifier                            {% ([id]) => ([id]) %}
