@@ -14,10 +14,10 @@ export const tokens = {
   '\\/':        '\\/',
   '/=':         '/=',
   '/':          /\/(?!\*)/,
+  '+':          /\+(?!\+)/,
   '++':         '++',
-  '+':          '+',
+  '-':          /-(?!-)/,
   '--':         '--',
-  '-':          '-',
   ';':          ';',
   '<-':         '<-',
   '<=':         '<=',
@@ -30,6 +30,8 @@ export const tokens = {
   '[':          '[',
   ']':          ']',
   '#':          '#',
+  ',':          ',',
+
 
   // Keywords
   'if':         'if',
@@ -40,8 +42,10 @@ export const tokens = {
   'div':        'div',
   'mod':        'mod',
   'string':     'string',
+  'int':        'int',
   'number':     'number',
   'boolean':    'boolean',
+  'return':     'return',
 
   // Atoms
   inf:          { match: /Infinity/, value:(x: string) => (parseInt(x)) },
@@ -49,7 +53,7 @@ export const tokens = {
   float:        { match: /[0-9]+\.[0-9]+(?:[eE][-+]?[0-9]+)?/, value: (x: string) => (parseFloat(x)) },
   hex:          { match: /0[xX][0-9a-f-A-F]+/, value: (x: string) => (parseInt(x,16)) },
   integer:      { match: /[0-9]+/, value: (x: string) => (parseFloat(x)) },
-  str:       { match: /"[^"\n]*?"/, value: (x: string) => (JSON.parse(x)) }, //hay que cambiarlo
+  str:          { match: /"[^"\n]*?"/, value: (x: string) => (JSON.parse(x)) }, //hay que cambiarlo
 
   // Identifiers
   identifier:   /[a-zA-Z_][a-zA-Z0-9_]*/,

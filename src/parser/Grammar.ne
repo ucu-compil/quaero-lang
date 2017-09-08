@@ -31,6 +31,14 @@ import {
   Index,
   DoWhile,
   WhileDoElse,
+  Funcion,
+  Call,
+  Return,
+  Print,
+  Div,
+  Mod,
+  String,
+  Boolean
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -51,20 +59,30 @@ stmt ->
 
 stmtelse ->
     identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | identifier "(" lista_id ")" stmt      {% ([name, , ids, , body]) => (new Funcion(name,ids,body)) %}
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
   | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "do" stmt "while" exp                 {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
   | "while" exp "do" stmt "else" stmt     {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
   | "if" exp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+  | "return" exp ";"                      {% ([, exp,]) => (new Return(exp)) %}
+  | "print" "(" exp ")" ";"               {% ([, , exp, ,]) => (new Print(exp)) %}
 
+lista_id ->
+    identifier                            {% ([id]) => ([id]) %}
+  | lista_id "," identifier               {% ([lista, ,id]) => { lista.push(id); return lista; } %}
 
 # Expressions
 
 exp ->
-    exp "if" exp "else" exp           {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
-  | "length" "(" exp ")"              {% ([, , exp, ]) => (new Length(exp)) %}
-  | exp "[" exp "]"                   {% ([str, ,ind, ]) => (new Index(str,ind)) %}
-  | condisj                           {% id %}
+    exp "if" exp "else" exp                  {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
+  | identifier "(" lista_params ")"          {% ([name, , ids,]) => (new Call(name,ids)) %}
+  | exp "[" exp "]"                          {% ([str, ,ind, ]) => (new Index(str,ind)) %}
+  | condisj                                  {% id %}
+
+lista_params ->
+    exp                                      {% ([exp]) => ([exp]) %}
+  | lista_params "," exp                     {% ([lista, ,exp]) => { lista.push(exp); return lista; } %}
 
 condisj ->
     exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
@@ -95,14 +113,18 @@ neg ->
   | value                   {% id %}
 
 value ->
-    "(" exp ")"             {% ([, exp, ]) => (exp) %}
-  | "null"                  {% () => (new Null()) %}
-  | number                  {% ([num]) => (new Numeral(+num)) %}
-  | "true"                  {% () => (new TruthValue(true)) %}
-  | "false"                 {% () => (new TruthValue(false)) %}
-  | identifier              {% ([id]) => (new Variable(id)) %}
-  | string                  {% ([id]) => (new TextLiteral(id)) %}
-
+    "(" exp ")"                 {% ([, exp, ]) => (exp) %}
+  | "null"                      {% () => (new Null()) %}
+  | number                      {% ([num]) => (new Numeral(+num)) %}
+  | "true"                      {% () => (new TruthValue(true)) %}
+  | "false"                     {% () => (new TruthValue(false)) %}
+  | identifier                  {% ([id]) => (new Variable(id)) %}
+  | str                         {% ([id]) => (new TextLiteral(id)) %}
+  | "div" "(" exp "," exp ")"   {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
+  | "mod" "(" exp "," exp ")"   {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
+  | "length" "(" exp ")"        {% ([, , exp, ]) => (new Length(exp)) %}
+  | "string" "(" exp ")"        {% ([, , exp,]) => (new String(exp)) %}
+  | "boolean" "(" exp ")"       {% ([, , exp,]) => (new Boolean(exp)) %}
 
 # Atoms
 
@@ -111,8 +133,8 @@ identifier ->
 
 number ->
     %integer                {% ([id]) => (id.value) %}
-  | %hex                    {% ([id]) => (id.value) %}
   | %float                  {% ([id]) => (id.value) %}
+  | %hex                    {% ([id]) => (id.value) %}
 
-string ->
-   %string                  {% ([id]) => (id.value) %}
+str ->
+   %str                     {% ([id]) => (id.value) %}

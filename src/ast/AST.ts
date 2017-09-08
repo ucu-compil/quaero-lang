@@ -9,6 +9,9 @@ export * from './Sequence';
 export * from './WhileDo';
 export * from './DoWhile';
 export * from './WhileDoElse';
+export * from './Funcion';
+export * from './Return';
+export * from './Print';
 
 // AExp
 export * from './Addition';
@@ -22,6 +25,11 @@ export * from './Length';
 export * from './TextLiteral';
 export * from './Index';
 export * from './Null';
+export * from './Call';
+export * from './Div';
+export * from './Mod';
+export * from './String';
+export * from './Boolean';
 
 // BExp
 export * from './CompareEqual';

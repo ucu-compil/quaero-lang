@@ -1,5 +1,6 @@
 import { Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
+import { Return } from './AST';
 
 /**
   Representación de las secuencias de sentencias.
@@ -30,6 +31,9 @@ export class Sequence implements Stmt {
 
   evaluate(state: State): State {
     for(var i = 0; i<this.statements.length; i++){
+      if(this.statements[i] instanceof Return){
+        return this.statements[i].evaluate(state); 
+      }
       state = this.statements[i].evaluate(state);
     }
     return state;
