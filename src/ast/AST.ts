@@ -30,6 +30,8 @@ export * from './Div';
 export * from './Mod';
 export * from './String';
 export * from './Boolean';
+export * from './Number';
+export * from './Int';
 
 // BExp
 export * from './CompareEqual';

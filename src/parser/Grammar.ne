@@ -38,7 +38,9 @@ import {
   Div,
   Mod,
   String,
-  Boolean
+  Boolean,
+  Number,
+  Int
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -124,6 +126,8 @@ value ->
   | "length" "(" exp ")"        {% ([, , exp, ]) => (new Length(exp)) %}
   | "string" "(" exp ")"        {% ([, , exp,]) => (new String(exp)) %}
   | "boolean" "(" exp ")"       {% ([, , exp,]) => (new Boolean(exp)) %}
+  | "number" "(" exp ")"        {% ([, , exp,]) => (new Number(exp)) %}
+  | "int" "(" exp ")"           {% ([, , exp,]) => (new Int(exp)) %}
 
 # Atoms
 

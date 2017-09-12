@@ -44,7 +44,9 @@ import {
   Div,
   Mod,
   String,
-  Boolean
+  Boolean,
+  Number,
+  Int
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -109,6 +111,8 @@ export var ParserRules:NearleyRule[] = [
     {"name": "value", "symbols": [{"literal":"length"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp, ]) => (new Length(exp))},
     {"name": "value", "symbols": [{"literal":"string"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new String(exp))},
     {"name": "value", "symbols": [{"literal":"boolean"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new Boolean(exp))},
+    {"name": "value", "symbols": [{"literal":"number"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new Number(exp))},
+    {"name": "value", "symbols": [{"literal":"int"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new Int(exp))},
     {"name": "identifier", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("integer") ? {type: "integer"} : integer)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("float") ? {type: "float"} : float)], "postprocess": ([id]) => (id.value)},
