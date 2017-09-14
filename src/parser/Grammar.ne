@@ -50,14 +50,15 @@ stmt ->
   | "if" "(" exp ")" stmt                 {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
 
 stmtelse ->
-    identifier "=" exp ";"                  {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | "{" stmt:* "}"                          {% ([, statements, ]) => (new Sequence(statements)) %}
-  | "while" exp "do" stmt                   {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
-  | "do" stmt "while" exp                   {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
-  | "while" exp "do" stmt "else" stmt       {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
-  | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+    identifier "=" exp ";"                    {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "{" stmt:* "}"                            {% ([, statements, ]) => (new Sequence(statements)) %}
+  | "while" exp "do" stmt                     {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+  | "do" stmt "while" exp                     {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
+  | "while" exp "do" stmt "else" stmt         {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
+  | "if"  "(" exp ")" stmtelse "else" stmt    {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+  | "for" "(" identifier "<-" list ")" stmt   {% ([, , id, , lst, , body]) => (new ForEach(id,lst,body)) %}
 
-
+//for (x <- xs) y = y * x;
 # Expressions
 
 exp ->
