@@ -20,7 +20,7 @@ export class CompareNotEqual extends Exp {
   }
 
   unparse(): string {
-    return `(${this.lhs.unparse()} != ${this.rhs.unparse()})`;
+    return `(${this.lhs.unparse()} /= ${this.rhs.unparse()})`;
   }
 
   evaluate(state: State): any {
