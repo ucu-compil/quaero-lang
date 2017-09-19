@@ -40,7 +40,14 @@ import {
   String,
   Boolean,
   Number,
-  Int
+  Int,
+  List,
+  KeyVal,
+  QSet,
+  Cardinality,
+  Belonging,
+  Concatenation,
+  Union
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -79,6 +86,11 @@ exp ->
     exp "if" exp "else" exp                  {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
   | identifier "(" lista_params ")"          {% ([name, , ids,]) => (new Call(name,ids)) %}
   | exp "[" exp "]"                          {% ([str, ,ind, ]) => (new Index(str,ind)) %}
+  | "#" exp                                  {% ([, exp]) => (new Cardinality(exp)) %}
+  | exp "." exp                              {% ([list, ,ind]) => (new Index(list,ind)) %}
+  | exp "<-" exp                             {% ([elem, ,list]) => (new Belonging(elem,list)) %}
+  | exp "++" exp                             {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
+  | exp "\\/" exp                            {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
   | condisj                                  {% id %}
 
 lista_params ->
@@ -128,6 +140,21 @@ value ->
   | "boolean" "(" exp ")"       {% ([, , exp,]) => (new Boolean(exp)) %}
   | "number" "(" exp ")"        {% ([, , exp,]) => (new Number(exp)) %}
   | "int" "(" exp ")"           {% ([, , exp,]) => (new Int(exp)) %}
+  | lists                        {% id %}
+
+lists ->
+    "[" elems "]"               {% ([, elems,]) => (new List(elems)) %}
+  | "{" elems "}"               {% ([, elems,]) => (new QSet(elems)) %}
+
+elems ->
+    exp                         {% ([exp]) => ([exp]) %}
+  | keyval                      {% ([kv]) => ([kv]) %}
+  | elems "," exp               {% ([elems, , exp]) => { elems.push(exp); return elems; } %}
+  | elems "," keyval            {% ([elems, , kv]) => { elems.push(kv); return elems; } %}
+
+keyval ->
+    identifier ":" exp          {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
+  | str ":" exp                 {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
 
 # Atoms
 

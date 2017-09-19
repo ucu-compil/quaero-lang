@@ -46,7 +46,14 @@ import {
   String,
   Boolean,
   Number,
-  Int
+  Int,
+  List,
+  KeyVal,
+  QSet,
+  Cardinality,
+  Belonging,
+  Concatenation,
+  Union
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -78,6 +85,11 @@ export var ParserRules:NearleyRule[] = [
     {"name": "exp", "symbols": ["exp", {"literal":"if"}, "exp", {"literal":"else"}, "exp"], "postprocess": ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse))},
     {"name": "exp", "symbols": ["identifier", {"literal":"("}, "lista_params", {"literal":")"}], "postprocess": ([name, , ids,]) => (new Call(name,ids))},
     {"name": "exp", "symbols": ["exp", {"literal":"["}, "exp", {"literal":"]"}], "postprocess": ([str, ,ind, ]) => (new Index(str,ind))},
+    {"name": "exp", "symbols": [{"literal":"#"}, "exp"], "postprocess": ([, exp]) => (new Cardinality(exp))},
+    {"name": "exp", "symbols": ["exp", {"literal":"."}, "exp"], "postprocess": ([list, ,ind]) => (new Index(list,ind))},
+    {"name": "exp", "symbols": ["exp", {"literal":"<-"}, "exp"], "postprocess": ([elem, ,list]) => (new Belonging(elem,list))},
+    {"name": "exp", "symbols": ["exp", {"literal":"++"}, "exp"], "postprocess": ([lhs, ,rhs]) => (new Concatenation(lhs,rhs))},
+    {"name": "exp", "symbols": ["exp", {"literal":"\\/"}, "exp"], "postprocess": ([lhs, ,rhs]) => (new Union(lhs,rhs))},
     {"name": "exp", "symbols": ["condisj"], "postprocess": id},
     {"name": "lista_params", "symbols": ["exp"], "postprocess": ([exp]) => ([exp])},
     {"name": "lista_params", "symbols": ["lista_params", {"literal":","}, "exp"], "postprocess": ([lista, ,exp]) => { lista.push(exp); return lista; }},
@@ -113,6 +125,15 @@ export var ParserRules:NearleyRule[] = [
     {"name": "value", "symbols": [{"literal":"boolean"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new Boolean(exp))},
     {"name": "value", "symbols": [{"literal":"number"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new Number(exp))},
     {"name": "value", "symbols": [{"literal":"int"}, {"literal":"("}, "exp", {"literal":")"}], "postprocess": ([, , exp,]) => (new Int(exp))},
+    {"name": "value", "symbols": ["lists"], "postprocess": id},
+    {"name": "lists", "symbols": [{"literal":"["}, "elems", {"literal":"]"}], "postprocess": ([, elems,]) => (new List(elems))},
+    {"name": "lists", "symbols": [{"literal":"{"}, "elems", {"literal":"}"}], "postprocess": ([, elems,]) => (new QSet(elems))},
+    {"name": "elems", "symbols": ["exp"], "postprocess": ([exp]) => ([exp])},
+    {"name": "elems", "symbols": ["keyval"], "postprocess": ([kv]) => ([kv])},
+    {"name": "elems", "symbols": ["elems", {"literal":","}, "exp"], "postprocess": ([elems, , exp]) => { elems.push(exp); return elems; }},
+    {"name": "elems", "symbols": ["elems", {"literal":","}, "keyval"], "postprocess": ([elems, , kv]) => { elems.push(kv); return elems; }},
+    {"name": "keyval", "symbols": ["identifier", {"literal":":"}, "exp"], "postprocess": ([id, ,exp]) => (new KeyVal(id,exp))},
+    {"name": "keyval", "symbols": ["str", {"literal":":"}, "exp"], "postprocess": ([id, ,exp]) => (new KeyVal(id,exp))},
     {"name": "identifier", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("integer") ? {type: "integer"} : integer)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("float") ? {type: "float"} : float)], "postprocess": ([id]) => (id.value)},

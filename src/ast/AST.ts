@@ -32,6 +32,13 @@ export * from './String';
 export * from './Boolean';
 export * from './Number';
 export * from './Int';
+export * from './KeyVal';
+export * from './List';
+export * from './QSet';
+export * from './Cardinality';
+export * from './Belonging';
+export * from './Concatenation';
+export * from './Union';
 
 // BExp
 export * from './CompareEqual';

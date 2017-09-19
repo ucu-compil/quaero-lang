@@ -18,7 +18,7 @@ export class IfThen implements Stmt {
   }
 
   unparse(): string {
-    return `if ${this.cond.unparse()} then { ${this.thenBody.unparse()} }`;
+    return `if(${this.cond.unparse()}) { ${this.thenBody.unparse()} }`;
   }
 
   evaluate(state: State): State {

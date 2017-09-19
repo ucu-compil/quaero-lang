@@ -24,7 +24,7 @@ export class Index extends Exp {
   }
 
   evaluate(state: State): any {
-    return this.str.evaluateString(state)[this.ind.evaluateNumber(state)];
+    return this.str.evaluate(state)[this.ind.evaluateNumber(state)];
   }
 
 }

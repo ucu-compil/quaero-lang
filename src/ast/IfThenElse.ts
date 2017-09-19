@@ -20,7 +20,7 @@ export class IfThenElse implements Stmt {
   }
 
   unparse(): string {
-    return `if ${this.cond.unparse()} then { ${this.thenBody.unparse()} } else { ${this.elseBody.unparse()} }`;
+    return `if(${this.cond.unparse()}) { ${this.thenBody.unparse()} } else { ${this.elseBody.unparse()} }`;
   }
 
   evaluate(state: State): State {

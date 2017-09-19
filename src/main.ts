@@ -35,7 +35,7 @@ while (true) {
       case 1: {
         const node = nodes[0];
         state = node.evaluate(state);
-        console.log(node.toString());
+        //console.log(node.toString());
         console.log(`\n${state.toString()}`);
         break;
       }
