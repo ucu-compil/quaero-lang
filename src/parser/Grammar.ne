@@ -11,7 +11,18 @@ import {
   TruthValue,
   Variable,
   Conjunction,
-  Disjunction
+  Disjunction,
+  Addition,
+  Substraction,
+  Negation,
+  CompareEqual,
+  CompareGreat,
+  CompareGreatOrEqual,
+  CompareLessOrEqual,
+  CompareLess,
+  CompareNotEqual,
+  Multiplication,
+  Division
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -50,14 +61,24 @@ identifier ":"
 
 # Expressions
 
+<<<<<<< HEAD
+=======
+# Expresiones
+
+
+
+>>>>>>> 27c9b2319ee65334538a8aac8bcc8d3794e92a54
 exp ->
     exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
   | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
   | exp "where" stmtelse  {% ([exp, ,stmtelse]) => (new Where(exp, stmtelse)) %}
   | comp                    {% id %}
 
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 27c9b2319ee65334538a8aac8bcc8d3794e92a54
 comp ->
     comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
   | comp "!=" addsub        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
@@ -74,7 +95,11 @@ addsub ->
 
 muldiv ->
     muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
+<<<<<<< HEAD
   | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, r'phs)) %}
+=======
+  | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
+>>>>>>> 27c9b2319ee65334538a8aac8bcc8d3794e92a54
   | neg                     {% id %}
 
 neg ->
