@@ -7,6 +7,8 @@ export const tokens = {
   ')':          ')',
   '{':          '{',
   '}':          '}',
+  '[':          '[',
+  ']':          ']',  
   '*':          '*',
   '/':          /\/(?!\*)/,
   '+':          '+',
@@ -20,6 +22,7 @@ export const tokens = {
   '==':         '==',
   '=':          '=',
   '!':          '!',
+  'comillas':   '"',
 
   // Keywords
   'do':         'do',
@@ -35,7 +38,7 @@ export const tokens = {
   hex:          { match: /0[xX][0-9a-f-A-F]+/, value: (x: string) => (parseInt(x,16)) },
   integer:      { match: /[0-9]+/, value: (x: string) => (parseFloat(x)) },
 
-  // Identifiers
+  // Identifiers o Variables
   identifier:   /[a-zA-Z_][a-zA-Z0-9_]*/,
 
   // Ignored tokens
