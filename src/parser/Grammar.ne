@@ -22,7 +22,14 @@ import {
   CompareLess,
   CompareNotEqual,
   Multiplication,
-  Division
+  Division,
+  Declaration,
+  DeclarationAssignment,
+  IfThen,
+  IfThenElse,
+  Assignment,
+  Sequence,
+  WhileDo
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -36,6 +43,18 @@ const lexer = new MyLexer(tokens);
 
 
 # Sentencias
+
+stmt ->
+    stmtelse                              {% id %}
+  | "if" exp "then" stmt                  {% ([, cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
+
+stmtelse ->
+    type identifier ";"                   {% ([type, identifier, ]) => (new Declaration(type, identifier)) %}
+  | type identifier "=" exp ";"           {% ([type, identifier, , exp, ]) => (new DeclarationAssignment(type, identifier, exp)) %}
+  | identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
+  | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+  | "if" exp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
 
 
 # Expresiones
