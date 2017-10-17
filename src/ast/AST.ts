@@ -39,6 +39,10 @@ export * from './Cardinality';
 export * from './Belonging';
 export * from './Concatenation';
 export * from './Union';
+export * from './Intersection';
+export * from './Difference';
+export * from './Enumeration';
+export * from './Negative';
 
 // BExp
 export * from './CompareEqual';

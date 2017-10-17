@@ -4,8 +4,10 @@ import { State } from '../interpreter/State';
 /**
   Representación de usos de variable en expresiones.
 */
-export class List extends Exp {
+export class Comprehension extends Exp {
+
   elems: Exp[];
+  list: Boolean;
 
   constructor(elems: Exp[]) {
     super();
@@ -17,7 +19,7 @@ export class List extends Exp {
   }
 
   unparse(): string {
-    return undefined; //cambiar 
+    return undefined; //cambiar
   }
 
   evaluate(state: State): any {

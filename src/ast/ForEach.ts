@@ -6,12 +6,12 @@ import { State } from '../interpreter/State';
 */
 export class ForEach implements Stmt {
   id: string;
-  lst: List;
+  lst: Exp;
   body: Stmt;
 
-  constructor(id: string, lst: List, body: Stmt) {
+  constructor(id: string, lst: Exp, body: Stmt) {
     this.id   = id;
-    this.lst = cond;
+    this.lst = lst;
     this.body = body;
   }
 
@@ -26,7 +26,8 @@ export class ForEach implements Stmt {
   }
 
   evaluate(state: State): State {
-    for (this.id of this.lst.evaluateList(state)) { this.body.evaluate(state) } 
+    for (this.id of this.lst.evaluate(state)) { this.body.evaluate(state) }
+    return state;
     //Clonar el estado de la evaluacion de la lista y luego utilizarlo dentro del body
     /*
     for(this.cond.evaluateBoolean(state)){

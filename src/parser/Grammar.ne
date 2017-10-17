@@ -3,51 +3,14 @@
 @{%
 
 import {
-  Null,
-  Addition,
-  Assignment,
-  CompareEqual,
-  CompareNotEqual,
-  CompareLessOrEqual,
-  CompareLess,
-  CompareGreatOrEqual,
-  CompareGreat,
-  Conjunction,
-  Disjunction,
-  IfThenElse,
-  IfThen,
-  Multiplication,
-  Division,
-  Negation,
-  Numeral,
-  Sequence,
-  Substraction,
-  TruthValue,
-  Variable,
-  WhileDo,
-  ExpCond,
-  TextLiteral,
-  Length,
-  Index,
-  DoWhile,
-  WhileDoElse,
-  Funcion,
-  Call,
-  Return,
-  Print,
-  Div,
-  Mod,
-  String,
-  Boolean,
-  Number,
-  Int,
-  List,
-  KeyVal,
-  QSet,
-  Cardinality,
-  Belonging,
-  Concatenation,
-  Union
+  Null, Addition, Assignment, CompareEqual, CompareNotEqual,
+  CompareLessOrEqual, CompareLess, CompareGreatOrEqual, CompareGreat,
+  Conjunction, Disjunction, IfThenElse, IfThen, Multiplication, Division,
+  Negation, Numeral, Sequence, Substraction, TruthValue, Variable, WhileDo,
+  ExpCond, TextLiteral, Length, Index, DoWhile, WhileDoElse, Funcion, Call,
+  Return, Print, Div, Mod, String, Boolean, Number, Int, List, KeyVal, QSet,
+  Cardinality, Belonging, Concatenation, Union, Intersection, Difference,
+  Enumeration, Negative
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -91,6 +54,8 @@ exp ->
   | exp "<-" exp                             {% ([elem, ,list]) => (new Belonging(elem,list)) %}
   | exp "++" exp                             {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
   | exp "\\/" exp                            {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
+  | exp "/\\" exp                            {% ([lhs, ,rhs]) => (new Intersection(lhs,rhs)) %}
+  | exp "--" exp                             {% ([lhs, ,rhs]) => (new Difference(lhs,rhs)) %}
   | condisj                                  {% id %}
 
 lista_params ->
@@ -123,6 +88,7 @@ muldiv ->
 
 neg ->
     "!" value               {% ([, exp]) => (new Negation(exp)) %}
+  | "-" value               {% ([, exp]) => (new Negative(exp)) %}
   | value                   {% id %}
 
 value ->
@@ -143,8 +109,12 @@ value ->
   | lists                        {% id %}
 
 lists ->
-    "[" elems "]"               {% ([, elems,]) => (new List(elems)) %}
-  | "{" elems "}"               {% ([, elems,]) => (new QSet(elems)) %}
+    "[" elems "]"                 {% ([, elems,]) => (new List(elems)) %}
+  | "{" elems "}"                 {% ([, elems,]) => (new QSet(elems)) %}
+  | "[" exp ".." exp "]"          {% ([, low, , high,]) => (new Enumeration(low,high)) %}
+  | "[" exp "," exp ".." exp "]"  {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
+  | "[" "]"                       {% ([,,]) => (new List([])) %}
+  | "{" "}"                       {% ([,,]) => (new QSet([])) %}
 
 elems ->
     exp                         {% ([exp]) => ([exp]) %}

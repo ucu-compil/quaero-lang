@@ -24,6 +24,22 @@ export class CompareNotEqual extends Exp {
   }
 
   evaluate(state: State): any {
-    return this.lhs.evaluateNumber(state) != this.rhs.evaluateNumber(state);
+    var lhs = this.lhs.evaluate(state);
+    var rhs = this.rhs.evaluate(state);
+    if (lhs.constructor == rhs.constructor){
+      if(lhs instanceof Array){
+        if(lhs.length == rhs.length) return false;
+        for(var i=0;i<Math.min(lhs.length,rhs.length);i++){
+          if(lhs[i] == rhs[i]) return false;
+        }
+        return true;
+      }
+      if(lhs instanceof Set){
+        var isSetsUnEqual = (a, b) => a.size != b.size && !([...a].every(value => b.has(value)));
+        return isSetsUnEqual(lhs,rhs);
+      }
+      else return lhs != rhs;
+    }
+    else throw "Type Error"
   }
 }
