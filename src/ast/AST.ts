@@ -7,6 +7,8 @@ export * from './Numeral';
 export * from './Int';
 export * from './TruthValue';
 export * from './Variable';
+export * from './Disjunction';
+export * from './Conjunction';
 
 // Statements
 

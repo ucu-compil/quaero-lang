@@ -9,7 +9,9 @@ import {
   Numeral,
   Int,
   TruthValue,
-  Variable
+  Variable,
+  Conjunction,
+  Disjunction
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -26,6 +28,11 @@ const lexer = new MyLexer(tokens);
 
 
 # Expresiones
+exp ->
+    exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
+  | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
+  | comp                    {% id %}
+
 value ->
     "(" exp ")"             {% ([, exp, ]) => (exp) %}
   | number                  {% ([num]) => (new Numeral(num)) %}

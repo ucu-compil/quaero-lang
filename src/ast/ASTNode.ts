@@ -1,4 +1,7 @@
 import { Estado } from '../interpreter/Estado';
+import { CheckState } from '../typecheck/CheckState';
+import { QuaeroType } from '../typecheck/QuaeroType';
+
 
 export interface ASTNode {
   toString(): string;
@@ -12,7 +15,8 @@ export interface ASTNode {
 export interface Exp extends ASTNode {
 
   evaluate(state: Estado): any;
-
+  checktype(checkstate: CheckState): QuaeroType;
+  
 }
 
 /**
