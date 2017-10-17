@@ -3,7 +3,7 @@
 @{%
 
 import {
-  Opuesto
+  
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
