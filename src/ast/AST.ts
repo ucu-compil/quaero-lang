@@ -12,6 +12,7 @@ export * from './WhileDoElse';
 export * from './Funcion';
 export * from './Return';
 export * from './Print';
+export * from './ExpAsStmt';
 
 // AExp
 export * from './Addition';

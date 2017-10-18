@@ -16,7 +16,7 @@ import {
   ExpCond, TextLiteral, Length, Index, DoWhile, WhileDoElse, Funcion, Call,
   Return, Print, Div, Mod, String, Boolean, Number, Int, List, KeyVal, QSet,
   Cardinality, Belonging, Concatenation, Union, Intersection, Difference,
-  Enumeration, Negative
+  Enumeration, Negative, ExpAsStmt
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -32,6 +32,7 @@ export var Lexer:Lexer|undefined = lexer;
 export var ParserRules:NearleyRule[] = [
     {"name": "stmt", "symbols": ["stmtelse"], "postprocess": id},
     {"name": "stmt", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmt"], "postprocess": ([, , cond, , thenBody]) => (new IfThen(cond, thenBody))},
+    {"name": "stmt", "symbols": ["exp", {"literal":";"}], "postprocess": ([exp,]) => (new ExpAsStmt(exp))},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"="}, "exp", {"literal":";"}], "postprocess": ([id, , exp, ]) => (new Assignment(id, exp))},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"("}, "lista_id", {"literal":")"}, "stmt"], "postprocess": ([name, , ids, , body]) => (new Funcion(name,ids,body))},
     {"name": "stmtelse$ebnf$1", "symbols": []},
