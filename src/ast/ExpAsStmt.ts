@@ -1,6 +1,5 @@
 import { Stmt, Exp } from './ASTNode';
 import { State } from '../interpreter/State';
-import { Return } from './AST';
 
 /**
   Representación de las secuencias de sentencias.
@@ -14,7 +13,6 @@ export class ExpAsStmt implements Stmt {
   }
 
   toString(): string {
-
     return `${this.exp.toString()};`
   }
 
@@ -22,7 +20,7 @@ export class ExpAsStmt implements Stmt {
     return `${this.exp.unparse()};`
   }
 
-  evaluate(state: State): any {
+  evaluate(state: State): State {
     console.log(this.exp.evaluate(state));
     return state;
   }

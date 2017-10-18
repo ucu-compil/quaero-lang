@@ -30,8 +30,7 @@ export class Call extends Exp {
       for(var i=0;i<fun[0].length;i++){
         auxState.set(fun[0][i],this.params[i].evaluate(state));
       }
-      console.log("a");
-      return fun[1].evaluate(auxState);
+      return fun[1].evaluate(state);
     }
     throw "error";
   }

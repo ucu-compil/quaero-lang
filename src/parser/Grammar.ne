@@ -3,14 +3,14 @@
 @{%
 
 import {
-  Null, Addition, Assignment, CompareEqual, CompareNotEqual,
-  CompareLessOrEqual, CompareLess, CompareGreatOrEqual, CompareGreat,
-  Conjunction, Disjunction, IfThenElse, IfThen, Multiplication, Division,
-  Negation, Numeral, Sequence, Substraction, TruthValue, Variable, WhileDo,
-  ExpCond, TextLiteral, Length, Index, DoWhile, WhileDoElse, Funcion, Call,
-  Return, Print, Div, Mod, String, Boolean, Number, Int, List, KeyVal, QSet,
-  Cardinality, Belonging, Concatenation, Union, Intersection, Difference,
-  Enumeration, Negative, ExpAsStmt
+  Addition, Assignment, Belonging, Boolean, Call, CompareEqual,
+  CompareGreat, CompareGreatOrEqual, CompareLess, CompareNotEqual,
+  Concatenation, Difference, Disjunction, Div, Division, DoWhile,
+  ExpAsStmt, Funcion, IfThen, IfThenElse, Index, Int, Intersection,
+  KeyVal, Length, List, Mod, Multiplication, Negative, Number, Numeral,
+  Print, QSet, Sequence, String, Substraction, TextLiteral, TruthValue,
+  Union, Variable, WhileDo, WhileDoElse, Cardinality, CompareLessOrEqual,
+  Conjunction, Enumeration, ExpCond, Negation, Null, Return
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
