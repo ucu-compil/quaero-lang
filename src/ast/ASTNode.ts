@@ -20,7 +20,7 @@ export abstract class Exp implements ASTNode {
     if (typeof e == 'number'){
       return e;
     }
-    else { throw "Type error"; }
+    else throw "Type error";
   }
 
   evaluateBoolean(state: State): boolean{
@@ -28,7 +28,7 @@ export abstract class Exp implements ASTNode {
     if (typeof e == 'boolean'){
       return e;
     }
-    else { throw "Type error"; }
+    else throw "Type error";
   }
 
   evaluateList(state: State): Array<any> {
@@ -36,6 +36,7 @@ export abstract class Exp implements ASTNode {
     if (e instanceof Array){
       return e;
     }
+    else throw "Type error";
   }
 
   evaluateSet(state: State): Set<any> {
@@ -43,6 +44,7 @@ export abstract class Exp implements ASTNode {
     if (e instanceof Set){
       return e;
     }
+    else throw "Type error";
   }
 
   evaluateString(state: State): string{
@@ -50,7 +52,7 @@ export abstract class Exp implements ASTNode {
     if (typeof e == 'string'){
       return e;
     }
-    else { throw "Type error"; }
+    else throw "Type error";
   }
 }
 

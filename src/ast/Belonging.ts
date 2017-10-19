@@ -24,11 +24,8 @@ export class Belonging extends Exp {
   }
 
   evaluate(state: State): any {
-    var l = this.list.evaluate(state);
-    for(var i=0;i<l.length;i++){
-    
-    }
-    return i > -1;
+    var l = this.list.evaluateList(state);
+    return l.indexOf(this.elem.evaluate(state)) >= 0;
   }
 
 }
