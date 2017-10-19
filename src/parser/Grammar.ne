@@ -22,14 +22,7 @@ import {
   CompareLess,
   CompareNotEqual,
   Multiplication,
-  Division,
-  Declaration,
-  DeclarationAssignment,
-  IfThen,
-  IfThenElse,
-  Assignment,
-  Sequence,
-  WhileDo
+  Division
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -48,13 +41,8 @@ conjunto ->
 |"{" elementos "}"      {% ([,]) => (new Conjunto(elementos)) %} 
 
 lista -> 
-<<<<<<< HEAD
 "["  "]"                {% ([,]) => (new Lista([])) %} 
 |"[" elementos "]"      {% ([,]) => (new Lista(elementos)) %} 
-=======
-"["  "]"                {% ([,]) => (new Lista()) %}
-|"[" elementos "]"      {% ([,elementos,]) => (new Lista(elementos)) %}
->>>>>>> 2ebc3115d5ec3aae2127adbde2489d3ab58fcdc0
 
 elementos->
 elemento                 {% ([elemento]) => [elemento] %} 
@@ -65,7 +53,6 @@ value                   {% id %}
 |lista                  {% id %}
 |conjunto               {% id %}
 |clave                  {% id %}
-
 
 clave ->
 identifier ":" value        {% ([id,,valor]) => (new Clave(id,valor)) %}
@@ -79,10 +66,8 @@ value ->
   | identifier              {% ([id]) => (new Variable(id)) %}
 
 # Atoms
-
 identifier ->
     %identifier             {% ([id]) => (id.value) %}
-
 string->
   %string                   {% ([id]) => (id.value) %}
 number ->

@@ -11,6 +11,15 @@ export * from './Conjunto';
 
 
 
+export * from './Assignment';
+export * from './IfThen';
+export * from './Declaration';
+export * from './DeclarationAssignment';
+export * from './Assignment';
+export * from './Sequence';
+export * from './WhileDo';
+export * from './IfThenElse';
+
 
 // Statements
 
