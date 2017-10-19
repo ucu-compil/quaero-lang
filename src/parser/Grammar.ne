@@ -7,6 +7,7 @@ import {
   QTInt,
   QTNumeral,
   Numeral,
+  String,
   Int,
   TruthValue,
   Variable,
@@ -22,7 +23,12 @@ import {
   CompareLess,
   CompareNotEqual,
   Multiplication,
-  Division
+  Division,
+  Lista,
+  Conjunto,
+  String,
+  Clave
+
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -45,9 +51,14 @@ lista ->
 |"[" elementos "]"      {% ([,]) => (new Lista(elementos)) %} 
 
 elementos->
+<<<<<<< HEAD
 elemento                 {% ([elemento]) => [elemento] %} 
 |elementos "," elemento  {% ([elementos, ,elemento]) => elementos.push(elemento) %} 
 
+=======
+elemento                 {% ([elemento]) => ([elemento]) %} 
+|elementos "," elemento  {% ([elementos, ,elemento]) => (elementos.push(elemento); return(elementos);)%} 
+>>>>>>> f1c5d62203a03fbc6c2be7e09f92b2d9315340a5
 elemento -> 
 value                   {% id %}
 |lista                  {% id %}
