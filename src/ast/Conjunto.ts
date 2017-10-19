@@ -1,17 +1,18 @@
 import { Exp, Stmt } from './ASTNode';
-import { State } from '../interpreter/State';
+import { Estado } from '../interpreter/Estado';
+import { CheckState } from '../typecheck/CheckState';
+import { QuaeroType } from '../typecheck/QuaeroType';
+import { QTConjunto } from '../typecheck/QTConjunto';
 
 /**
   Representación de las asignaciones de valores a variables.
 */
-export class Conjunto implements Stmt {
+export class Conjunto implements Exp {
 
   elementos: [Exp];
 
   constructor(elementos: [Exp]) {
     this.elementos = elementos;
-  }
-
   }
 
 
@@ -31,12 +32,12 @@ export class Conjunto implements Stmt {
     return `{${elementos}}`;
   }
 
-  evaluate(state: State): State {
-    this.elementos.forEach(function (s: Stmt) {
-      state = s.evaluate(state);
-    });
+  evaluate(state: Estado): Estado {
+    return undefined;
+  }
 
-    return state;
+  checktype(checkstate: CheckState): QuaeroType {
+    return QTConjunto.Instance;
   }
 
 }
