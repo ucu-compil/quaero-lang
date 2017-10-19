@@ -46,7 +46,7 @@ lista ->
 
 elementos->
 elemento                 {% ([elemento]) => [elemento] %} 
-|elementos "," elemento  {% ([elementos, ,elemento]) => elementos.push(elemento) %} //tiene que retornar elementos
+|elementos "," elemento  {% ([elementos, ,elemento]) => elementos.push(elemento) %} 
 
 elemento -> 
 value                   {% id %}
