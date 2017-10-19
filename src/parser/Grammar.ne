@@ -22,7 +22,14 @@ import {
   CompareLess,
   CompareNotEqual,
   Multiplication,
-  Division
+  Division,
+  Declaration,
+  DeclarationAssignment,
+  IfThen,
+  IfThenElse,
+  Assignment,
+  Sequence,
+  WhileDo
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -41,8 +48,13 @@ conjunto ->
 |"{" elementos "}"      {% ([,]) => (new Conjunto(elementos)) %} 
 
 lista -> 
+<<<<<<< HEAD
 "["  "]"                {% ([,]) => (new Lista([])) %} 
 |"[" elementos "]"      {% ([,]) => (new Lista(elementos)) %} 
+=======
+"["  "]"                {% ([,]) => (new Lista()) %}
+|"[" elementos "]"      {% ([,elementos,]) => (new Lista(elementos)) %}
+>>>>>>> 2ebc3115d5ec3aae2127adbde2489d3ab58fcdc0
 
 elementos->
 elemento                 {% ([elemento]) => [elemento] %} 
