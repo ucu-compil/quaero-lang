@@ -145,6 +145,16 @@ value ->
 lists ->
     "[" elems "]"               {% ([, elems,]) => (new List(elems)) %}
   | "{" elems "}"               {% ([, elems,]) => (new QSet(elems)) %}
+  | "[" exp "for" belongings "]"     {% ([]) => (new CLASS(args*)) %}
+
+belongings ->
+    belongings "," belonging
+  | belonging
+
+belonging ->
+    identifier "<-" "[" elems "]"
+  | identifier "<-" "{" elems "}"
+
 
 elems ->
     exp                         {% ([exp]) => ([exp]) %}
