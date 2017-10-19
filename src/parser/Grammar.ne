@@ -37,67 +37,34 @@ const lexer = new MyLexer(tokens);
 
 # Colecciones
 conjunto -> 
-"{"  "}"  
-|"{" elementos "}"
+"{"  "}"                {% ([,]) => (new Conjunto([])) %} 
+|"{" elementos "}"      {% ([,]) => (new Conjunto(elementos)) %} 
 
 lista -> 
-"["  "]"
-|"[" elementos "]"
+"["  "]"                {% ([,]) => (new Lista([])) %} 
+|"[" elementos "]"      {% ([,]) => (new Lista(elementos)) %} 
 
 elementos->
-elemento
-|elementos "," elemento
+elemento                 {% ([elemento]) => [elemento] %} 
+|elementos "," elemento  {% ([elementos, ,elemento]) => elementos.push(elemento) %} //tiene que retornar elementos
 
 elemento -> 
-identifier              {% ([id]) => (new Variable(id)) %}
-|" string "             {% ([string]) => (new String(string)) %}
+value                   {% id %}
 |lista                  {% id %}
 |conjunto               {% id %}
-|clave
+|clave                  {% id %}
+
 
 clave ->
-identifier ":" 
-|string ":" 
-
-
-# Expressions
-
-exp ->
-    exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
-  | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
-  | exp "where" stmtelse  {% ([exp, ,stmtelse]) => (new Where(exp, stmtelse)) %}
-  | comp                    {% id %}
-
-comp ->
-    comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
-  | comp "!=" addsub        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
-  | comp "<=" addsub        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
-  | comp "<" addsub         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
-  | comp ">=" addsub        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
-  | comp ">" addsub         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
-  | addsub
-
-addsub ->
-    addsub "+" muldiv       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
-  | addsub "-" muldiv       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
-  | muldiv                  {% id %}
-
-muldiv ->
-    muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
-  | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
-  | neg                     {% id %}
-
-neg ->
-    "!" value               {% ([, exp]) => (new Negation(exp)) %}
-  | value                   {% id %}
+identifier ":" value        {% ([id,,valor]) => (new Clave(id,valor)) %}
+|string ":" value           {% ([id,,valor]) => (new Clave(id,valor)) %}
 
 value ->
-    "comillas" string "comillas"                  {% ([string]) => (new String(string)) %}
+  string                    {% ([string]) => (new String(string)) %}
   | number                  {% ([num]) => (new Numeral(num)) %}
   | "true"                  {% () => (new TruthValue(true)) %}
   | "false"                 {% () => (new TruthValue(false)) %}
   | identifier              {% ([id]) => (new Variable(id)) %}
-
 
 # Atoms
 
