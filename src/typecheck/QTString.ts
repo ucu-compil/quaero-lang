@@ -1,4 +1,5 @@
 import { QuaeroType } from "./QuaeroType";
+<<<<<<< HEAD
 import { QTNumeral } from "./QTNumeral";
 
 export class QTString extends QuaeroType {
@@ -26,3 +27,5 @@ export class QTString extends QuaeroType {
 	}
 
 }
+=======
+>>>>>>> cd58e20aa8f5e14ac62ce2e788776d6f93ed7133
