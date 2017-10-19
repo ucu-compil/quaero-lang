@@ -7,20 +7,7 @@ export * from './Numeral';
 export * from './Int';
 export * from './TruthValue';
 export * from './Variable';
-export * from './Disjunction';
-export * from './Conjunction';
 
-export * from './CompareEqual';
-export * from './CompareNotEqual';
-export * from './CompareLessOrEqual';
-export * from './CompareGreatOrEqual';
-export * from './CompareLess';
-export * from './CompareGreat';
-export * from './Negation';
-export * from './Substraction';
-export * from './Addition';
-export * from './Multiplication';
-export * from './Division';
 
 export * from './Assignment';
 export * from './IfThen';
