@@ -23,6 +23,25 @@ export * from './Assignment';
 export * from './Sequence';
 export * from './WhileDo';
 export * from './IfThenElse';
+////
+export * from './Conjunction';
+export * from './Disjunction';
+export * from './Addition';
+export * from './Substraction';
+export * from './Negation';
+///
+export * from './CompareEqual';
+export * from './CompareGreat';
+export * from './CompareGreatOrEqual';
+export * from './CompareLessOrEqual';
+export * from './CompareLess';
+//
+export * from './CompareNotEqual';
+export * from './Multiplication';
+export * from './Division';
+export * from './Clave';
+export * from './CompareLess';
+
 
 
 // Statements

@@ -9,9 +9,9 @@ import { QTLista } from '../typecheck/QTLista';
 */
 export class Lista implements Exp {
 
-  elementos: [Exp];
+  elementos: Exp[];
 
-  constructor(elementos: [Exp]) {
+  constructor(elementos: Exp[] = null) {
     this.elementos = elementos;
   }
 

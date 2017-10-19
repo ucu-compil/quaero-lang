@@ -9,9 +9,9 @@ import { QTConjunto } from '../typecheck/QTConjunto';
 */
 export class Conjunto implements Exp {
 
-  elementos: [Exp];
+  elementos: Exp[];
 
-  constructor(elementos: [Exp]) {
+  constructor(elementos: Exp[] = null) {
     this.elementos = elementos;
   }
 

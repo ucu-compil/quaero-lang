@@ -26,13 +26,13 @@ import {
   Division,
   Lista,
   Conjunto,
-  String,
   Clave
 
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
 import { MyLexer } from './Lexer';
+import { Exp } from '../ast/ASTNode';
 
 const lexer = new MyLexer(tokens);
 
@@ -43,16 +43,16 @@ const lexer = new MyLexer(tokens);
 
 # Colecciones
 conjunto -> 
-"{"  "}"                {% ([,]) => (new Conjunto([])) %} 
-|"{" elementos "}"      {% ([,]) => (new Conjunto(elementos)) %} 
+"{"  "}"                {% ([,]) => (new Conjunto()) %} 
+|"{" elementos "}"      {% ([,elementos,]) => (new Conjunto(elementos)) %} 
 
 lista -> 
-"["  "]"                {% ([,]) => (new Lista([])) %} 
-|"[" elementos "]"      {% ([,]) => (new Lista(elementos)) %} 
+"["  "]"                {% ([,]) => (new Lista()) %} 
+|"[" elementos "]"      {% ([,elementos,]) => (new Lista(elementos)) %} 
 
 elementos->
-elemento                 {% ([elemento]) => ([elemento]) %} 
-|elementos "," elemento  {% ([elementos, ,elemento]) => (elementos.push(elemento); return(elementos);)%} 
+elemento                 {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
+|elementos "," elemento  {% ([elementos, ,elemento]) => {elementos.push(elemento); return elementos;} %} 
 
 elemento -> 
 value                   {% id %}
