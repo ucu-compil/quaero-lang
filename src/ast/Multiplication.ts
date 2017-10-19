@@ -28,10 +28,13 @@ export class Multiplication extends Exp {
     var r = this.rhs.evaluate(state);
     if(typeof l == 'string' && typeof r == 'number'){
       return l.repeat(r);
-    } else{
-      if(typeof r == 'string' && typeof l == 'number'){
-        return r.repeat(l);
-      } else { throw "Type error" }
     }
+    if(typeof r == 'string' && typeof l == 'number'){
+      return r.repeat(l);
+    }
+    if(typeof l == 'number' && typeof r == 'number'){
+      return l*r;
+    }
+    throw "Type error"
   }
 }

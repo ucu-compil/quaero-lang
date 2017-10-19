@@ -12,6 +12,7 @@ export * from './WhileDoElse';
 export * from './Funcion';
 export * from './Return';
 export * from './Print';
+export * from './ExpAsStmt';
 
 // AExp
 export * from './Addition';
@@ -39,6 +40,10 @@ export * from './Cardinality';
 export * from './Belonging';
 export * from './Concatenation';
 export * from './Union';
+export * from './Intersection';
+export * from './Difference';
+export * from './Enumeration';
+export * from './Negative';
 
 // BExp
 export * from './CompareEqual';

@@ -25,14 +25,11 @@ export class Union extends Exp {
 
   evaluate(state: State): any {
     var res = [];
-    res.push(this.lhs.evaluate(state));
-    var rhs = this.rhs.evaluate(state);
-    console.log(rhs);
-    for(var i=0;i<res.length;i++){
-      if(res.indexOf(rhs[i]) < 0){
-        res.push(rhs[i]);
-        console.log(res.indexOf(rhs[i]));
-      }
+    var list = this.lhs.evaluate(state).slice().concat(this.rhs.evaluate(state));
+    for(var i=0;i<list.length;i++){
+      if(res.indexOf(list[i]) < 0){
+        res.push(list[i]);
+        }
     }
     return res;
   }

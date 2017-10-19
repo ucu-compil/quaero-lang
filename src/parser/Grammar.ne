@@ -3,51 +3,14 @@
 @{%
 
 import {
-  Null,
-  Addition,
-  Assignment,
-  CompareEqual,
-  CompareNotEqual,
-  CompareLessOrEqual,
-  CompareLess,
-  CompareGreatOrEqual,
-  CompareGreat,
-  Conjunction,
-  Disjunction,
-  IfThenElse,
-  IfThen,
-  Multiplication,
-  Division,
-  Negation,
-  Numeral,
-  Sequence,
-  Substraction,
-  TruthValue,
-  Variable,
-  WhileDo,
-  ExpCond,
-  TextLiteral,
-  Length,
-  Index,
-  DoWhile,
-  WhileDoElse,
-  Funcion,
-  Call,
-  Return,
-  Print,
-  Div,
-  Mod,
-  String,
-  Boolean,
-  Number,
-  Int,
-  List,
-  KeyVal,
-  QSet,
-  Cardinality,
-  Belonging,
-  Concatenation,
-  Union
+  Addition, Assignment, Belonging, Boolean, Call, CompareEqual,
+  CompareGreat, CompareGreatOrEqual, CompareLess, CompareNotEqual,
+  Concatenation, Difference, Disjunction, Div, Division, DoWhile,
+  ExpAsStmt, Funcion, IfThen, IfThenElse, Index, Int, Intersection,
+  KeyVal, Length, List, Mod, Multiplication, Negative, Number, Numeral,
+  Print, QSet, Sequence, String, Substraction, TextLiteral, TruthValue,
+  Union, Variable, WhileDo, WhileDoElse, Cardinality, CompareLessOrEqual,
+  Conjunction, Enumeration, ExpCond, Negation, Null, Return
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -64,16 +27,17 @@ const lexer = new MyLexer(tokens);
 stmt ->
     stmtelse                              {% id %}
   | "if" "(" exp ")" stmt                 {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
+  | exp ";"                                 {% ([exp,]) => (new ExpAsStmt(exp)) %}
 
 stmtelse ->
-    identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | identifier "(" lista_id ")" stmt      {% ([name, , ids, , body]) => (new Funcion(name,ids,body)) %}
-  | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
-  | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
-  | "do" stmt "while" exp                 {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
-  | "while" exp "do" stmt "else" stmt     {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
-  | "return" exp ";"                      {% ([, exp,]) => (new Return(exp)) %}
-  | "print" "(" exp ")" ";"               {% ([, , exp, ,]) => (new Print(exp)) %}
+    identifier "=" exp ";"                  {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | identifier "(" lista_id ")" stmt        {% ([name, , ids, , body]) => (new Funcion(name,ids,body)) %}
+  | "{" stmt:* "}"                          {% ([, statements, ]) => (new Sequence(statements)) %}
+  | "while" exp "do" stmt                   {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+  | "do" stmt "while" exp                   {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
+  | "while" exp "do" stmt "else" stmt       {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
+  | "return" exp ";"                        {% ([, exp,]) => (new Return(exp)) %}
+  | "print" "(" exp ")" ";"                 {% ([, , exp, ,]) => (new Print(exp)) %}
   | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
 
 lista_id ->
@@ -91,6 +55,8 @@ exp ->
   | exp "<-" exp                             {% ([elem, ,list]) => (new Belonging(elem,list)) %}
   | exp "++" exp                             {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
   | exp "\\/" exp                            {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
+  | exp "/\\" exp                            {% ([lhs, ,rhs]) => (new Intersection(lhs,rhs)) %}
+  | exp "--" exp                             {% ([lhs, ,rhs]) => (new Difference(lhs,rhs)) %}
   | condisj                                  {% id %}
 
 lista_params ->
@@ -123,6 +89,7 @@ muldiv ->
 
 neg ->
     "!" value               {% ([, exp]) => (new Negation(exp)) %}
+  | "-" value               {% ([, exp]) => (new Negative(exp)) %}
   | value                   {% id %}
 
 value ->
@@ -140,12 +107,15 @@ value ->
   | "boolean" "(" exp ")"       {% ([, , exp,]) => (new Boolean(exp)) %}
   | "number" "(" exp ")"        {% ([, , exp,]) => (new Number(exp)) %}
   | "int" "(" exp ")"           {% ([, , exp,]) => (new Int(exp)) %}
-  | lists                        {% id %}
+  | lists                       {% id %}
 
 lists ->
-    "[" elems "]"               {% ([, elems,]) => (new List(elems)) %}
-  | "{" elems "}"               {% ([, elems,]) => (new QSet(elems)) %}
-  | "[" exp "for" belongings "]"     {% ([]) => (new CLASS(args*)) %}
+    "[" elems "]"                 {% ([, elems,]) => (new List(elems)) %}
+  | "{" elems "}"                 {% ([, elems,]) => (new QSet(elems)) %}
+  | "[" exp ".." exp "]"          {% ([, low, , high,]) => (new Enumeration(low,high)) %}
+  | "[" exp "," exp ".." exp "]"  {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
+  | "[" "]"                       {% ([,,]) => (new List([])) %}
+  | "{" "}"                       {% ([,,]) => (new QSet([])) %}
 
 belongings ->
     belongings "," belonging
