@@ -8,7 +8,9 @@ export * from './Int';
 export * from './TruthValue';
 export * from './Variable';
 export * from './Conjunto';
-
+export * from './Lista';
+export * from './Conjunto';
+export * from './String';
 
 
 export * from './Assignment';
