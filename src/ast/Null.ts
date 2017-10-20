@@ -21,4 +21,8 @@ export class Null extends Exp {
   evaluate(state: State): any {
     return null;
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

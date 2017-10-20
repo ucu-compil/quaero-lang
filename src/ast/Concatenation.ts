@@ -27,4 +27,7 @@ export class Concatenation extends Exp {
     return this.lhs.evaluate(state).concat(this.rhs.evaluate(state));
   }
 
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

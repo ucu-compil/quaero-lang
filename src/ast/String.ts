@@ -24,4 +24,8 @@ export class String extends Exp {
   evaluate(state: State): any {
     return this.exp.evaluate(state) + [];
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

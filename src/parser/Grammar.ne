@@ -10,7 +10,7 @@ import {
   KeyVal, Length, List, Mod, Multiplication, Negative, Number, Numeral,
   Print, QSet, Sequence, String, Substraction, TextLiteral, TruthValue,
   Union, Variable, WhileDo, WhileDoElse, Cardinality, CompareLessOrEqual,
-  Conjunction, Enumeration, ExpCond, Negation, Null, Return
+  Conjunction, Enumeration, ExpCond, Negation, Null, Return, ListComprehension
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -25,8 +25,8 @@ const lexer = new MyLexer(tokens);
 # Statements
 
 stmt ->
-    stmtelse                              {% id %}
-  | "if" "(" exp ")" stmt                 {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
+    stmtelse                                {% id %}
+  | "if" "(" exp ")" stmt                   {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
   | exp ";"                                 {% ([exp,]) => (new ExpAsStmt(exp)) %}
 
 stmtelse ->
@@ -41,110 +41,106 @@ stmtelse ->
   | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
 
 lista_id ->
-    identifier                            {% ([id]) => ([id]) %}
-  | lista_id "," identifier               {% ([lista, ,id]) => { lista.push(id); return lista; } %}
+    identifier                              {% ([id]) => ([id]) %}
+  | lista_id "," identifier                 {% ([lista, ,id]) => { lista.push(id); return lista; } %}
 
 # Expressions
 
 exp ->
-    exp "if" exp "else" exp                  {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
-  | identifier "(" lista_params ")"          {% ([name, , ids,]) => (new Call(name,ids)) %}
-  | exp "[" exp "]"                          {% ([str, ,ind, ]) => (new Index(str,ind)) %}
-  | "#" exp                                  {% ([, exp]) => (new Cardinality(exp)) %}
-  | exp "." exp                              {% ([list, ,ind]) => (new Index(list,ind)) %}
-  | exp "<-" exp                             {% ([elem, ,list]) => (new Belonging(elem,list)) %}
-  | exp "++" exp                             {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
-  | exp "\\/" exp                            {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
-  | exp "/\\" exp                            {% ([lhs, ,rhs]) => (new Intersection(lhs,rhs)) %}
-  | exp "--" exp                             {% ([lhs, ,rhs]) => (new Difference(lhs,rhs)) %}
-  | condisj                                  {% id %}
+    exp "if" exp "else" exp                 {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
+  | identifier "(" lista_params ")"         {% ([name, , ids,]) => (new Call(name,ids)) %}
+  | exp "[" exp "]"                         {% ([str, ,ind, ]) => (new Index(str,ind)) %}
+  | "#" exp                                 {% ([, exp]) => (new Cardinality(exp)) %}
+  | exp "." exp                             {% ([list, ,ind]) => (new Index(list,ind)) %}
+  | exp "<-" exp                            {% ([elem, ,list]) => (new Belonging(elem,list)) %}
+  | exp "++" exp                            {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
+  | exp "\\/" exp                           {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
+  | exp "/\\" exp                           {% ([lhs, ,rhs]) => (new Intersection(lhs,rhs)) %}
+  | exp "--" exp                            {% ([lhs, ,rhs]) => (new Difference(lhs,rhs)) %}
+  | condisj                                 {% id %}
 
 lista_params ->
-    exp                                      {% ([exp]) => ([exp]) %}
-  | lista_params "," exp                     {% ([lista, ,exp]) => { lista.push(exp); return lista; } %}
+    exp                                     {% ([exp]) => ([exp]) %}
+  | lista_params "," exp                    {% ([lista, ,exp]) => { lista.push(exp); return lista; } %}
 
 condisj ->
-    exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
-  | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
-  | comp                    {% id %}
+    exp "&&" comp                           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
+  | exp "||" comp                           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
+  | comp                                    {% id %}
 
 comp ->
-    comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
-  | comp "/=" addsub        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
-  | comp "<=" addsub        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
-  | comp "<" addsub         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
-  | comp ">=" addsub        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
-  | comp ">" addsub         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
-  | addsub                  {% id %}
+    comp "==" addsub                        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
+  | comp "/=" addsub                        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
+  | comp "<=" addsub                        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
+  | comp "<" addsub                         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
+  | comp ">=" addsub                        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
+  | comp ">" addsub                         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
+  | addsub                                  {% id %}
 
 addsub ->
-    addsub "+" muldiv       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
-  | addsub "-" muldiv       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
-  | muldiv                  {% id %}
+    addsub "+" muldiv                       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
+  | addsub "-" muldiv                       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
+  | muldiv                                  {% id %}
 
 muldiv ->
-    muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
-  | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
-  | neg                     {% id %}
+    muldiv "*" neg                          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
+  | muldiv "/" neg                          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
+  | neg                                     {% id %}
 
 neg ->
-    "!" value               {% ([, exp]) => (new Negation(exp)) %}
-  | "-" value               {% ([, exp]) => (new Negative(exp)) %}
-  | value                   {% id %}
+    "!" value                               {% ([, exp]) => (new Negation(exp)) %}
+  | "-" value                               {% ([, exp]) => (new Negative(exp)) %}
+  | value                                   {% id %}
 
 value ->
-    "(" exp ")"                 {% ([, exp, ]) => (exp) %}
-  | "null"                      {% () => (new Null()) %}
-  | number                      {% ([num]) => (new Numeral(+num)) %}
-  | "true"                      {% () => (new TruthValue(true)) %}
-  | "false"                     {% () => (new TruthValue(false)) %}
-  | identifier                  {% ([id]) => (new Variable(id)) %}
-  | str                         {% ([id]) => (new TextLiteral(id)) %}
-  | "div" "(" exp "," exp ")"   {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
-  | "mod" "(" exp "," exp ")"   {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
-  | "length" "(" exp ")"        {% ([, , exp, ]) => (new Length(exp)) %}
-  | "string" "(" exp ")"        {% ([, , exp,]) => (new String(exp)) %}
-  | "boolean" "(" exp ")"       {% ([, , exp,]) => (new Boolean(exp)) %}
-  | "number" "(" exp ")"        {% ([, , exp,]) => (new Number(exp)) %}
-  | "int" "(" exp ")"           {% ([, , exp,]) => (new Int(exp)) %}
-  | lists                       {% id %}
+    "(" exp ")"                             {% ([, exp, ]) => (exp) %}
+  | "null"                                  {% () => (new Null()) %}
+  | number                                  {% ([num]) => (new Numeral(+num)) %}
+  | "true"                                  {% () => (new TruthValue(true)) %}
+  | "false"                                 {% () => (new TruthValue(false)) %}
+  | identifier                              {% ([id]) => (new Variable(id)) %}
+  | str                                     {% ([id]) => (new TextLiteral(id)) %}
+  | "div" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
+  | "mod" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
+  | "length" "(" exp ")"                    {% ([, , exp, ]) => (new Length(exp)) %}
+  | "string" "(" exp ")"                    {% ([, , exp,]) => (new String(exp)) %}
+  | "boolean" "(" exp ")"                   {% ([, , exp,]) => (new Boolean(exp)) %}
+  | "number" "(" exp ")"                    {% ([, , exp,]) => (new Number(exp)) %}
+  | "int" "(" exp ")"                       {% ([, , exp,]) => (new Int(exp)) %}
+  | lists                                   {% id %}
 
 lists ->
-    "[" elems "]"                 {% ([, elems,]) => (new List(elems)) %}
-  | "{" elems "}"                 {% ([, elems,]) => (new QSet(elems)) %}
-  | "[" exp ".." exp "]"          {% ([, low, , high,]) => (new Enumeration(low,high)) %}
-  | "[" exp "," exp ".." exp "]"  {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
-  | "[" "]"                       {% ([,,]) => (new List([])) %}
-  | "{" "}"                       {% ([,,]) => (new QSet([])) %}
+    "[" elems "]"                           {% ([, elems,]) => (new List(elems)) %}
+  | "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
+  | "[" exp ".." exp "]"                    {% ([, low, , high,]) => (new Enumeration(low,high)) %}
+  | "[" exp "," exp ".." exp "]"            {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
+  | "[" exp "for" ranges "," exp "]"        {% ([,exp,,id,,list,,cond,]) => (new ListComprehension(exp,[new Belonging(id,list)],[cond])) %}
+  | "[" "]"                                 {% ([,]) => (new List([])) %}
+  | "{" "}"                                 {% ([,]) => (new QSet([])) %}
 
-belongings ->
-    belongings "," belonging
-  | belonging
-
-belonging ->
-    identifier "<-" "[" elems "]"
-  | identifier "<-" "{" elems "}"
-
+ranges ->
+  identifier "<-" lists                     {% ([id,,list]) => ([id,,list]) %}
+  | ranges "," identifier "<-" lists          {% ([r,,id,,list]) => { r.push([id,list]); return r; } %}
 
 elems ->
-    exp                         {% ([exp]) => ([exp]) %}
-  | keyval                      {% ([kv]) => ([kv]) %}
-  | elems "," exp               {% ([elems, , exp]) => { elems.push(exp); return elems; } %}
-  | elems "," keyval            {% ([elems, , kv]) => { elems.push(kv); return elems; } %}
+    exp                                     {% ([exp]) => ([exp]) %}
+  | keyval                                  {% ([kv]) => ([kv]) %}
+  | elems "," exp                           {% ([elems, , exp]) => { elems.push(exp); return elems; } %}
+  | elems "," keyval                        {% ([elems, , kv]) => { elems.push(kv); return elems; } %}
 
 keyval ->
-    identifier ":" exp          {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
-  | str ":" exp                 {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
+    identifier ":" exp                      {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
+  | str ":" exp                             {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
 
 # Atoms
 
 identifier ->
-    %identifier             {% ([id]) => (id.value) %}
+    %identifier                             {% ([id]) => (id.value) %}
 
 number ->
-    %integer                {% ([id]) => (id.value) %}
-  | %float                  {% ([id]) => (id.value) %}
-  | %hex                    {% ([id]) => (id.value) %}
+    %integer                                {% ([id]) => (id.value) %}
+  | %float                                  {% ([id]) => (id.value) %}
+  | %hex                                    {% ([id]) => (id.value) %}
 
 str ->
-   %str                     {% ([id]) => (id.value) %}
+   %str                                     {% ([id]) => (id.value) %}

@@ -16,7 +16,7 @@ import {
   KeyVal, Length, List, Mod, Multiplication, Negative, Number, Numeral,
   Print, QSet, Sequence, String, Substraction, TextLiteral, TruthValue,
   Union, Variable, WhileDo, WhileDoElse, Cardinality, CompareLessOrEqual,
-  Conjunction, Enumeration, ExpCond, Negation, Null, Return
+  Conjunction, Enumeration, ExpCond, Negation, Null, Return, ListComprehension
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -97,8 +97,11 @@ export var ParserRules:NearleyRule[] = [
     {"name": "lists", "symbols": [{"literal":"{"}, "elems", {"literal":"}"}], "postprocess": ([, elems,]) => (new QSet(elems))},
     {"name": "lists", "symbols": [{"literal":"["}, "exp", {"literal":".."}, "exp", {"literal":"]"}], "postprocess": ([, low, , high,]) => (new Enumeration(low,high))},
     {"name": "lists", "symbols": [{"literal":"["}, "exp", {"literal":","}, "exp", {"literal":".."}, "exp", {"literal":"]"}], "postprocess": ([, low, ,step, ,high,]) => (new Enumeration(low,high,step))},
-    {"name": "lists", "symbols": [{"literal":"["}, {"literal":"]"}], "postprocess": ([,,]) => (new List([]))},
-    {"name": "lists", "symbols": [{"literal":"{"}, {"literal":"}"}], "postprocess": ([,,]) => (new QSet([]))},
+    {"name": "lists", "symbols": [{"literal":"["}, "exp", {"literal":"for"}, "ranges", {"literal":","}, "exp", {"literal":"]"}], "postprocess": ([,exp,,id,,list,,cond,]) => (new ListComprehension(exp,[new Belonging(id,list)],[cond]))},
+    {"name": "lists", "symbols": [{"literal":"["}, {"literal":"]"}], "postprocess": ([,]) => (new List([]))},
+    {"name": "lists", "symbols": [{"literal":"{"}, {"literal":"}"}], "postprocess": ([,]) => (new QSet([]))},
+    {"name": "ranges", "symbols": ["identifier", {"literal":"<-"}, "lists"], "postprocess": ([id,,list]) => ([id,,list])},
+    {"name": "ranges", "symbols": ["ranges", {"literal":","}, "identifier", {"literal":"<-"}, "lists"], "postprocess": ([r,,id,,list]) => { r.push([id,list]); return r; }},
     {"name": "elems", "symbols": ["exp"], "postprocess": ([exp]) => ([exp])},
     {"name": "elems", "symbols": ["keyval"], "postprocess": ([kv]) => ([kv])},
     {"name": "elems", "symbols": ["elems", {"literal":","}, "exp"], "postprocess": ([elems, , exp]) => { elems.push(exp); return elems; }},

@@ -17,10 +17,14 @@ export class List extends Exp {
   }
 
   unparse(): string {
-    return undefined; //cambiar 
+    return undefined; //cambiar
   }
 
   evaluate(state: State): any {
     return this.elems.map((e) => e.evaluate(state));
+  }
+
+  evaluateFor(state: State): any{
+    throw "For error";
   }
 }

@@ -27,4 +27,7 @@ export class Index extends Exp {
     return this.str.evaluate(state)[this.ind.evaluateNumber(state)];
   }
 
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

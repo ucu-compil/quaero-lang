@@ -23,4 +23,8 @@ export class Variable extends Exp {
   evaluate(state: State): any {
     return state.get(this.id);
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

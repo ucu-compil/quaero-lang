@@ -24,4 +24,8 @@ export class Length extends Exp {
   evaluate(state: State): any {
     return this.str.evaluateString(state).length;
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

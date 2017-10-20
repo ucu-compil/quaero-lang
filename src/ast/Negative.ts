@@ -24,4 +24,8 @@ export class Negative extends Exp {
   evaluate(state: State): any {
     return -this.exp.evaluateNumber(state);
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

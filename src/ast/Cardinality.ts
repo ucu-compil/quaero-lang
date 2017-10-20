@@ -25,4 +25,7 @@ export class Cardinality extends Exp {
     return this.list.evaluate(state).length;
   }
 
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

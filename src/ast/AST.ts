@@ -44,6 +44,7 @@ export * from './Intersection';
 export * from './Difference';
 export * from './Enumeration';
 export * from './Negative';
+export * from './ListComprehension';
 
 // BExp
 export * from './CompareEqual';

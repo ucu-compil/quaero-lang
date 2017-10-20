@@ -37,4 +37,8 @@ export class Multiplication extends Exp {
     }
     throw "Type error"
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

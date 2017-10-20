@@ -24,4 +24,8 @@ export class Number extends Exp {
   evaluate(state: State): any {
     return parseFloat(this.exp.evaluate(state));
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

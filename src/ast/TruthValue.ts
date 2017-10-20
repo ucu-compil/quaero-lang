@@ -24,4 +24,8 @@ export class TruthValue extends Exp {
   evaluate(state: State): any {
     return this.value;
   }
+
+  evaluateFor(state: State): boolean{
+    return this.value;
+  }
 }

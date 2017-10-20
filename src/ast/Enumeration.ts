@@ -32,4 +32,8 @@ export class Enumeration extends Exp {
     }
     return res;
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

@@ -26,4 +26,8 @@ export class Div extends Exp {
   evaluate(state: State): any {
     return Math.floor(this.lhs.evaluateNumber(state) / this.lhs.evaluateNumber(state));
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

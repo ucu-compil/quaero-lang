@@ -35,4 +35,8 @@ export class Boolean extends Exp {
         return true;
     }
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

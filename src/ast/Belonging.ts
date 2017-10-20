@@ -28,4 +28,7 @@ export class Belonging extends Exp {
     return l.indexOf(this.elem.evaluate(state)) >= 0;
   }
 
+  evalLC(state: State): any{
+    return [this.elem,this.list.evaluate(state)];
+  }
 }

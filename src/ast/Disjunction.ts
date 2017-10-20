@@ -26,4 +26,8 @@ export class Disjunction extends Exp {
   evaluate(state: State): any {
     return this.lhs.evaluateBoolean(state) || this.rhs.evaluateBoolean(state);
   }
+  
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

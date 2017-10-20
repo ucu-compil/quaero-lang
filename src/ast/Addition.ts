@@ -32,4 +32,7 @@ export class Addition extends Exp {
     else{ throw "Type error"; }
   }
 
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }

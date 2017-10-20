@@ -24,4 +24,8 @@ export class Numeral extends Exp {
   evaluate(state: State): any {
     return this.value;
   }
+
+  evaluateFor(state: State): any{
+    throw "For error";
+  }
 }
