@@ -25,7 +25,7 @@ export class Negative extends Exp {
     return -this.exp.evaluateNumber(state);
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 19";
   }
 }

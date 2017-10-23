@@ -25,7 +25,7 @@ export class Int extends Exp {
     return parseInt(this.exp.evaluate(state));
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 12";
   }
 }

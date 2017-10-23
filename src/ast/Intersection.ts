@@ -30,7 +30,7 @@ export class Intersection extends Exp {
     return lhs.filter((e) => rhs.indexOf(e) >= 0);
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 13";
   }
 }

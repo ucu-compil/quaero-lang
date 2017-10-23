@@ -24,7 +24,7 @@ export class Variable extends Exp {
     return state.get(this.id);
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 28";
   }
 }

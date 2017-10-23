@@ -20,7 +20,7 @@ export class State {
 
   clone(): State{
     let clone = new State();
-    this.vars.forEach(function(k,v){clone.set(k,v);});
+    this.vars.forEach(function(v,k){clone.set(k,v);});
     return clone;
   }
 }

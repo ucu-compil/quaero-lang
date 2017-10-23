@@ -14,6 +14,7 @@ export abstract class Exp implements ASTNode {
   abstract toString(): string;
   abstract unparse(): string;
   abstract evaluate(state: State): any;
+  abstract evaluateFor(state: State, exp_list: Exp[], exp: Exp): any;
 
   evaluateNumber(state: State): number{
     var e = this.evaluate(state);

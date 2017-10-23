@@ -34,4 +34,8 @@ export class Call extends Exp {
     }
     throw "error";
   }
+
+  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any {
+    
+  }
 }

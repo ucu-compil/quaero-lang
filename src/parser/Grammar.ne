@@ -114,13 +114,13 @@ lists ->
   | "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
   | "[" exp ".." exp "]"                    {% ([, low, , high,]) => (new Enumeration(low,high)) %}
   | "[" exp "," exp ".." exp "]"            {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
-  | "[" exp "for" ranges "," exp "]"        {% ([,exp,,id,,list,,cond,]) => (new ListComprehension(exp,[new Belonging(id,list)],[cond])) %}
+  | "[" exp "for" exp_list "]"              {% ([,exp,,list,]) => (new ListComprehension(exp, list)) %}
   | "[" "]"                                 {% ([,]) => (new List([])) %}
   | "{" "}"                                 {% ([,]) => (new QSet([])) %}
 
-ranges ->
-  identifier "<-" lists                     {% ([id,,list]) => ([id,,list]) %}
-  | ranges "," identifier "<-" lists          {% ([r,,id,,list]) => { r.push([id,list]); return r; } %}
+exp_list ->
+    exp                                     {% ([exp]) => ([exp]) %}
+  | exp_list "," exp                        {% ([list,,exp]) => { list.push(exp); return list; } %}
 
 elems ->
     exp                                     {% ([exp]) => ([exp]) %}

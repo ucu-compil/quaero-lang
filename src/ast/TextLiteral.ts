@@ -24,7 +24,7 @@ export class TextLiteral extends Exp {
     return this.value;
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 26";
   }
 }

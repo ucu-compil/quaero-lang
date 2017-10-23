@@ -27,7 +27,7 @@ export class Substraction extends Exp {
     return this.lhs.evaluateNumber(state) - this.rhs.evaluateNumber(state);
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 25";
   }
 }

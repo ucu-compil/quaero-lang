@@ -1,4 +1,5 @@
 import { Exp } from './ASTNode';
+import { Variable } from './AST';
 import { State } from '../interpreter/State';
 
 /**
@@ -28,7 +29,25 @@ export class Belonging extends Exp {
     return l.indexOf(this.elem.evaluate(state)) >= 0;
   }
 
-  evalLC(state: State): any{
-    return [this.elem,this.list.evaluate(state)];
+  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any{
+    let head = exp_list[0];
+    let tail = exp_list.slice(1);
+    let res = [];
+    let list = this.list.evaluate(state);
+
+    if(!(this.elem instanceof Variable)) throw "Error";
+
+    for(var i=0;i<list.length;i++){
+      state.set(this.elem.id,list[i]);
+      if(exp_list.length == 0){
+        res.push(exp.evaluate(state));
+      } else {
+        let head = exp_list[0];
+        let tail = exp_list.slice(1);
+        let aux = [].concat.apply([],head.evaluateFor(state,tail,exp));
+        aux.map((x) => res.push(x));
+      }
+    }
+    return res;
   }
 }

@@ -7,13 +7,11 @@ import { State } from '../interpreter/State';
 */
 export class ListComprehension implements Stmt {
   exp: Exp;
-  vars: Belonging[];
-  conds: Exp[];
+  expList: Exp[];
 
-  constructor(exp: Exp, vars: Belonging[], conds: Exp[]) {
+  constructor(exp: Exp, expList: Exp[]) {
     this.exp = exp;
-    this.vars = vars;
-    this.conds = conds;
+    this.expList = expList;
   }
 
   toString(): string {
@@ -24,10 +22,20 @@ export class ListComprehension implements Stmt {
     return `ListComprehension`;
   }
 
+  evaluateFor(state: State, exp_list: Exp[]): any {
+
+  }
+
   evaluate(state: State): any {
-    let res = [];
+    console.log(state);
+    let auxState = state.clone();
+    console.log(auxState);
+    let list = this.expList.slice(1);
+    return this.expList[0].evaluateFor(auxState,list,this.exp);
+  }
+/*    let res = [];
     let auxState: State = state.clone();
-    let aux = (this.vars.map((v) => v.evalLC(state)));
+    let aux = (this.vars.map((v) => v.evaluateFor(state)));
     let [ids,values] = [aux.map((x) => x[0]),aux.map((x) => x[1])]
     let pc = (function(arr){
       return arr.reduce(function(a,b){
@@ -47,6 +55,5 @@ export class ListComprehension implements Stmt {
       }
       res.push(this.exp.evaluate(auxState));
     }
-    return res;
-  }
+    return res;*/
 }

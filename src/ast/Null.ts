@@ -22,7 +22,7 @@ export class Null extends Exp {
     return null;
   }
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 20";
   }
 }

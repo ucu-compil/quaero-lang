@@ -29,7 +29,7 @@ export class QSet extends Exp {
     return new Set(res);
   } //{a=[1,2,3];b=[3,4,5];c=a\/b;}
 
-  evaluateFor(state: State): any{
-    throw "For error";
+  evaluateFor(state: State, exp_list: Exp[]): any{
+    throw "For error 23";
   }
 }
