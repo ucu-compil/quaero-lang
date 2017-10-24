@@ -111,12 +111,16 @@ value ->
 
 lists ->
     "[" elems "]"                           {% ([, elems,]) => (new List(elems)) %}
-  | "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
   | "[" exp ".." exp "]"                    {% ([, low, , high,]) => (new Enumeration(low,high)) %}
   | "[" exp "," exp ".." exp "]"            {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
   | "[" exp "for" exp_list "]"              {% ([,exp,,list,]) => (new ListComprehension(exp, list)) %}
   | "[" "]"                                 {% ([,]) => (new List([])) %}
+  | sets
+
+sets ->
+    "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
   | "{" "}"                                 {% ([,]) => (new QSet([])) %}
+  | "{" exp "for" exp_list "}"              {% ([,exp,,list,]) => (new ListComprehension(exp, list, true)) %}
 
 exp_list ->
     exp                                     {% ([exp]) => ([exp]) %}

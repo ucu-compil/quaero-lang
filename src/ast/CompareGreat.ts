@@ -26,9 +26,6 @@ export class CompareGreat extends Exp {
   evaluate(state: State): any {
     var lhs = this.lhs.evaluate(state);
     var rhs = this.rhs.evaluate(state);
-    console.log(this.lhs,lhs);
-    console.log(this.rhs,rhs);
-
     if (lhs.constructor == rhs.constructor){
       if(lhs instanceof Array){
         if(lhs.length <= rhs.length) return false;

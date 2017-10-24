@@ -8,10 +8,12 @@ import { State } from '../interpreter/State';
 export class ListComprehension implements Stmt {
   exp: Exp;
   expList: Exp[];
+  isSet: boolean;
 
-  constructor(exp: Exp, expList: Exp[]) {
+  constructor(exp: Exp, expList: Exp[],isSet=false) {
     this.exp = exp;
     this.expList = expList;
+    this.isSet = isSet;
   }
 
   toString(): string {
@@ -23,15 +25,14 @@ export class ListComprehension implements Stmt {
   }
 
   evaluateFor(state: State, exp_list: Exp[]): any {
-
+    throw "For Error 29";
   }
 
   evaluate(state: State): any {
-    console.log(state);
     let auxState = state.clone();
-    console.log(auxState);
     let list = this.expList.slice(1);
-    return this.expList[0].evaluateFor(auxState,list,this.exp);
+    if(this.isSet) return new Set(this.expList[0].evaluateFor(auxState,list,this.exp));
+    else return this.expList[0].evaluateFor(auxState,list,this.exp);
   }
 /*    let res = [];
     let auxState: State = state.clone();

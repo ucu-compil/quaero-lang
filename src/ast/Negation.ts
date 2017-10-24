@@ -26,7 +26,7 @@ export class Negation extends Exp {
   }
 
   evaluateFor(state: State, exp_list: Exp[], exp: Exp): any {
-    if(!this.evaluate(state)){
+    if(this.evaluate(state)){
       if(exp_list.length == 0){
         return [exp.evaluate(state)];
       } else{
