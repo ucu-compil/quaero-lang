@@ -49,6 +49,7 @@ export const tokens = {
   'return':     'return',
   'negative':   'negative',
   'null':       'null',
+  'length':     'length',
 
   // Atoms
   inf:          { match: /Infinity/, value:(x: string) => (parseInt(x)) },

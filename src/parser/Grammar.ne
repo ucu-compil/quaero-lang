@@ -3,14 +3,16 @@
 @{%
 
 import {
-  Addition, Assignment, Belonging, Boolean, Call, CompareEqual,
-  CompareGreat, CompareGreatOrEqual, CompareLess, CompareNotEqual,
-  Concatenation, Difference, Disjunction, Div, Division, DoWhile,
-  ExpAsStmt, Funcion, IfThen, IfThenElse, Index, Int, Intersection,
-  KeyVal, Length, List, Mod, Multiplication, Negative, Number, Numeral,
-  Print, QSet, Sequence, String, Substraction, TextLiteral, TruthValue,
-  Union, Variable, WhileDo, WhileDoElse, Cardinality, CompareLessOrEqual,
-  Conjunction, Enumeration, ExpCond, Negation, Null, Return, ListComprehension
+  Addition, Assignment, Belonging, Boolean, Call, Cardinality,
+  CompareEqual, CompareGreat, CompareGreatOrEqual, CompareLess,
+  CompareLessOrEqual, CompareNotEqual, Concatenation, Conjunction,
+  Difference, Disjunction, Div, Division, DoWhile, Enumeration,
+  ExpAsStmt, ExpCond, Funcion, IfThen, IfThenElse, Index, Int,
+  Intersection, KeyVal, Length, List, ListComprehension, Mod,
+  Multiplication, Negation, Negative, Null, Number, Numeral,
+  Print, QSet, Return, Sequence, String, Substraction,
+  TextLiteral, TruthValue, Union, Variable, WhileDo,
+  WhileDoElse
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -100,7 +102,10 @@ value ->
   | "false"                                 {% () => (new TruthValue(false)) %}
   | identifier                              {% ([id]) => (new Variable(id)) %}
   | str                                     {% ([id]) => (new TextLiteral(id)) %}
-  | "div" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
+  | functions                               {% id %}
+
+functions ->
+    "div" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
   | "mod" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
   | "length" "(" exp ")"                    {% ([, , exp, ]) => (new Length(exp)) %}
   | "string" "(" exp ")"                    {% ([, , exp,]) => (new String(exp)) %}
@@ -111,20 +116,17 @@ value ->
 
 lists ->
     "[" elems "]"                           {% ([, elems,]) => (new List(elems)) %}
+  | "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
+  | "[" "]"                                 {% ([,]) => (new List([])) %}
+  | "{" "}"                                 {% ([,]) => (new QSet([])) %}
   | "[" exp ".." exp "]"                    {% ([, low, , high,]) => (new Enumeration(low,high)) %}
   | "[" exp "," exp ".." exp "]"            {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
   | "[" exp "for" exp_list "]"              {% ([,exp,,list,]) => (new ListComprehension(exp, list)) %}
-  | "[" "]"                                 {% ([,]) => (new List([])) %}
-  | sets
-
-sets ->
-    "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
-  | "{" "}"                                 {% ([,]) => (new QSet([])) %}
   | "{" exp "for" exp_list "}"              {% ([,exp,,list,]) => (new ListComprehension(exp, list, true)) %}
 
 exp_list ->
     exp                                     {% ([exp]) => ([exp]) %}
-  | exp_list "," exp                        {% ([list,,exp]) => { list.push(exp); return list; } %}
+  | exp_list "," exp                        {% ([list,,exp]) => { console.log(exp); list.push(exp); return list; } %}
 
 elems ->
     exp                                     {% ([exp]) => ([exp]) %}

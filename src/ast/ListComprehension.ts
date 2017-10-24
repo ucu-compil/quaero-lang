@@ -14,6 +14,8 @@ export class ListComprehension implements Stmt {
     this.exp = exp;
     this.expList = expList;
     this.isSet = isSet;
+    console.log(expList);
+    console.log(expList.length);
   }
 
   toString(): string {

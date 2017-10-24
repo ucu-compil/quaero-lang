@@ -6,23 +6,27 @@ import { State } from '../interpreter/State';
 */
 export class Length extends Exp {
 
-  str: Exp;
+  exp: Exp;
 
-  constructor(str: Exp) {
+  constructor(exp: Exp) {
     super();
-    this.str = str;
+    this.exp = exp;
   }
 
   toString(): string {
-    return `Length(${this.str.toString()})`;
+    return `Length(${this.exp.toString()})`;
   }
 
   unparse(): string {
-    return `(Length(${this.str.unparse()})`;
+    return `(Length(${this.exp.unparse()})`;
   }
 
   evaluate(state: State): any {
-    return this.str.evaluateString(state).length;
+    let e = this.exp.evaluate(state);
+    if(typeof e == 'string') return e.length;
+    if(e instanceof Array) return e.length;
+    if(e instanceof Set) return e.size;
+    throw "Type error"
   }
 
   evaluateFor(state: State, exp_list: Exp[]): any{

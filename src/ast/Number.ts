@@ -22,7 +22,7 @@ export class Number extends Exp {
   }
 
   evaluate(state: State): any {
-    return parseFloat(this.exp.evaluate(state));
+    return parseFloat(this.exp.evaluateString(state));
   }
 
   evaluateFor(state: State, exp_list: Exp[]): any{
