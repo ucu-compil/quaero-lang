@@ -2,15 +2,14 @@ import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
 import { CheckState } from '../typecheck/CheckState';
 import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTLista } from '../typecheck/QTLista';
 
 /**
   Representación de las claves.
 */
 export class Clave implements Exp {
 
-  id: String
-  value: Exp
+  id: String;
+  value: Exp;
 
   constructor(id: String, value: Exp) {
     this.id = id;
@@ -18,7 +17,7 @@ export class Clave implements Exp {
   }
 
   toString(): string {
-    return `Clave(${this.id},${this.value})`
+    return `Clave(${this.id},${this.value})`;
   }
 
   unparse(): string {
@@ -31,5 +30,5 @@ export class Clave implements Exp {
 
   checktype(checkstate: CheckState): QuaeroType {
     return undefined;
-}
+  }
 }

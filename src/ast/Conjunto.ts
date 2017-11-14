@@ -5,7 +5,7 @@ import { QuaeroType } from '../typecheck/QuaeroType';
 import { QTConjunto } from '../typecheck/QTConjunto';
 
 /**
-  Representación de las asignaciones de valores a variables.
+  Representación de 
 */
 export class Conjunto implements Exp {
 
@@ -14,7 +14,6 @@ export class Conjunto implements Exp {
   constructor(elementos: Exp[] = null) {
     this.elementos = elementos;
   }
-
 
   toString(): string {
     const elementos = this.elementos
