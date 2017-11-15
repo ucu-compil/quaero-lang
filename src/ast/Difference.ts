@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -30,7 +30,11 @@ export class Difference extends Exp {
     return lhs.filter((e) => rhs.indexOf(e) < 0);
   }
 
-  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any{
+  evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
+    throw "LC error 5";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 5";
   }
 }

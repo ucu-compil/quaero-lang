@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -24,15 +24,16 @@ export class Addition extends Exp {
   }
 
   evaluate(state: State): any {
-    var l = this.lhs.evaluate(state);
-    var r = this.rhs.evaluate(state);
-    if ((typeof l != 'boolean') && (typeof r != 'boolean')){
-      return l + r;
-    }
-    else{ throw "Type error"; }
+    var l = this.lhs.evaluateNumber(state);
+    var r = this.rhs.evaluateNumber(state);
+    return l + r;
   }
 
-  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any{
+  evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
+    throw "LC error 1";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 1";
   }
 }

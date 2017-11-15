@@ -1,19 +1,15 @@
 import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
-
+import { ListComprehension } from './AST';
 /**
   Representación de las iteraciones while-do.
 */
 export class For implements Stmt {
-  vars: String[];
-  values: Exp[];
-  conds: Exp[];
+  expList: Exp[];
   body: Stmt;
 
-  constructor(vars: String[], values: Exp[], conds: Exp[], body: Stmt) {
-    this.vars = vars;
-    this.values = values;
-    this.conds = conds;
+  constructor(expList: Exp[], body: Stmt) {
+    this.expList = expList;
     this.body = body;
   }
 
@@ -26,10 +22,7 @@ export class For implements Stmt {
   }
 
   evaluate(state: State): State {
-    var auxState = state;
-
-    var conds = this.conds.map((c) => c.evaluate(auxState));
-
-    return state;
+    let list = this.expList.slice(1);
+    return this.expList[0].evaluateFor(state,list,this.body);
   }
 }

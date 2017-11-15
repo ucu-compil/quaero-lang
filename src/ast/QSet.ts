@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -29,7 +29,11 @@ export class QSet extends Exp {
     return new Set(res);
   } //{a=[1,2,3];b=[3,4,5];c=a\/b;}
 
-  evaluateFor(state: State, exp_list: Exp[]): any{
+  evaluateLC(state: State, exp_list: Exp[]): any{
+    throw "LC error 23";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 23";
   }
 }

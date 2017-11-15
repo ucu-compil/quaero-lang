@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 import { Numeral, List } from './AST';
 /**
@@ -33,7 +33,11 @@ export class Enumeration extends Exp {
     return res;
   }
 
-  evaluateFor(state: State, exp_list: Exp[]): any{
+  evaluateLC(state: State, exp_list: Exp[]): any{
+    throw "LC error 9";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 9";
   }
 }

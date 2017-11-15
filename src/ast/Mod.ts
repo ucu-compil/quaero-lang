@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -27,7 +27,11 @@ export class Mod extends Exp {
     return this.lhs.evaluateNumber(state) % this.lhs.evaluateNumber(state);
   }
 
-  evaluateFor(state: State, exp_list: Exp[]): any{
+  evaluateLC(state: State, exp_list: Exp[]): any{
+    throw "For error 17";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 17";
   }
 }

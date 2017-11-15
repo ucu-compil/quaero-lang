@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -29,7 +29,11 @@ export class Length extends Exp {
     throw "Type error"
   }
 
-  evaluateFor(state: State, exp_list: Exp[]): any{
+  evaluateLC(state: State, exp_list: Exp[]): any{
+    throw "LC error 15";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 15";
   }
 }

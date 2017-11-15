@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -25,7 +25,11 @@ export class Cardinality extends Exp {
     return this.list.evaluate(state).length;
   }
 
-  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any{
+  evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
+    throw "LC error 2";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 2";
   }
 }

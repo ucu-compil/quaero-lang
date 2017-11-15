@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -27,7 +27,11 @@ export class Index extends Exp {
     return this.str.evaluate(state)[this.ind.evaluateNumber(state)];
   }
 
-  evaluateFor(state: State, exp_list: Exp[]): any{
+  evaluateLC(state: State, exp_list: Exp[]): any{
+    throw "LC error 11";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 11";
   }
 }

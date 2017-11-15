@@ -7,12 +7,11 @@ import {
   CompareEqual, CompareGreat, CompareGreatOrEqual, CompareLess,
   CompareLessOrEqual, CompareNotEqual, Concatenation, Conjunction,
   Difference, Disjunction, Div, Division, DoWhile, Enumeration,
-  ExpAsStmt, ExpCond, Funcion, IfThen, IfThenElse, Index, Int,
-  Intersection, KeyVal, Length, List, ListComprehension, Mod,
-  Multiplication, Negation, Negative, Null, Number, Numeral,
-  Print, QSet, Return, Sequence, String, Substraction,
-  TextLiteral, TruthValue, Union, Variable, WhileDo,
-  WhileDoElse
+  ExpAsStmt, ExpCond, For, Funcion, IfThen, IfThenElse, IndKey,
+  Index, Int, Intersection, KeyVal, Length, List, ListComprehension,
+  Mod, Multiplication, Negation, Negative, Null, Number, Numeral,
+  Print, QSet, Return, Sequence, String, Substraction, TextLiteral,
+  TruthValue, Union, Variable, WhileDo, WhileDoElse
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -41,6 +40,7 @@ stmtelse ->
   | "return" exp ";"                        {% ([, exp,]) => (new Return(exp)) %}
   | "print" "(" exp ")" ";"                 {% ([, , exp, ,]) => (new Print(exp)) %}
   | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+  | "for" "(" exp_list ")" stmt             {% ([,,list,,stmt]) => (new For(list,stmt)) %}
 
 lista_id ->
     identifier                              {% ([id]) => ([id]) %}
@@ -50,20 +50,16 @@ lista_id ->
 
 exp ->
     exp "if" exp "else" exp                 {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
-  | identifier "(" lista_params ")"         {% ([name, , ids,]) => (new Call(name,ids)) %}
-  | exp "[" exp "]"                         {% ([str, ,ind, ]) => (new Index(str,ind)) %}
+  | identifier "(" exp_list ")"             {% ([name, , ids,]) => (new Call(name,ids)) %}
+  | exp "[" condisj "]"                     {% ([str, ,ind, ]) => (new Index(str,ind)) %}
   | "#" exp                                 {% ([, exp]) => (new Cardinality(exp)) %}
-  | exp "." exp                             {% ([list, ,ind]) => (new Index(list,ind)) %}
-  | exp "<-" exp                            {% ([elem, ,list]) => (new Belonging(elem,list)) %}
-  | exp "++" exp                            {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
-  | exp "\\/" exp                           {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
-  | exp "/\\" exp                           {% ([lhs, ,rhs]) => (new Intersection(lhs,rhs)) %}
-  | exp "--" exp                            {% ([lhs, ,rhs]) => (new Difference(lhs,rhs)) %}
+  | exp "." condisj                         {% ([list, ,key]) => (new IndKey(list,key)) %}
+  | exp "<-" condisj                        {% ([elem, ,list]) => (new Belonging(elem,list)) %}
+  | exp "++" condisj                        {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
+  | exp "\\/" condisj                       {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
+  | exp "/\\" condisj                       {% ([lhs, ,rhs]) => (new Intersection(lhs,rhs)) %}
+  | exp "--" condisj                        {% ([lhs, ,rhs]) => (new Difference(lhs,rhs)) %}
   | condisj                                 {% id %}
-
-lista_params ->
-    exp                                     {% ([exp]) => ([exp]) %}
-  | lista_params "," exp                    {% ([lista, ,exp]) => { lista.push(exp); return lista; } %}
 
 condisj ->
     exp "&&" comp                           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
@@ -71,13 +67,13 @@ condisj ->
   | comp                                    {% id %}
 
 comp ->
-    comp "==" addsub                        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
-  | comp "/=" addsub                        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
-  | comp "<=" addsub                        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
-  | comp "<" addsub                         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
-  | comp ">=" addsub                        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
-  | comp ">" addsub                         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
-  | addsub                                  {% id %}
+    addsub "==" addsub                        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
+  | addsub "/=" addsub                        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
+  | addsub "<=" addsub                        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
+  | addsub "<" addsub                         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
+  | addsub ">=" addsub                        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
+  | addsub ">" addsub                         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
+  | addsub                                    {% id %}
 
 addsub ->
     addsub "+" muldiv                       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
@@ -126,13 +122,13 @@ lists ->
 
 exp_list ->
     exp                                     {% ([exp]) => ([exp]) %}
-  | exp_list "," exp                        {% ([list,,exp]) => { console.log(exp); list.push(exp); return list; } %}
+  | exp_list "," exp                        {% ([list,,exp]) => list.concat([exp]) %}
 
 elems ->
     exp                                     {% ([exp]) => ([exp]) %}
   | keyval                                  {% ([kv]) => ([kv]) %}
-  | elems "," exp                           {% ([elems, , exp]) => { elems.push(exp); return elems; } %}
-  | elems "," keyval                        {% ([elems, , kv]) => { elems.push(kv); return elems; } %}
+  | elems "," exp                           {% ([elems, , exp]) => elems.concat([exp]) %}
+  | elems "," keyval                        {% ([elems, , kv]) => elems.concat([kv]) %}
 
 keyval ->
     identifier ":" exp                      {% ([id, ,exp]) => (new KeyVal(id,exp)) %}

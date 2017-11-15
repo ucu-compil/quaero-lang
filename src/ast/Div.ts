@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -27,7 +27,11 @@ export class Div extends Exp {
     return Math.floor(this.lhs.evaluateNumber(state) / this.lhs.evaluateNumber(state));
   }
 
-  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any{
+  evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
+    throw "LC error 7";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 7";
   }
 }

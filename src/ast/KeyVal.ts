@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -19,14 +19,18 @@ export class KeyVal extends Exp {
   }
 
   unparse(): string {
-    return `${this.key.unparse()}:${this.value.unparse()}`;
+    return `(${this.key.unparse()}:${this.value.unparse()})`;
   }
 
   evaluate(state: State): any {
-    return [this.key,this.value]; //?
+    return this; //?
   }
 
-  evaluateFor(state: State, exp_list: Exp[]): any{
+  evaluateLC(state: State, exp_list: Exp[]): any{
+    throw "LC error 14";
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
     throw "For error 14";
   }
 }

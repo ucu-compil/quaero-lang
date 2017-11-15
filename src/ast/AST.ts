@@ -13,6 +13,7 @@ export * from './Funcion';
 export * from './Return';
 export * from './Print';
 export * from './ExpAsStmt';
+export * from './For';
 
 // AExp
 export * from './Addition';
@@ -45,6 +46,7 @@ export * from './Difference';
 export * from './Enumeration';
 export * from './Negative';
 export * from './ListComprehension';
+export * from './IndKey';
 
 // BExp
 export * from './CompareEqual';

@@ -1,4 +1,4 @@
-import { Exp } from './ASTNode';
+import { Exp, Stmt } from './ASTNode';
 import { State } from '../interpreter/State';
 
 /**
@@ -32,14 +32,32 @@ export class ExpCond extends Exp {
     }
   }
 
-  evaluateFor(state: State, exp_list: Exp[], exp: Exp): any {
-    if(typeof this.evaluate(state) == 'boolean'){
-      if(exp_list.length == 0){
-        return [exp.evaluate(state)];
-      } else{
-        let head = exp_list[0];
-        let tail = exp_list.slice(1);
-        return head.evaluateFor(state,tail,exp);
+  evaluateLC(state: State, exp_list: Exp[], exp: Exp): any {
+    let r = this.evaluate(state);
+    if(typeof r == 'boolean'){
+      if(r){
+        if(exp_list.length == 0){
+          return [exp.evaluate(state)];
+        } else{
+          let head = exp_list[0];
+          let tail = exp_list.slice(1);
+          return head.evaluateLC(state,tail,exp);
+        }
+      }
+    } else { throw "LC error 10"; }
+  }
+
+  evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
+    let r = this.evaluate(state);
+    if(typeof r == 'boolean'){
+      if(r){
+        if(exp_list.length == 0){
+          return stmt.evaluate(state);
+        } else{
+          let head = exp_list[0];
+          let tail = exp_list.slice(1);
+          return head.evaluateFor(state,tail,stmt);
+        }
       }
     } else { throw "For error 10"; }
   }
