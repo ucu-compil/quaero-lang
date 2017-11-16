@@ -9,33 +9,34 @@ import { QTConjunto } from '../typecheck/QTConjunto';
 */
 export class Conjunto implements Exp {
 
-  elementos: Exp[];
+  conjunto: Exp[];
 
-  constructor(elementos: Exp[] = null) {
-    this.elementos = elementos;
+  constructor(conjunto: Exp[] = null) {
+    this.conjunto = conjunto;
   }
 
   toString(): string {
-    const elementos = this.elementos
+    const conjunto = this.conjunto
       .filter((exp) => (exp !== undefined))
       .map((exp) => (exp.toString()))
       .join(", ");
-    return `Conjunto(${elementos})`
+    return `ConjuntoCardinalidad(${conjunto})`
   }
 
   unparse(): string {
-    const elementos = this.elementos
+    const conjunto = this.conjunto
       .filter((exp) => (exp !== undefined))
       .map((exp) => (exp.toString()))
       .join(" ");
-    return `{${elementos}}`;
+    return `{${conjunto}}`;
   }
 
   evaluate(state: Estado): any {
-    const elementos = this.elementos
-    .filter((exp) => (exp !== undefined))
-    .map((exp) => (exp.evaluate(state)));
-    return elementos;
+    var valor = 0;
+    this.conjunto.forEach(element => {
+        valor++
+    })
+    return valor;
   }
 
   checktype(checkstate: CheckState): QuaeroType {
