@@ -28,7 +28,4 @@ export class Clave implements Exp {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    return undefined;
-  }
 }

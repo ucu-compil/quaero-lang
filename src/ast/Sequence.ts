@@ -34,7 +34,4 @@ export class Sequence implements Stmt {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): CheckState {
-    return undefined;
-  }
 }

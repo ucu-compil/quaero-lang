@@ -29,16 +29,5 @@ export class Disjunction implements Exp {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-    if (trhs == QTBool.Instance && tlhs == QTBool.Instance) {
-      return QTBool.Instance;
-    }
-    else {
-      console.log("Guardar Error [No se pueden & variables de tipo " + tlhs.toString() + " con " + trhs.toString() + "] Y Seguir")
-    }
-
-  }
 }
 

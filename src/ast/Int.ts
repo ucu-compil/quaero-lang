@@ -26,9 +26,5 @@ export class Int implements Exp {
   evaluate(state: Estado): any {
     return undefined;
   }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    return QTInt.Instance;
-  }
   
 }

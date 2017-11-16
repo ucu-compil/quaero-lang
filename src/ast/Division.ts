@@ -32,29 +32,15 @@ export class Division implements Exp {
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
-
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       console.log ('Los operandos son del tipo numérico.');
-      return lhsEval / rhsEval;
-    }else{
-      console.log ('Operandos deben ser de tipo numérico.');
-    }
-  }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-    if(tlhs==QTBool.Instance || trhs == QTBool.Instance){
-      console.log("no podes operar con buleanos crimen, cual haces?, me guardo el error y sigo")
-    }
-    else{
-      if(trhs === tlhs && tlhs === QTInt.Instance){
-        return QTInt.Instance;
-      }
-      else{
-        return QTNumeral.Instance;
+      try {
+        return lhsEval / rhsEval;
+      } catch (error) {
+        throw new Error(error.description);
       }
     }
-    return undefined
+    console.log ('Operandos deben ser de tipo numérico.');
+    throw new Error("Operandos deben ser de tipo numérico.");
   }
 }

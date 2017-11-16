@@ -27,9 +27,4 @@ export class WhileDo implements Stmt {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): CheckState
-  {
-   this.body.checktype(checkstate);
-   return checkstate
-  }
 }

@@ -26,8 +26,5 @@ export class TruthValue implements Exp {
   evaluate(state: Estado): any {
     return undefined;
   }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    return QTBool.Instance;
-  }
+  
 }

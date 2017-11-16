@@ -27,7 +27,4 @@ export class IfThen implements Stmt {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): CheckState {
-    return undefined;
-  }
 }

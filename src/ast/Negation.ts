@@ -27,13 +27,4 @@ export class Negation implements Exp {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.exp.checktype(checkstate);
-    if (trhs == QTBool.Instance) {
-      return QTBool.Instance;
-    }
-    else {
-      console.log("Guardar Error [No se pueden Negar variables de tipo " + trhs.toString() + "] Y Seguir")
-    }
-  }
 }

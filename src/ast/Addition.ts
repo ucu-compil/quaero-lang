@@ -36,33 +36,8 @@ export class Addition implements Exp {
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       console.log ('Los operandos son del tipo numérico.');
       return lhsEval + rhsEval;
-    }else{
-      console.log ('Operandos deben ser de tipo numérico.');
     }
-  }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-
-    //Si es Numeral y (Numeral o Int)
-    if (tlhs === QTNumeral.Instance && (trhs === QTInt.Instance || trhs === QTNumeral.Instance)) {
-      return QTNumeral.Instance;
-    }
-    //Si es Int
-    else if (tlhs === QTInt.Instance) {
-      //Y Int
-      if (trhs === QTInt.Instance) {
-        return QTInt.Instance;
-      }
-      //Y Numeral
-      else if (trhs === QTNumeral.Instance) {
-        return QTNumeral.Instance
-      }
-    }
-    //Si no es Numeral Ni Int
-    else {
-      console.log("Guardar Error [No se pueden SUMAR variables de tipo " + tlhs.toString() + " con " + trhs.toString() + "] Y Seguir")
-    }
+    console.log ('Operandos deben ser de tipo numérico.');
+    throw new Error("Operandos deben ser de tipo numérico.");
   }
 }

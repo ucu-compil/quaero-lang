@@ -38,8 +38,4 @@ export class Conjunto implements Exp {
     return elementos;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    return undefined;
-  }
-
 }

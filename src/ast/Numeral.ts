@@ -24,11 +24,7 @@ export class Numeral implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
-  }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    return QTNumeral.Instance;
+    return this.value;
   }
   
 }

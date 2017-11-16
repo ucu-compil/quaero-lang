@@ -15,7 +15,6 @@ export interface ASTNode {
 export interface Exp extends ASTNode {
 
   evaluate(state: Estado): any;
-  checktype(checkstate: CheckState): QuaeroType;
   
 }
 
@@ -27,5 +26,5 @@ export interface Exp extends ASTNode {
 export interface Stmt extends ASTNode {
 
   evaluate(state: Estado): Estado;
-  checktype(checkstate: CheckState): CheckState;
+  
 }
