@@ -1,10 +1,12 @@
 export class State {
 
   vars: Map<string, any>;
+  jsfun: Map<string, Function>;
   files: Set<String>;
 
   constructor() {
     this.vars = new Map<string, any>();
+    this.jsfun = new Map<string,Function>();
     this.files = new Set<String>();
   }
 
@@ -16,6 +18,9 @@ export class State {
     return this.vars.get(id);
   }
 
+  getFunction(id: string): any{
+    return this.jsfun.get(id);
+  }
   set(id: string, value: any) {
     this.vars.set(id, value);
   }

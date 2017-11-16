@@ -40,7 +40,7 @@ stmtelse ->
   | "do" stmt "while" exp                   {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
   | "while" exp "do" stmt "else" stmt       {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
   | "return" exp ";"                        {% ([, exp,]) => (new Return(exp)) %}
-  | "print" "(" exp ")" ";"                 {% ([, , exp, ,]) => (new Print(exp)) %}
+#  | "print" "(" exp ")" ";"                 {% ([, , exp, ,]) => (new Print(exp)) %}
   | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "for" "(" exp_list ")" stmt             {% ([,,list,,stmt]) => (new For(list,stmt)) %}
 
@@ -100,17 +100,17 @@ value ->
   | "false"                                 {% () => (new TruthValue(false)) %}
   | identifier                              {% ([id]) => (new Variable(id)) %}
   | str                                     {% ([id]) => (new TextLiteral(id)) %}
-  | functions                               {% id %}
-
-functions ->
-    "div" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
-  | "mod" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
-  | "length" "(" exp ")"                    {% ([, , exp, ]) => (new Length(exp)) %}
-  | "string" "(" exp ")"                    {% ([, , exp,]) => (new String(exp)) %}
-  | "boolean" "(" exp ")"                   {% ([, , exp,]) => (new Boolean(exp)) %}
-  | "number" "(" exp ")"                    {% ([, , exp,]) => (new Number(exp)) %}
-  | "int" "(" exp ")"                       {% ([, , exp,]) => (new Int(exp)) %}
   | lists                                   {% id %}
+
+#functions ->
+#    "div" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
+#  | "mod" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
+#  | "length" "(" exp ")"                    {% ([, , exp, ]) => (new Length(exp)) %}
+#  | "string" "(" exp ")"                    {% ([, , exp,]) => (new String(exp)) %}
+#  | "boolean" "(" exp ")"                   {% ([, , exp,]) => (new Boolean(exp)) %}
+#  | "number" "(" exp ")"                    {% ([, , exp,]) => (new Number(exp)) %}
+#  | "int" "(" exp ")"                       {% ([, , exp,]) => (new Int(exp)) %}
+#  | lists                                   {% id %}
 
 lists ->
     "[" elems "]"                           {% ([, elems,]) => (new List(elems)) %}
