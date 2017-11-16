@@ -14,6 +14,8 @@ export * from './Return';
 export * from './Print';
 export * from './ExpAsStmt';
 export * from './For';
+export * from './Load';
+export * from './Reload';
 
 // AExp
 export * from './Addition';

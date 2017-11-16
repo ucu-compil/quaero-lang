@@ -1,13 +1,15 @@
 export class State {
 
   vars: Map<string, any>;
+  files: Set<String>;
 
   constructor() {
     this.vars = new Map<string, any>();
+    this.files = new Set<String>();
   }
 
   toString(): string {
-    return `{ ${Array.from(this.vars.entries()).map(([key, value]) => (`${key} = ${value}`)).join("; ")} }`;
+    return `{ ${Array.from(this.vars.entries()).map(([key, value]) => (`${key} = ${value}`)).join("; ")}, ${Array.from(this.files)} }`;
   }
 
   get(id: string): any {
@@ -16,6 +18,10 @@ export class State {
 
   set(id: string, value: any) {
     this.vars.set(id, value);
+  }
+
+  setFile(path: string){
+    this.files.add(path);
   }
 
   clone(): State{

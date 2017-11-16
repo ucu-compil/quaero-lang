@@ -11,7 +11,7 @@ import {
   Index, Int, Intersection, KeyVal, Length, List, ListComprehension,
   Mod, Multiplication, Negation, Negative, Null, Number, Numeral,
   Print, QSet, Return, Sequence, String, Substraction, TextLiteral,
-  TruthValue, Union, Variable, WhileDo, WhileDoElse
+  TruthValue, Union, Variable, WhileDo, WhileDoElse, Load, Reload
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -29,6 +29,8 @@ stmt ->
     stmtelse                                {% id %}
   | "if" "(" exp ")" stmt                   {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
   | exp ";"                                 {% ([exp,]) => (new ExpAsStmt(exp)) %}
+  | ":" "l" str                             {% ([,,str]) => (new Load(str)) %}
+  | ":" "r"                                 {% ([,,]) => (new Reload()) %}
 
 stmtelse ->
     identifier "=" exp ";"                  {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
@@ -143,6 +145,8 @@ number ->
     %integer                                {% ([id]) => (id.value) %}
   | %float                                  {% ([id]) => (id.value) %}
   | %hex                                    {% ([id]) => (id.value) %}
+  | %inf                                    {% ([id]) => (id.value) %}
+  | %nan                                    {% ([id]) => (id.value) %}
 
 str ->
    %str                                     {% ([id]) => (id.value) %}

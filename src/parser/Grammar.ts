@@ -5,6 +5,8 @@ declare var identifier:any;
 declare var integer:any;
 declare var float:any;
 declare var hex:any;
+declare var inf:any;
+declare var nan:any;
 declare var str:any;
 
 
@@ -17,7 +19,7 @@ import {
   Index, Int, Intersection, KeyVal, Length, List, ListComprehension,
   Mod, Multiplication, Negation, Negative, Null, Number, Numeral,
   Print, QSet, Return, Sequence, String, Substraction, TextLiteral,
-  TruthValue, Union, Variable, WhileDo, WhileDoElse
+  TruthValue, Union, Variable, WhileDo, WhileDoElse, Load, Reload
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -34,6 +36,8 @@ export var ParserRules:NearleyRule[] = [
     {"name": "stmt", "symbols": ["stmtelse"], "postprocess": id},
     {"name": "stmt", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmt"], "postprocess": ([, , cond, , thenBody]) => (new IfThen(cond, thenBody))},
     {"name": "stmt", "symbols": ["exp", {"literal":";"}], "postprocess": ([exp,]) => (new ExpAsStmt(exp))},
+    {"name": "stmt", "symbols": [{"literal":":"}, {"literal":"l"}, "str"], "postprocess": ([,,str]) => (new Load(str))},
+    {"name": "stmt", "symbols": [{"literal":":"}, {"literal":"r"}], "postprocess": ([,,]) => (new Reload())},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"="}, "exp", {"literal":";"}], "postprocess": ([id, , exp, ]) => (new Assignment(id, exp))},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"("}, "lista_id", {"literal":")"}, "stmt"], "postprocess": ([name, , ids, , body]) => (new Funcion(name,ids,body))},
     {"name": "stmtelse$ebnf$1", "symbols": []},
@@ -114,6 +118,8 @@ export var ParserRules:NearleyRule[] = [
     {"name": "number", "symbols": [(lexer.has("integer") ? {type: "integer"} : integer)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("float") ? {type: "float"} : float)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("hex") ? {type: "hex"} : hex)], "postprocess": ([id]) => (id.value)},
+    {"name": "number", "symbols": [(lexer.has("inf") ? {type: "inf"} : inf)], "postprocess": ([id]) => (id.value)},
+    {"name": "number", "symbols": [(lexer.has("nan") ? {type: "nan"} : nan)], "postprocess": ([id]) => (id.value)},
     {"name": "str", "symbols": [(lexer.has("str") ? {type: "str"} : str)], "postprocess": ([id]) => (id.value)}
 ];
 export var ParserStart:string = "stmt";
