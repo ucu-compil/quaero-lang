@@ -13,7 +13,7 @@ export * from './Conjunto';
 export * from './Lista';
 export * from './Conjunto';
 export * from './String';
-
+export * from './Enumeracion';
 
 export * from './Assignment';
 export * from './IfThen';

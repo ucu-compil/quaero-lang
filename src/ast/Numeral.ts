@@ -24,7 +24,7 @@ export class Numeral implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    return this.value;
   }
 
   checktype(checkstate: CheckState): QuaeroType {

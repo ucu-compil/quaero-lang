@@ -32,7 +32,8 @@ import {
   WhileDo,
   IfThenElse,
   Sequence,
-  Opposite
+  Opposite,
+  Enumeracion
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -94,19 +95,25 @@ elemento ->
     value                   {% id %}
   | lista                   {% id %}
   | conjunto                {% id %}
+  | enumeracion             {% id %}
   | clave                   {% id %}
   | "(" exp ")"             {% ([, exp, ]) => (exp) %} 
 
 # Colecciones
 conjunto -> 
-    "{" "}"                {% ([,]) => (new Conjunto()) %} 
+    "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
 
 lista -> 
-    "[" "]"                 {% ([,]) => (new Lista()) %} 
-  | "[" elementos "]"       {% ([,elementos,]) => (new Lista(elementos)) %} 
+    "[" number "]"                 {% ([,]) => (new Lista()) %} 
+  | "[" elementos "]"              {% ([,elementos,]) => (new Lista(elementos)) %} 
 
-elementos->
+# Enumeración
+enumeracion ->
+    "[" value ".." value "]"                {% ([,inicio,,fin,]) => (new Enumeracion(inicio, fin)) %} 
+  | "[" value "," value ".." value "]"      {% ([,inicio,,salto,,fin,]) => (new Enumeracion(inicio, fin, salto)) %} 
+
+elementos ->
     elemento                  {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
   | elementos "," elemento    {% ([elementos, ,elemento]) => {elementos.push(elemento); return elementos;} %} 
 
