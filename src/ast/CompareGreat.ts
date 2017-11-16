@@ -28,29 +28,5 @@ export class CompareGreat implements Exp {
   evaluate(state: Estado): any {
     return undefined;
   }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-
-    //Si es Numeral y (Numeral o Int)
-    if (tlhs === QTNumeral.Instance && (trhs === QTInt.Instance || trhs === QTNumeral.Instance)) {
-      return QTBool.Instance;
-    }
-    //Si es Int
-    else if (tlhs === QTInt.Instance) {
-      //Y Int
-      if (trhs === QTInt.Instance) {
-        return QTBool.Instance;
-      }
-      //Y Numeral
-      else if (trhs === QTNumeral.Instance) {
-        return QTBool.Instance
-      }
-    }
-    //Si no es Numeral Ni Int
-    else {
-      console.log("Guardar Error [No se pueden COMPARAR < variables de tipo " + tlhs.toString() + " con " + trhs.toString() + "] Y Seguir")
-    }
-  }
+  
 }

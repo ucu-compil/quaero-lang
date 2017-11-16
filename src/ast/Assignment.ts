@@ -29,28 +29,4 @@ export class Assignment implements Stmt {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): CheckState {
-    console.log(this.exp);
-
-    var state = checkstate.get(this.id);
-    if (state === undefined) {
-      checkstate.set(this.id, this.exp[0].checktype(checkstate));
-    } else {
-      if (state.isCompatible(this.exp[0].checktype(checkstate))) {
-        checkstate.set(this.id, state.coerce(this.exp[0]));
-
-
-        // if (this.exp[0].checktype(checkstate) === WTNumeral.Instance) {
-        //   console.log("entro aquiqui")
-        //   checkstate.set(this.id, new WTNumeral());
-        // }
-        // console.log("Listo");
-      }
-      else {
-        console.log("No son compatibles, guardo error y sigo de largo");
-      }
-    }
-    console.log(checkstate.get(this.id));
-    return checkstate;
-  }
 }

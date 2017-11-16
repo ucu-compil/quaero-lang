@@ -35,7 +35,4 @@ export class Lista implements Exp {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    return QTLista.Instance;
-  }
 }

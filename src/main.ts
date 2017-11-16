@@ -37,12 +37,10 @@ while (true) {
       }
       case 1: {
         const node = nodes[0];
-        console.log(node.toString());    
+        console.log(node.toString());
         state = node.evaluate(state);
-        checkstate = node.checktype(checkstate);
         console.log(`\n${state.toString()}`);
-        console.log(`\n${checkstate.toString()}`);
-        
+
         break;
       }
       default: {
@@ -52,7 +50,7 @@ while (true) {
       }
     }
 
-  } catch(parseError) {
+  } catch (parseError) {
     console.log(parseError);
   }
 }

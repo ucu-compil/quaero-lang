@@ -35,8 +35,4 @@ export class Conjunto implements Exp {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    return QTConjunto.Instance;
-  }
-
 }

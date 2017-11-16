@@ -26,9 +26,5 @@ export class String implements Exp {
   evaluate(state: Estado): any {
     return undefined;
   }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    return QTString.Instance;
-  }
   
 }

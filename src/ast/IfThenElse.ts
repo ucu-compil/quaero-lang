@@ -29,7 +29,4 @@ export class IfThenElse implements Stmt {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): CheckState {
-    return undefined;
-  }
 }
