@@ -71,7 +71,7 @@ comp ->
   | comp "<" addsub         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
   | comp ">=" addsub        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
   | comp ">" addsub         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
-  | addsub
+  | addsub                  {% id %}
 
 addsub ->
     addsub "+" muldiv       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
@@ -80,7 +80,7 @@ addsub ->
 
 opposite ->
     "-" muldiv              {% ([,op]) => (new Opposite(op)) %}
-    |muldiv                 {% id %}
+  | muldiv                  {% id %}
 
 muldiv ->
     muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
