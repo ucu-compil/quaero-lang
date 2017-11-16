@@ -38,9 +38,9 @@ while (true) {
       case 1: {
         const node = nodes[0];
         console.log(node.toString());    
-        //state = node.evaluate(state);
+        state = node.evaluate(state);
         checkstate = node.checktype(checkstate);
-        //console.log(`\n${state.toString()}`);
+        console.log(`\n${state.toString()}`);
         console.log(`\n${checkstate.toString()}`);
         
         break;
