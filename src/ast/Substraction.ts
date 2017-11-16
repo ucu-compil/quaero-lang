@@ -28,7 +28,17 @@ export class Substraction implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    var lhsEval = this.lhs.evaluate(state);
+    var rhsEval = this.rhs.evaluate(state);
+    console.log(typeof lhsEval)
+    console.log(typeof rhsEval)
+
+    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
+      console.log ('Los operandos son del tipo numérico.');
+      return lhsEval - rhsEval;
+    }else{
+      console.log ('Operandos deben ser de tipo numérico.');
+    }
   }
 
   checktype(checkstate: CheckState): QuaeroType {
