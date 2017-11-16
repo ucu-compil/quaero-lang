@@ -31,7 +31,8 @@ import {
   Assignment,
   WhileDo,
   IfThenElse,
-  Sequence
+  Sequence,
+  Opposite
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -75,6 +76,10 @@ addsub ->
     addsub "+" muldiv       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
   | addsub "-" muldiv       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
   | muldiv                  {% id %}
+
+opposite ->
+    "-" muldiv              {% ([,op]) => (new Opposite(op)) %}
+    |muldiv                 {% id %}
 
 muldiv ->
     muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
