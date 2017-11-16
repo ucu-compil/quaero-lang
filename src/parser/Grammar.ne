@@ -80,7 +80,7 @@ addsub ->
 
 opposite ->
     "-" muldiv              {% ([,op]) => (new Opposite(op)) %}
-    |muldiv                 {% id %}
+  | muldiv                  {% id %}
 
 muldiv ->
     muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}

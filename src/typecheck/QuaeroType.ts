@@ -1,3 +1,4 @@
+import CheckState from './CheckState';
 export class QuaeroType {
     private static _instance: QuaeroType;
     public constructor() {
@@ -21,6 +22,9 @@ export class QuaeroType {
     }
 
     public coerce(tipo: QuaeroType): QuaeroType {
+        return null;
+    }
+    public checktype(checkstate: CheckState): QuaeroType {
         return null;
     }
 }
