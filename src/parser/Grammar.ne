@@ -26,7 +26,12 @@ import {
   Division,
   Lista,
   Conjunto,
-  Clave
+  Clave,
+  IfThen,
+  Assignment,
+  WhileDo,
+  IfThenElse,
+  Sequence
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -39,9 +44,53 @@ const lexer = new MyLexer(tokens);
 
 @lexer lexer
 
-inicial ->
-    conjunto      {% id %}
-  | lista         {% id %}
+
+stmt ->
+    stmtelse                              {% id %}
+  | "if" exp "then" stmt                  {% ([, cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
+
+
+stmtelse ->
+    identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+  | "if" exp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+  | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
+  | exp ";"                               {% ([exp, ]) => (exp) %} 
+
+exp ->
+    exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
+  | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
+  | comp                    {% id %}
+
+comp ->
+    comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
+  | comp "!=" addsub        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
+  | comp "<=" addsub        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
+  | comp "<" addsub         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
+  | comp ">=" addsub        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
+  | comp ">" addsub         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
+  | addsub
+
+addsub ->
+    addsub "+" muldiv       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
+  | addsub "-" muldiv       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
+  | muldiv                  {% id %}
+
+muldiv ->
+    muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
+  | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
+  | neg                     {% id %}
+
+neg ->
+    "!" elemento               {% ([, exp]) => (new Negation(exp)) %}
+  | elemento                   {% id %}
+
+elemento -> 
+    value                   {% id %}
+  | lista                   {% id %}
+  | conjunto                {% id %}
+  | clave                   {% id %}
+  | "(" exp ")"             {% ([, exp, ]) => (exp) %} 
 
 # Colecciones
 conjunto -> 
@@ -56,12 +105,7 @@ elementos->
     elemento                  {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
   | elementos "," elemento    {% ([elementos, ,elemento]) => {elementos.push(elemento); return elementos;} %} 
 
-elemento -> 
-    value                   {% id %}
-  | lista                   {% id %}
-  | conjunto                {% id %}
-  | clave                   {% id %}
-
+#Clave
 clave ->
     identifier ":" value        {% ([id,,valor]) => (new Clave(id,valor)) %}
   | string ":" value            {% ([id,,valor]) => (new Clave(id,valor)) %}
@@ -72,6 +116,7 @@ value ->
   | "true"                  {% () => (new TruthValue(true)) %}
   | "false"                 {% () => (new TruthValue(false)) %}
   | identifier              {% ([id]) => (new Variable(id)) %}
+
 
 # Atoms
 identifier ->
