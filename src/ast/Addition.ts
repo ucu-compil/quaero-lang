@@ -1,10 +1,6 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
 import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTNumeral } from '../typecheck/QTNumeral';
-import { QTBool } from '../typecheck/QTBool';
-import { QTInt } from '../typecheck/QTInt';
 
 /**
   Representación de sumas.

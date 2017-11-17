@@ -1,8 +1,6 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
 import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTBool, QTNumeral, QTInt } from './AST';
 
 /**
   Representación de las comparaciones por igual.
@@ -22,36 +20,20 @@ export class CompareNotEqual implements Exp {
   }
 
   unparse(): string {
-    return `(${this.lhs.unparse()} != ${this.rhs.unparse()})`;
+    return `(${this.lhs.unparse()} /= ${this.rhs.unparse()})`;
   }
 
   evaluate(state: Estado): any {
-    return undefined;
-  }
+    var lhsEval = this.lhs.evaluate(state);
+    var rhsEval = this.rhs.evaluate(state);
+    console.log(typeof lhsEval)
+    console.log(typeof rhsEval)
 
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-
-
-    if (tlhs === QTNumeral.Instance && (trhs === QTInt.Instance || trhs === QTNumeral.Instance)) {
-      return QTBool.Instance;
+    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
+      console.log ('Los operandos son del tipo numérico.');
+      return lhsEval /= rhsEval;
     }
-    else if (tlhs === QTInt.Instance) {
-      if (trhs === QTInt.Instance) {
-        return QTBool.Instance;
-      }
-      //Y Numeral
-      else if (trhs === QTNumeral.Instance) {
-        return QTBool.Instance
-      }
-    }
-    //Si son booleanos 
-    else if (trhs === QTBool.Instance && tlhs === QTBool.Instance) {
-      return QTBool.Instance;
-    }
-    else {
-      console.log("Guardar Error [No se pueden COMPARAR variables de tipo " + tlhs.toString() + " con " + trhs.toString() + "] Y Seguir")
-    }
+    console.log ('Operandos deben ser de tipo numérico.');
+    throw new Error("Operandos deben ser de tipo numérico.");
   }
 }

@@ -1,8 +1,9 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
 import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTNumeral, QTInt, QTBool } from './AST';
+import { Lista } from './Lista';
+import { Conjunto } from './Conjunto';
+
 
 /**
   Representación de las comparaciones por igual.
@@ -26,37 +27,36 @@ export class CompareEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
-  }
+    var lhsEval = this.lhs.evaluate(state);
+    var rhsEval = this.rhs.evaluate(state);
+    console.log(typeof lhsEval)
+    console.log(typeof rhsEval)
 
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-
-
-    if(tlhs === QTNumeral.Instance && (trhs === QTInt.Instance||trhs === QTNumeral.Instance))
-      {
-        return QTBool.Instance;
-      }
-    else if (tlhs === QTInt.Instance)
-      {
-        if (trhs === QTInt.Instance)
-          {
-            return QTBool.Instance;
-          }
-        //Y Numeral
-        else if(trhs === QTNumeral.Instance)
-          {
-            return QTBool.Instance
-          }
-      }
-    //Si son booleanos 
-    else if (trhs === QTBool.Instance && tlhs === QTBool.Instance ){
-      return QTBool.Instance;
+    if (typeof lhsEval === 'number' && rhsEval === NaN) {
+      return false;
     }
-    else
-      {
-        console.log("Guardar Error [No se pueden COMPARAR variables de tipo "+tlhs.toString()+" con "+ trhs.toString()+ "] Y Seguir")                  
+    if (lhsEval === NaN && typeof rhsEval === 'number') {
+      return false;
+    }
+    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean' ){
+      return lhsEval == rhsEval;
+    }
+
+    if(lhsEval instanceof Lista && rhsEval instanceof Lista){
+      if (lhsEval.elementos.length != rhsEval.elementos.length){
+        return false;
+      }else{
+        for (var x=0;x<lhsEval.elementos.length;x++) 
+        { 
+          if (lhsEval.elementos[x] != rhsEval.elementos[x]) 
+          { 
+            return false;
+          }
+        }
+        return true;
       }
+    }
+
+    throw new Error("No se reconoce el tipo.");
   }
 }

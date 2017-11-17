@@ -1,8 +1,7 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
 import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTNumeral, QTInt, QTBool } from './AST';
+import { Conjunto } from './Conjunto';
 
 /**
   Representación de las comparaciones por menor o igual.
@@ -26,31 +25,40 @@ export class CompareGreat implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
-  }
+    var lhsEval = this.lhs.evaluate(state);
+    var rhsEval = this.rhs.evaluate(state);
+    console.log(typeof lhsEval)
+    console.log(typeof rhsEval)
 
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
 
-    //Si es Numeral y (Numeral o Int)
-    if (tlhs === QTNumeral.Instance && (trhs === QTInt.Instance || trhs === QTNumeral.Instance)) {
-      return QTBool.Instance;
-    }
-    //Si es Int
-    else if (tlhs === QTInt.Instance) {
-      //Y Int
-      if (trhs === QTInt.Instance) {
-        return QTBool.Instance;
+    var pertenece = false;
+    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
+      if (lhsEval.elementos.length != rhsEval.elementos.length){
+        return false;
+      }else{
+        for (var x=0;x<rhsEval.elementos.length;x++) 
+        { 
+          pertenece = false;
+          for(var y=0;y<lhsEval.elementos.length;y++){
+            if (lhsEval.elementos[y] == rhsEval.elementos[x]) 
+            { 
+              pertenece = true;
+              break;
+            }
+          }
+          if(!pertenece){
+            return false;
+          }
+        }
+        return true;
       }
-      //Y Numeral
-      else if (trhs === QTNumeral.Instance) {
-        return QTBool.Instance
-      }
     }
-    //Si no es Numeral Ni Int
-    else {
-      console.log("Guardar Error [No se pueden COMPARAR < variables de tipo " + tlhs.toString() + " con " + trhs.toString() + "] Y Seguir")
+
+    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
+      console.log ('Los operandos son del tipo numérico.');
+      return lhsEval > rhsEval;
     }
+    console.log ('Operandos deben ser de tipo numérico.');
+    throw new Error("Operandos deben ser de tipo numérico.");
   }
 }

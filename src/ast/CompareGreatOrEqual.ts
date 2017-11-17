@@ -1,9 +1,6 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
 import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTNumeral, QTInt, QTBool } from './AST';
-
 /**
   Representación de las comparaciones por menor o igual.
 */
@@ -26,32 +23,17 @@ export class CompareGreatOrEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
-  }
+    var lhsEval = this.lhs.evaluate(state);
+    var rhsEval = this.rhs.evaluate(state);
+    console.log(typeof lhsEval)
+    console.log(typeof rhsEval)
 
-  checktype(checkstate: CheckState): QuaeroType {
-    var trhs = this.rhs.checktype(checkstate);
-    var tlhs = this.lhs.checktype(checkstate);
-
-    //Si es Numeral y (Numeral o Int)
-    if (tlhs === QTNumeral.Instance && (trhs === QTInt.Instance || trhs === QTNumeral.Instance)) {
-      return QTNumeral.Instance;
+    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
+      console.log ('Los operandos son del tipo numérico.');
+      return lhsEval >= rhsEval;
     }
-    //Si es Int
-    else if (tlhs === QTInt.Instance) {
-      //Y Int
-      if (trhs === QTInt.Instance) {
-        return QTBool.Instance;
-      }
-      //Y Numeral
-      else if (trhs === QTNumeral.Instance) {
-        return QTBool.Instance
-      }
-    }
-    //Si no es Numeral Ni Int
-    else {
-      console.log("Guardar Error [No se pueden CMPARAR <= variables de tipo " + tlhs.toString() + " con " + trhs.toString() + "] Y Seguir")
-    }
+    console.log ('Operandos deben ser de tipo numérico.');
+    throw new Error("Operandos deben ser de tipo numérico.");
   }
 }
 
