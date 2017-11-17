@@ -13,12 +13,10 @@ export * from './Conjunto';
 export * from './Lista';
 export * from './Conjunto';
 export * from './String';
-
+export * from './Enumeracion';
 
 export * from './Assignment';
 export * from './IfThen';
-export * from './Declaration';
-export * from './DeclarationAssignment';
 export * from './Assignment';
 export * from './Sequence';
 export * from './WhileDo';

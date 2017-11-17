@@ -26,7 +26,4 @@ export class Variable implements Exp {
     return undefined;
   }
 
-  checktype(checkstate: CheckState): QuaeroType {
-    return checkstate.get(this.id);
-  }
 }

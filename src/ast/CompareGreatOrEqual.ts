@@ -23,6 +23,7 @@ export class CompareGreatOrEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
+<<<<<<< HEAD
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
@@ -35,5 +36,10 @@ export class CompareGreatOrEqual implements Exp {
     console.log ('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
+=======
+    return undefined;
+  }
+
+>>>>>>> ad6a215f531c2f088e709bcfa1b6203f3535e2ef
 }
 

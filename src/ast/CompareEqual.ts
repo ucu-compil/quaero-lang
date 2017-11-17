@@ -27,6 +27,7 @@ export class CompareEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
+<<<<<<< HEAD
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
@@ -59,4 +60,9 @@ export class CompareEqual implements Exp {
 
     throw new Error("No se reconoce el tipo.");
   }
+=======
+    return undefined;
+  }
+
+>>>>>>> ad6a215f531c2f088e709bcfa1b6203f3535e2ef
 }
