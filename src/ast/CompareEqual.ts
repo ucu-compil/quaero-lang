@@ -1,9 +1,7 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { QuaeroType } from '../typecheck/QuaeroType';
 import { Lista } from './Lista';
 import { Conjunto } from './Conjunto';
-
 
 /**
   Representación de las comparaciones por igual.

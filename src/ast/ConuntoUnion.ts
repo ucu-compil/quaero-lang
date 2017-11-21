@@ -1,8 +1,5 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
-import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTNumeral, QTInt, QTBool } from './AST';
 
 /**
   Representación de las comparaciones por igual.
@@ -43,7 +40,4 @@ export class ConjuntoUnion implements Exp {
         return union;
     }
 
-    checktype(checkstate: CheckState): QuaeroType {
-        return undefined;
-    }
 }

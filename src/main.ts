@@ -9,15 +9,10 @@ import { ParserRules, ParserStart } from "./parser/Grammar";
 import { ASTNode, Stmt } from './ast/AST';
 
 import { Estado } from './interpreter/Estado';
-import { CheckState } from './typecheck/CheckState';
-import { QuaeroType } from './typecheck/QuaeroType';
-import { QTNumeral } from "./typecheck/QTNumeral";
-
 
 console.log("Quaero :: REPL");
 
 var state = new Estado();
-var checkstate = new CheckState();
 while (true) {
   const lexer = new MyLexer(tokens);
   const parser = new Parser(ParserRules, ParserStart, { lexer });
@@ -38,8 +33,9 @@ while (true) {
       case 1: {
         const node = nodes[0];
         console.log(node);
-        state = node.evaluate(state);console.log(`\n${state.toString()}`);
-        
+        state = node.evaluate(state);
+        console.log(`\n${state.toString()}`);
+
         break;
       }
       default: {

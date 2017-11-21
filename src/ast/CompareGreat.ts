@@ -1,6 +1,5 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { QuaeroType } from '../typecheck/QuaeroType';
 import { Conjunto } from './Conjunto';
 
 /**

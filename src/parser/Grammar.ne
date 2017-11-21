@@ -3,9 +3,6 @@
 @{%
 
 import {
-  QTBool,
-  QTInt,
-  QTNumeral,
   Numeral,
   String,
   Int,
@@ -33,7 +30,8 @@ import {
   IfThenElse,
   Sequence,
   Opposite,
-  Enumeracion
+  Enumeracion,
+  ExpCond
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -62,6 +60,7 @@ stmtelse ->
 exp ->
     exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
   | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
+  | exp "if" exp "else" exp {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
   | comp                    {% id %}
 
 comp ->
@@ -74,9 +73,9 @@ comp ->
   | addsub                  {% id %}
 
 addsub ->
-    addsub "+" muldiv       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
-  | addsub "-" muldiv       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
-  | muldiv                  {% id %}
+    addsub "+" opposite       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
+  | addsub "-" opposite       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
+  | opposite                  {% id %}
 
 opposite ->
     "-" muldiv              {% ([,op]) => (new Opposite(op)) %}

@@ -1,6 +1,5 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { QuaeroType } from '../typecheck/QuaeroType';
 
 /**
   Representación de las negaciones de expresiones booleanas.
@@ -23,10 +22,10 @@ export class Opposite implements Exp {
 
   evaluate(state: Estado): any {
     var expEval = this.exp.evaluate(state);
-    
-        if (typeof expEval === 'number') {
-          return -expEval;
-        }
-        throw new Error('El operando debe ser del tipo numerico');
+
+    if (typeof expEval === 'number') {
+      return -expEval;
+    }
+    throw new Error('El operando debe ser del tipo numerico');
   }
 }

@@ -1,8 +1,5 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
-import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTBool } from '../typecheck/QTBool';
 
 /**
   Representación de valores de verdad (cierto o falso).
@@ -24,7 +21,7 @@ export class TruthValue implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    return this.value;
   }
-  
+
 }
