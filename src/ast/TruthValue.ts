@@ -21,7 +21,7 @@ export class TruthValue implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    return this.value;
   }
 
 }
