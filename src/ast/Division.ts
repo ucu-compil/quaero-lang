@@ -28,10 +28,10 @@ export class Division extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
-    throw "LC error 8";
+    throw new Error("LC error 8");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 8";
+    throw new Error("For error 8");
   }
 }

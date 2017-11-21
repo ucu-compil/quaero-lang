@@ -26,10 +26,10 @@ export class Number extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "For error 21";
+    throw new Error( "For error 21");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 21";
+    throw new Error( "For error 21");
   }
 }

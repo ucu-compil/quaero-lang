@@ -28,10 +28,10 @@ export class Substraction extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 25";
+    throw new Error( "LC error 25");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 25";
+    throw new Error( "For error 25");
   }
 }

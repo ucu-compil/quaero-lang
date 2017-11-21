@@ -29,6 +29,6 @@ export class TextLiteral extends Exp {
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 26";
+    throw new Error( "For error 26");
   }
 }

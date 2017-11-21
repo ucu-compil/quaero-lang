@@ -26,10 +26,10 @@ export class Negative extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 19";
+    throw new Error( "LC error 19");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 19";
+    throw new Error( "For error 19");
   }
 }

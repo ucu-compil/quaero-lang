@@ -28,10 +28,10 @@ export class Index extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 11";
+    throw new Error( "LC error 11");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 11";
+    throw new Error( "For error 11");
   }
 }

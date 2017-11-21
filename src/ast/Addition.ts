@@ -30,10 +30,10 @@ export class Addition extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
-    throw "LC error 1";
+    throw new Error("LC error 1");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 1";
+    throw new Error("For error 1");
   }
 }

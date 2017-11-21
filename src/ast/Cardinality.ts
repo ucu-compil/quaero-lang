@@ -26,10 +26,10 @@ export class Cardinality extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
-    throw "LC error 2";
+    throw new Error("LC error 2");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 2";
+    throw new Error("For error 2");
   }
 }

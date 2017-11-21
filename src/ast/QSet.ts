@@ -30,10 +30,10 @@ export class QSet extends Exp {
   } //{a=[1,2,3];b=[3,4,5];c=a\/b;}
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 23";
+    throw new Error( "LC error 23");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 23";
+    throw new Error( "For error 23");
   }
 }
