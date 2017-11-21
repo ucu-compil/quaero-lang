@@ -1,8 +1,5 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
-import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTInt } from '../typecheck/QTInt';
 
 /**
   Representación de constantes numéricas o numerales.

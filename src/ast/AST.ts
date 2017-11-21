@@ -1,10 +1,5 @@
 // Abstract nodes
 export * from './ASTNode';
-export * from '../typecheck/QTBool';
-export * from '../typecheck/QTInt';
-export * from '../typecheck/QTNumeral';
-export * from '../typecheck/QTString';
-
 export * from './Numeral';
 export * from './Int';
 export * from './TruthValue';
@@ -27,6 +22,7 @@ export * from './Disjunction';
 export * from './Addition';
 export * from './Substraction';
 export * from './Negation';
+export * from './Opposite';
 ///
 export * from './CompareEqual';
 export * from './CompareGreat';

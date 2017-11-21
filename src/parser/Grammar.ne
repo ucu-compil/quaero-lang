@@ -3,9 +3,6 @@
 @{%
 
 import {
-  QTBool,
-  QTInt,
-  QTNumeral,
   Numeral,
   String,
   Int,

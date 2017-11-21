@@ -1,7 +1,4 @@
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
-import { QuaeroType } from '../typecheck/QuaeroType';
-
 
 export interface ASTNode {
   toString(): string;

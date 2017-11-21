@@ -1,6 +1,5 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { QuaeroType } from '../typecheck/QuaeroType';
 import { Conjunto } from './Conjunto';
 
 /**
@@ -25,28 +24,25 @@ export class CompareLess implements Exp {
   }
 
   evaluate(state: Estado): any {
-<<<<<<< HEAD
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
 
     var pertenece = false;
-    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
-      if (lhsEval.elementos.length != rhsEval.elementos.length){
+    if (lhsEval instanceof Conjunto && rhsEval instanceof Conjunto) {
+      if (lhsEval.elementos.length != rhsEval.elementos.length) {
         return false;
-      }else{
-        for (var x=0;x<lhsEval.elementos.length;x++) 
-        { 
+      } else {
+        for (var x = 0; x < lhsEval.elementos.length; x++) {
           pertenece = false;
-          for(var y=0;y<rhsEval.elementos.length;y++){
-            if (lhsEval.elementos[x] == rhsEval.elementos[y]) 
-            { 
+          for (var y = 0; y < rhsEval.elementos.length; y++) {
+            if (lhsEval.elementos[x] == rhsEval.elementos[y]) {
               pertenece = true;
               break;
             }
           }
-          if(!pertenece){
+          if (!pertenece) {
             return false;
           }
         }
@@ -55,16 +51,11 @@ export class CompareLess implements Exp {
     }
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log ('Los operandos son del tipo numérico.');
+      console.log('Los operandos son del tipo numérico.');
       return lhsEval < rhsEval;
     }
-    console.log ('Operandos deben ser de tipo numérico.');
+    console.log('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
-=======
-    return undefined;
-  }
-
->>>>>>> ad6a215f531c2f088e709bcfa1b6203f3535e2ef
 }
 

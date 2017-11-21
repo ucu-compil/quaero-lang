@@ -1,8 +1,5 @@
 import { Exp, Stmt } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
-import { QuaeroType } from '../typecheck/QuaeroType';
-import { QTConjunto } from '../typecheck/QTConjunto';
 
 /**
   Representación de 
@@ -33,14 +30,8 @@ export class Conjunto implements Exp {
 
   evaluate(state: Estado): any {
     var valor = 0;
-    this.conjunto.forEach(element => {
-        valor++
-    })
+    this.conjunto.forEach(element => valor++);
     return valor;
-  }
-
-  checktype(checkstate: CheckState): QuaeroType {
-    return undefined;
   }
 
 }

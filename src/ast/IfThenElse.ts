@@ -1,7 +1,5 @@
 import { Exp, Stmt } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-import { CheckState } from '../typecheck/CheckState';
-import { QuaeroType } from '../typecheck/QuaeroType';
 
 /**
   Representación de las sentencias condicionales.
