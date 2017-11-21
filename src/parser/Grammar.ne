@@ -68,13 +68,13 @@ condisj ->
   | comp                                    {% id %}
 
 comp ->
-    addsub "==" addsub                        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
-  | addsub "/=" addsub                        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
-  | addsub "<=" addsub                        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
-  | addsub "<" addsub                         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
-  | addsub ">=" addsub                        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
-  | addsub ">" addsub                         {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
-  | addsub                                    {% id %}
+    addsub "==" addsub                      {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
+  | addsub "/=" addsub                      {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
+  | addsub "<=" addsub                      {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
+  | addsub "<" addsub                       {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
+  | addsub ">=" addsub                      {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
+  | addsub ">" addsub                       {% ([lhs, , rhs]) => (new CompareGreat(lhs, rhs)) %}
+  | addsub                                  {% id %}
 
 addsub ->
     addsub "+" muldiv                       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}

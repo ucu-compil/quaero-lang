@@ -27,7 +27,7 @@ export class Enumeration extends Exp {
 
   evaluate(state: State): any {
     var res = [];
-    for(var i=this.low.evaluate(state);i<this.high.evaluate(state);i=i+this.step.evaluate(state)){
+    for(var i=this.low.evaluate(state);i<=this.high.evaluate(state);i=i+this.step.evaluate(state)){
       res.push(i);
     }
     return res;

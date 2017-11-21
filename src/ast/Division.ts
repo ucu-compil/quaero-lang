@@ -24,7 +24,7 @@ export class Division extends Exp {
   }
 
   evaluate(state: State): any {
-    return this.lhs.evaluateNumber(state) / this.lhs.evaluateNumber(state);
+    return this.lhs.evaluateNumber(state) / this.rhs.evaluateNumber(state);
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
