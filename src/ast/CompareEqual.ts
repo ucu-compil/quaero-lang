@@ -27,18 +27,19 @@ export class CompareEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
-<<<<<<< HEAD
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
 
-    if (typeof lhsEval === 'number' && rhsEval === NaN) {
-      return false;
+    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
+      if (lhsEval === NaN || rhsEval === NaN ) {
+        return false;
+      }else{
+        return lhsEval == rhsEval;
+      }
     }
-    if (lhsEval === NaN && typeof rhsEval === 'number') {
-      return false;
-    }
+
     if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean' ){
       return lhsEval == rhsEval;
     }
@@ -58,11 +59,43 @@ export class CompareEqual implements Exp {
       }
     }
 
+    if(lhsEval instanceof String && rhsEval instanceof String){
+      if (lhsEval.length != rhsEval.length){
+        return false;
+      }else{
+        for (var x=0;x<lhsEval.length;x++) 
+        { 
+          if (lhsEval.charAt(x) != rhsEval.charAt(x))
+          { 
+            return false;
+          }
+        }
+        return true;
+      }
+    }
+
+    var pertenece = false;
+    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
+      if(lhsEval.elementos.length == rhsEval.elementos.length){
+        for (var x=0;x<lhsEval.elementos.length;x++) 
+        { 
+          pertenece = false;
+          for(var y=0;y<rhsEval.elementos.length;y++){
+            if (lhsEval.elementos[x] == rhsEval.elementos[y]) 
+            { 
+              pertenece = true;
+              break;
+            }
+          }
+          if(!pertenece){
+            return false;
+          }
+        }
+        return true;
+      }
+      return false;
+    }
+
     throw new Error("No se reconoce el tipo.");
   }
-=======
-    return undefined;
-  }
-
->>>>>>> ad6a215f531c2f088e709bcfa1b6203f3535e2ef
 }

@@ -1,6 +1,8 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
 import { QuaeroType } from '../typecheck/QuaeroType';
+import { Lista } from './Lista';
+import { Conjunto } from './Conjunto';
 
 /**
   Representación de las comparaciones por igual.
@@ -24,22 +26,75 @@ export class CompareNotEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
-<<<<<<< HEAD
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log ('Los operandos son del tipo numérico.');
-      return lhsEval /= rhsEval;
+      if (lhsEval === NaN || rhsEval === NaN ) {
+        return false;
+      }else{
+        return lhsEval != rhsEval;
+      }
     }
-    console.log ('Operandos deben ser de tipo numérico.');
-    throw new Error("Operandos deben ser de tipo numérico.");
-  }
-=======
-    return undefined;
-  }
 
->>>>>>> ad6a215f531c2f088e709bcfa1b6203f3535e2ef
+    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean' ){
+      return lhsEval != rhsEval;
+    }
+
+    if(lhsEval instanceof Lista && rhsEval instanceof Lista){
+      if (lhsEval.elementos.length != rhsEval.elementos.length){
+        return true;
+      }else{
+        for (var x=0;x<lhsEval.elementos.length;x++) 
+        { 
+          if (lhsEval.elementos[x] != rhsEval.elementos[x]) 
+          { 
+            return true;
+          }
+        }
+        return false;
+      }
+    }
+
+    if(lhsEval instanceof String && rhsEval instanceof String){
+      if (lhsEval.length != rhsEval.length){
+        return true;
+      }else{
+        for (var x=0;x<lhsEval.length;x++) 
+        { 
+          if (lhsEval.charAt(x) != rhsEval.charAt(x))
+          { 
+            return true;
+          }
+        }
+        return false;
+      }
+    }
+
+    var pertenece = false;
+    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
+      if(lhsEval.elementos.length == rhsEval.elementos.length){
+        for (var x=0;x<lhsEval.elementos.length;x++) 
+        { 
+          pertenece = false;
+          for(var y=0;y<rhsEval.elementos.length;y++){
+            if (lhsEval.elementos[x] == rhsEval.elementos[y]) 
+            { 
+              pertenece = true;
+              break;
+            }
+          }
+          if(!pertenece){
+            return true;
+          }
+        }
+        return false;
+      }
+      return true;
+    }
+
+    throw new Error("No se reconoce el tipo.");
+  }
 }

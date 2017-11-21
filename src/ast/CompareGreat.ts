@@ -25,23 +25,32 @@ export class CompareGreat implements Exp {
   }
 
   evaluate(state: Estado): any {
-<<<<<<< HEAD
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
 
-
+    if (typeof lhsEval === 'number' && rhsEval === NaN) {
+      return false;
+    }
+    if (lhsEval === NaN && typeof rhsEval === 'number') {
+      return false;
+    }
+    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean' ){
+      if (lhsEval == true && rhsEval == false){
+        return true;
+      }else{
+        return false
+      }
+    }
+    
     var pertenece = false;
     if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
-      if (lhsEval.elementos.length != rhsEval.elementos.length){
-        return false;
-      }else{
-        for (var x=0;x<rhsEval.elementos.length;x++) 
+        for (var x=0;x<lhsEval.elementos.length;x++) 
         { 
           pertenece = false;
-          for(var y=0;y<lhsEval.elementos.length;y++){
-            if (lhsEval.elementos[y] == rhsEval.elementos[x]) 
+          for(var y=0;y<rhsEval.elementos.length;y++){
+            if (lhsEval.elementos[x] == rhsEval.elementos[y]) 
             { 
               pertenece = true;
               break;
@@ -51,8 +60,7 @@ export class CompareGreat implements Exp {
             return false;
           }
         }
-        return true;
-      }
+      return true;
     }
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
@@ -62,9 +70,4 @@ export class CompareGreat implements Exp {
     console.log ('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
-=======
-    return undefined;
-  }
-  
->>>>>>> ad6a215f531c2f088e709bcfa1b6203f3535e2ef
 }
