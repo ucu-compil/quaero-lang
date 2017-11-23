@@ -31,7 +31,8 @@ import {
   Sequence,
   Opposite,
   Enumeracion,
-  ExpCond
+  ExpCond,
+  StatmentExpression
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -55,7 +56,7 @@ stmtelse ->
   | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "if" exp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
-  | exp ";"                               {% ([exp, ]) => (exp) %} 
+  | exp ";"                               {% ([exp, ]) => (new StatmentExpression(exp))%} 
 
 exp ->
     exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}

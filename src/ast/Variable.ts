@@ -20,7 +20,7 @@ export class Variable implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    return state.get(this.id);
   }
 
 }

@@ -44,7 +44,6 @@ export class CompareLess implements Exp {
     }
 
     var pertenece = false;
-<<<<<<< HEAD
     if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
         for (var x=0;x<rhsEval.elementos.length;x++) 
         { 
@@ -52,16 +51,6 @@ export class CompareLess implements Exp {
           for(var y=0;y<lhsEval.elementos.length;y++){
             if (lhsEval.elementos[y] == rhsEval.elementos[x]) 
             { 
-=======
-    if (lhsEval instanceof Conjunto && rhsEval instanceof Conjunto) {
-      if (lhsEval.elementos.length != rhsEval.elementos.length) {
-        return false;
-      } else {
-        for (var x = 0; x < lhsEval.elementos.length; x++) {
-          pertenece = false;
-          for (var y = 0; y < rhsEval.elementos.length; y++) {
-            if (lhsEval.elementos[x] == rhsEval.elementos[y]) {
->>>>>>> 32a5f6fb1c6245cdd412164d77c2e593fea0fea3
               pertenece = true;
               break;
             }

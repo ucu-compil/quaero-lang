@@ -29,7 +29,6 @@ export class Addition implements Exp {
     console.log(typeof rhsEval)
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log ('Los operandos son del tipo numérico.');
       return lhsEval + rhsEval;
     }
     console.log ('Operandos deben ser de tipo numérico.');
