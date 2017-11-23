@@ -15,15 +15,17 @@ export class Clave implements Exp {
   }
 
   toString(): string {
-    return `Clave(${this.id},${this.value})`;
+    return `Clave(${this.id}, ${this.value.toString()})`;
   }
 
   unparse(): string {
-    return `${this.id}: ${this.value}`;
+    return `${this.id}: ${this.value.toString()}`;
   }
 
-  evaluate(state: Estado): Estado {
-    return undefined;
+  evaluate(state: Estado): any {
+    let clave = this.id;
+    let valorEval = this.value.evaluate(state);
+    return { clave: valorEval };
   }
 
 }
