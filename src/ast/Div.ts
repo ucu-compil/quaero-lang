@@ -30,7 +30,7 @@ export class Division implements Exp {
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       console.log ('Los operandos son del tipo numérico.');
       try {
-        return lhsEval % rhsEval;
+        return (lhsEval / rhsEval);
       } catch (error) {
         throw new Error(error.description);
       }
