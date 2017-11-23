@@ -7,7 +7,7 @@ declare var float:any;
 declare var hex:any;
 declare var inf:any;
 declare var nan:any;
-declare var str:any;
+declare var lit:any;
 
 
 import {
@@ -35,10 +35,11 @@ export var ParserRules:NearleyRule[] = [
     {"name": "stmt", "symbols": ["stmtelse"], "postprocess": id},
     {"name": "stmt", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmt"], "postprocess": ([, , cond, , thenBody]) => (new IfThen(cond, thenBody))},
     {"name": "stmt", "symbols": ["exp", {"literal":";"}], "postprocess": ([exp,]) => (new ExpAsStmt(exp))},
-    {"name": "stmt", "symbols": [{"literal":":"}, {"literal":"l"}, "str"], "postprocess": ([,,str]) => (new Load(str))},
+    {"name": "stmt", "symbols": [{"literal":":"}, {"literal":"l"}, "lit"], "postprocess": ([,,str]) => (new Load(str))},
     {"name": "stmt", "symbols": [{"literal":":"}, {"literal":"r"}], "postprocess": ([,,]) => (new Reload())},
     {"name": "stmtelse", "symbols": ["identifier", {"literal":"="}, "exp", {"literal":";"}], "postprocess": ([id, , exp, ]) => (new Assignment(id, exp))},
-    {"name": "stmtelse", "symbols": ["identifier", {"literal":"("}, "lista_id", {"literal":")"}, "stmt"], "postprocess": ([name, , ids, , body]) => (new Funcion(name,ids,body))},
+    {"name": "stmtelse", "symbols": ["identifier", {"literal":"("}, "lista_id", {"literal":")"}, "stmt"], "postprocess": ([name,, ids,, body]) => (new Funcion(name,ids,body))},
+    {"name": "stmtelse", "symbols": ["identifier", {"literal":"("}, {"literal":")"}, "stmt"], "postprocess": ([name,,, body]) => (new Funcion(name, new Array<any>() ,body))},
     {"name": "stmtelse$ebnf$1", "symbols": []},
     {"name": "stmtelse$ebnf$1", "symbols": ["stmtelse$ebnf$1", "stmt"], "postprocess": (d) => d[0].concat([d[1]])},
     {"name": "stmtelse", "symbols": [{"literal":"{"}, "stmtelse$ebnf$1", {"literal":"}"}], "postprocess": ([, statements, ]) => (new Sequence(statements))},
@@ -49,9 +50,10 @@ export var ParserRules:NearleyRule[] = [
     {"name": "stmtelse", "symbols": [{"literal":"if"}, {"literal":"("}, "exp", {"literal":")"}, "stmtelse", {"literal":"else"}, "stmt"], "postprocess": ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody))},
     {"name": "stmtelse", "symbols": [{"literal":"for"}, {"literal":"("}, "exp_list", {"literal":")"}, "stmt"], "postprocess": ([,,list,,stmt]) => (new For(list,stmt))},
     {"name": "lista_id", "symbols": ["identifier"], "postprocess": ([id]) => ([id])},
-    {"name": "lista_id", "symbols": ["lista_id", {"literal":","}, "identifier"], "postprocess": ([lista, ,id]) => { lista.push(id); return lista; }},
+    {"name": "lista_id", "symbols": ["lista_id", {"literal":","}, "identifier"], "postprocess": ([lista, ,id]) => { lista.concat(id) }},
     {"name": "exp", "symbols": ["exp", {"literal":"if"}, "exp", {"literal":"else"}, "exp"], "postprocess": ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse))},
     {"name": "exp", "symbols": ["identifier", {"literal":"("}, "exp_list", {"literal":")"}], "postprocess": ([name, , ids,]) => (new Call(name,ids))},
+    {"name": "exp", "symbols": ["identifier", {"literal":"("}, {"literal":")"}], "postprocess": ([name, ,]) => (new Call(name,new Array<any>()))},
     {"name": "exp", "symbols": ["exp", {"literal":"["}, "condisj", {"literal":"]"}], "postprocess": ([str, ,ind, ]) => (new Index(str,ind))},
     {"name": "exp", "symbols": [{"literal":"#"}, "exp"], "postprocess": ([, exp]) => (new Cardinality(exp))},
     {"name": "exp", "symbols": ["exp", {"literal":"."}, "condisj"], "postprocess": ([list, ,key]) => (new IndKey(list,key))},
@@ -86,7 +88,7 @@ export var ParserRules:NearleyRule[] = [
     {"name": "value", "symbols": [{"literal":"true"}], "postprocess": () => (new TruthValue(true))},
     {"name": "value", "symbols": [{"literal":"false"}], "postprocess": () => (new TruthValue(false))},
     {"name": "value", "symbols": ["identifier"], "postprocess": ([id]) => (new Variable(id))},
-    {"name": "value", "symbols": ["str"], "postprocess": ([id]) => (new TextLiteral(id))},
+    {"name": "value", "symbols": ["lit"], "postprocess": ([str]) => (new TextLiteral(JSON.parse(str)))},
     {"name": "value", "symbols": ["lists"], "postprocess": id},
     {"name": "lists", "symbols": [{"literal":"["}, "elems", {"literal":"]"}], "postprocess": ([, elems,]) => (new List(elems))},
     {"name": "lists", "symbols": [{"literal":"{"}, "elems", {"literal":"}"}], "postprocess": ([, elems,]) => (new QSet(elems))},
@@ -103,13 +105,13 @@ export var ParserRules:NearleyRule[] = [
     {"name": "elems", "symbols": ["elems", {"literal":","}, "exp"], "postprocess": ([elems, , exp]) => elems.concat([exp])},
     {"name": "elems", "symbols": ["elems", {"literal":","}, "keyval"], "postprocess": ([elems, , kv]) => elems.concat([kv])},
     {"name": "keyval", "symbols": ["identifier", {"literal":":"}, "exp"], "postprocess": ([id, ,exp]) => (new KeyVal(id,exp))},
-    {"name": "keyval", "symbols": ["str", {"literal":":"}, "exp"], "postprocess": ([id, ,exp]) => (new KeyVal(id,exp))},
+    {"name": "keyval", "symbols": ["lit", {"literal":":"}, "exp"], "postprocess": ([id, ,exp]) => (new KeyVal(id,exp))},
     {"name": "identifier", "symbols": [(lexer.has("identifier") ? {type: "identifier"} : identifier)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("integer") ? {type: "integer"} : integer)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("float") ? {type: "float"} : float)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("hex") ? {type: "hex"} : hex)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("inf") ? {type: "inf"} : inf)], "postprocess": ([id]) => (id.value)},
     {"name": "number", "symbols": [(lexer.has("nan") ? {type: "nan"} : nan)], "postprocess": ([id]) => (id.value)},
-    {"name": "str", "symbols": [(lexer.has("str") ? {type: "str"} : str)], "postprocess": ([id]) => (id.value)}
+    {"name": "lit", "symbols": [(lexer.has("lit") ? {type: "lit"} : lit)], "postprocess": ([id]) => (id.value)}
 ];
 export var ParserStart:string = "stmt";

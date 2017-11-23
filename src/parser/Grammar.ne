@@ -28,30 +28,31 @@ stmt ->
     stmtelse                                {% id %}
   | "if" "(" exp ")" stmt                   {% ([, , cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
   | exp ";"                                 {% ([exp,]) => (new ExpAsStmt(exp)) %}
-  | ":" "l" str                             {% ([,,str]) => (new Load(str)) %}
+  | ":" "l" lit                             {% ([,,str]) => (new Load(str)) %}
   | ":" "r"                                 {% ([,,]) => (new Reload()) %}
 
 stmtelse ->
     identifier "=" exp ";"                  {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | identifier "(" lista_id ")" stmt        {% ([name, , ids, , body]) => (new Funcion(name,ids,body)) %}
+  | identifier "(" lista_id ")" stmt        {% ([name,, ids,, body]) => (new Funcion(name,ids,body)) %}
+  | identifier "(" ")" stmt                 {% ([name,,, body]) => (new Funcion(name, new Array<any>() ,body)) %}
   | "{" stmt:* "}"                          {% ([, statements, ]) => (new Sequence(statements)) %}
   | "while" exp "do" stmt                   {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "do" stmt "while" exp                   {% ([, body, , cond]) => (new DoWhile(cond, body)) %}
   | "while" exp "do" stmt "else" stmt       {% ([, cond, , body, , elseBody]) => (new WhileDoElse(cond,body,elseBody)) %}
   | "return" exp ";"                        {% ([, exp,]) => (new Return(exp)) %}
-#  | "print" "(" exp ")" ";"                 {% ([, , exp, ,]) => (new Print(exp)) %}
   | "if"  "(" exp ")" stmtelse "else" stmt  {% ([, , cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "for" "(" exp_list ")" stmt             {% ([,,list,,stmt]) => (new For(list,stmt)) %}
 
 lista_id ->
     identifier                              {% ([id]) => ([id]) %}
-  | lista_id "," identifier                 {% ([lista, ,id]) => { lista.push(id); return lista; } %}
+  | lista_id "," identifier                 {% ([lista, ,id]) => { lista.concat(id) } %}
 
 # Expressions
 
 exp ->
     exp "if" exp "else" exp                 {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
   | identifier "(" exp_list ")"             {% ([name, , ids,]) => (new Call(name,ids)) %}
+  | identifier "(" ")"                      {% ([name, ,]) => (new Call(name,new Array<any>())) %}
   | exp "[" condisj "]"                     {% ([str, ,ind, ]) => (new Index(str,ind)) %}
   | "#" exp                                 {% ([, exp]) => (new Cardinality(exp)) %}
   | exp "." condisj                         {% ([list, ,key]) => (new IndKey(list,key)) %}
@@ -98,18 +99,8 @@ value ->
   | "true"                                  {% () => (new TruthValue(true)) %}
   | "false"                                 {% () => (new TruthValue(false)) %}
   | identifier                              {% ([id]) => (new Variable(id)) %}
-  | str                                     {% ([id]) => (new TextLiteral(id)) %}
+  | lit                                     {% ([str]) => (new TextLiteral(JSON.parse(str))) %}
   | lists                                   {% id %}
-
-#functions ->
-#    "div" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Div(lhs,rhs)) %}
-#  | "mod" "(" exp "," exp ")"               {% ([, ,lhs, , rhs,]) => (new Mod(lhs,rhs)) %}
-#  | "length" "(" exp ")"                    {% ([, , exp, ]) => (new Length(exp)) %}
-#  | "string" "(" exp ")"                    {% ([, , exp,]) => (new String(exp)) %}
-#  | "boolean" "(" exp ")"                   {% ([, , exp,]) => (new Boolean(exp)) %}
-#  | "number" "(" exp ")"                    {% ([, , exp,]) => (new Number(exp)) %}
-#  | "int" "(" exp ")"                       {% ([, , exp,]) => (new Int(exp)) %}
-#  | lists                                   {% id %}
 
 lists ->
     "[" elems "]"                           {% ([, elems,]) => (new List(elems)) %}
@@ -133,7 +124,7 @@ elems ->
 
 keyval ->
     identifier ":" exp                      {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
-  | str ":" exp                             {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
+  | lit ":" exp                             {% ([id, ,exp]) => (new KeyVal(id,exp)) %}
 
 # Atoms
 
@@ -147,5 +138,5 @@ number ->
   | %inf                                    {% ([id]) => (id.value) %}
   | %nan                                    {% ([id]) => (id.value) %}
 
-str ->
-   %str                                     {% ([id]) => (id.value) %}
+lit ->
+   %lit                                     {% ([id]) => (id.value) %}

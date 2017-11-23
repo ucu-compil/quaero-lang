@@ -10,7 +10,7 @@ import { State } from '../interpreter/State';
 */
 export class Reload implements Stmt {
 
-  constructor(path: string) {
+  constructor() {
   }
 
   toString(): string {

@@ -8,10 +8,10 @@ import { State } from '../interpreter/State';
 export class Funcion implements Stmt {
 
   name: string;
-  params: [string];
+  params: string[];
   body: Sequence;
 
-  constructor(name: string, params: [string], body: Sequence) {
+  constructor(name: string, params: string[], body: Sequence) {
     this.name = name;
     this.params = params;
     this.body = body;

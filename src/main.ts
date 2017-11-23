@@ -18,7 +18,9 @@ state.jsfun.set("div",function div(x,y){ return Math.floor(x/y); });
 state.jsfun.set("mod",function mod(x,y){ return x%y; });
 state.jsfun.set("length",function length(x){ return x.length; });
 state.jsfun.set("string",function string(x){ return x+''; });
-state.jsfun.set("boolean",function boolean(x){ return !!x; });
+state.jsfun.set("boolean",function boolean(x){
+  if ((x instanceof Array && x.length == 0) || (x instanceof Set && x.size == 0)) return false;
+  return !!x;});
 state.jsfun.set("number",function number(x){ return parseFloat(x); });
 state.jsfun.set("int",function int(x){ return parseInt(x); });
 state.jsfun.set("max",Math.max);
