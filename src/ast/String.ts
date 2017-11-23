@@ -17,11 +17,11 @@ export class String implements Exp {
   }
 
   unparse(): string {
-    return `${this.value}`;
+    return `\'${this.value}\'`;
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    return `\'${this.value}\'`;
   }
 
 }
