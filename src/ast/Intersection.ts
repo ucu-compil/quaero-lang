@@ -31,10 +31,10 @@ export class Intersection extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 13";
+    throw new Error( "LC error 13");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 13";
+    throw new Error( "For error 13");
   }
 }

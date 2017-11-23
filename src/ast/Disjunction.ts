@@ -28,10 +28,10 @@ export class Disjunction extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
-    throw "For error 6";
+    throw new Error("For error 6");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 6";
+    throw new Error("For error 6");
   }
 }

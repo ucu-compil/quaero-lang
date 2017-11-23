@@ -28,10 +28,10 @@ export class Mod extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "For error 17";
+    throw new Error( "For error 17");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 17";
+    throw new Error( "For error 17");
   }
 }

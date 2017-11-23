@@ -28,10 +28,10 @@ export class Concatenation extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any{
-    throw "LC error 3";
+    throw new Error("LC error 3");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 3";
+    throw new Error("For error 3");
   }
 }

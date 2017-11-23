@@ -39,10 +39,10 @@ export class Multiplication extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 18";
+    throw new Error( "LC error 18");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 18";
+    throw new Error( "For error 18");
   }
 }

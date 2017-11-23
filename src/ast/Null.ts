@@ -23,10 +23,10 @@ export class Null extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 20";
+    throw new Error( "LC error 20");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 20";
+    throw new Error( "For error 20");
   }
 }

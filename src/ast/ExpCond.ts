@@ -44,7 +44,7 @@ export class ExpCond extends Exp {
           return head.evaluateLC(state,tail,exp);
         }
       }
-    } else { throw "LC error 10"; }
+    } else { throw new Error( "LC error 10"); }
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
@@ -59,6 +59,6 @@ export class ExpCond extends Exp {
           return head.evaluateFor(state,tail,stmt);
         }
       }
-    } else { throw "For error 10"; }
+    } else { throw new Error( "For error 10"); }
   }
 }

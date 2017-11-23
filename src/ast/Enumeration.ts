@@ -27,17 +27,17 @@ export class Enumeration extends Exp {
 
   evaluate(state: State): any {
     var res = [];
-    for(var i=this.low.evaluate(state);i<this.high.evaluate(state);i=i+this.step.evaluate(state)){
+    for(var i=this.low.evaluate(state);i<=this.high.evaluate(state);i=i+this.step.evaluate(state)){
       res.push(i);
     }
     return res;
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 9";
+    throw new Error( "LC error 9");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 9";
+    throw new Error( "For error 9");
   }
 }

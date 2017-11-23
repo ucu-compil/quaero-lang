@@ -26,10 +26,10 @@ export class String extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 24";
+    throw new Error( "LC error 24");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 24";
+    throw new Error( "For error 24");
   }
 }

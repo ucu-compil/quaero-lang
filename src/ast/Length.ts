@@ -30,10 +30,10 @@ export class Length extends Exp {
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
-    throw "LC error 15";
+    throw new Error( "LC error 15");
   }
 
   evaluateFor(state: State, exp_list: Exp[], stmt: Stmt): any{
-    throw "For error 15";
+    throw new Error( "For error 15");
   }
 }
