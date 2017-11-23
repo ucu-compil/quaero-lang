@@ -38,7 +38,8 @@ export * from './CompareLess';
 export * from './ExpCond';
 export * from './StatmentExpression';
 
-
+export * from './Div';
+export * from './Mod';
 
 
 
