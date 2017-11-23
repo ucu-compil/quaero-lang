@@ -4,7 +4,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de multiplicaciones.
 */
-export class Division implements Exp {
+export class Div implements Exp {
 
   lhs: Exp;
   rhs: Exp;
