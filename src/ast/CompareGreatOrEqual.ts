@@ -40,7 +40,7 @@ export class CompareGreatOrEqual extends Exp {
       }
       else return lhs >= rhs;
     }
-    else throw "Type Error"
+    else throw new Error('Type error')
   }
 
   evaluateLC(state: State, exp_list: Exp[], exp: Exp): any {

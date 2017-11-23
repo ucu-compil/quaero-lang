@@ -11,15 +11,14 @@ declare var str:any;
 
 
 import {
-  Addition, Assignment, Belonging, Call, Cardinality,
-  CompareEqual, CompareGreat, CompareGreatOrEqual, CompareLess,
-  CompareLessOrEqual, CompareNotEqual, Concatenation, Conjunction,
-  Difference, Disjunction, Division, DoWhile, Enumeration,
-  ExpAsStmt, ExpCond, For, Funcion, IfThen, IfThenElse, IndKey,
-  Index, Intersection, KeyVal, List, ListComprehension,
-  Multiplication, Negation, Negative, Null, Numeral,
-  QSet, Return, Sequence, Substraction, TextLiteral,
-  TruthValue, Union, Variable, WhileDo, WhileDoElse, Load, Reload
+  Addition, Assignment, Belonging, Call, Cardinality, CompareEqual,
+  CompareGreat, CompareGreatOrEqual, CompareLess, CompareLessOrEqual,
+  CompareNotEqual, Concatenation, Conjunction, Difference, Disjunction,
+  Division, DoWhile, Enumeration, ExpAsStmt, ExpCond, For, Funcion, IfThen,
+  IfThenElse, IndKey, Index, Intersection, KeyVal, List, ListComprehension,
+  Load, Multiplication, Negation, Negative, Null, Numeral, QSet, Reload,
+  Return, Sequence, Substraction, TextLiteral, TruthValue, Union,
+  Variable, WhileDo, WhileDoElse
 } from '../ast/AST';
 
 import { tokens } from './Tokens';

@@ -26,7 +26,7 @@ export class Length extends Exp {
     if(typeof e == 'string') return e.length;
     if(e instanceof Array) return e.length;
     if(e instanceof Set) return e.size;
-    throw "Type error"
+    throw new Error('Type error')
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{

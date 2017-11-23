@@ -21,7 +21,9 @@ export class State {
   getFunction(id: string): any{
     return this.jsfun.get(id);
   }
+
   set(id: string, value: any) {
+    if(this.jsfun.has(id)) throw new Error(`${id} is a reserverd word`)
     this.vars.set(id, value);
   }
 

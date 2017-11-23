@@ -35,7 +35,7 @@ export class Multiplication extends Exp {
     if(typeof l == 'number' && typeof r == 'number'){
       return l*r;
     }
-    throw "Type error"
+    throw new Error('Type error')
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{
