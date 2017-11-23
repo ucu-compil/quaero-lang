@@ -8,37 +8,25 @@ import { State } from '../interpreter/State';
 export class IndKey extends Exp {
 
   list: Exp;
-  key: Exp;
+  key: string;
 
-  constructor(str: Exp, key: Exp) {
+  constructor(list: Exp, key: string) {
     super();
-    this.list = str;
+    this.list = list;
     this.key = key;
   }
 
   toString(): string {
-    return `IndKey(${this.list.toString()}, ${this.key.toString()})`;
+    return `IndKey(${this.list.toString()}, ${this.key})`;
   }
 
   unparse(): string {
-    return `(${this.list.unparse()}.${this.key.unparse()})`;
+    return `(${this.list.unparse()}.${this.key})`;
   }
 
   evaluate(state: State): any {
     let list = this.list.evaluateList(state);
-    var key;
-    if(this.key instanceof Variable){
-        key = this.key.id;
-    }
-    if(this.key instanceof TextLiteral){
-      key = `"${this.key.evaluate(state)}"`;
-    }
-    if(key !== undefined){
-      for(var elem of list){
-        if(elem instanceof KeyVal && elem.key == key) return elem.value;
-      }
-    }
-    return new Null();
+    return list[this.key];
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{

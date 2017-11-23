@@ -10,7 +10,6 @@ export class TextLiteral extends Exp {
   constructor(value: string) {
     super();
     this.value = value;
-    console.log(this.unparse());
   }
 
   toString(): string {

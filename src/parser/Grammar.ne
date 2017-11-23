@@ -55,7 +55,7 @@ exp ->
   | identifier "(" ")"                      {% ([name, ,]) => (new Call(name,new Array<any>())) %}
   | exp "[" condisj "]"                     {% ([str, ,ind, ]) => (new Index(str,ind)) %}
   | "#" exp                                 {% ([, exp]) => (new Cardinality(exp)) %}
-  | exp "." condisj                         {% ([list, ,key]) => (new IndKey(list,key)) %}
+  | exp "." identifier                      {% ([list, ,key]) => (new IndKey(list,key)) %}
   | exp "<-" condisj                        {% ([elem, ,list]) => (new Belonging(elem,list)) %}
   | exp "++" condisj                        {% ([lhs, ,rhs]) => (new Concatenation(lhs,rhs)) %}
   | exp "\\/" condisj                       {% ([lhs, ,rhs]) => (new Union(lhs,rhs)) %}
