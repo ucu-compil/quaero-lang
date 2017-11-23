@@ -40,6 +40,8 @@ export * from './StatmentExpression';
 
 export * from './Div';
 export * from './Mod';
+export * from './Print';
+
 
 
 

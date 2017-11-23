@@ -13,7 +13,7 @@ export class Numeral implements Exp {
   }
 
   toString(): string {
-    return `Numeral(${this.value})`;
+    return `Numeral(${this.value.toString()})`;
   }
 
   unparse(): string {
