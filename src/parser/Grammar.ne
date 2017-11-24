@@ -63,8 +63,8 @@ stmtelse ->
   | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
 
 funcionexp ->
-   "div" "(" %integer ","  %integer ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
-  |"mod" "(" %integer ","  %integer ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
+   "div" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
+  |"mod" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
   |exp                                      {% id %}
 
 exp ->

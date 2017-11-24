@@ -15,7 +15,7 @@ export class Div implements Exp {
   }
 
   toString(): string {
-    return `Division(${this.lhs.toString()}, ${this.rhs.toString()})`;
+    return `Div(${this.lhs.toString()}, ${this.rhs.toString()})`;
   }
 
   unparse(): string {
@@ -30,7 +30,7 @@ export class Div implements Exp {
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       console.log ('Los operandos son del tipo numérico.');
       try {
-        return (lhsEval / rhsEval);
+        return Math.round(lhsEval / rhsEval);
       } catch (error) {
         throw new Error(error.description);
       }

@@ -15,7 +15,7 @@ export class Mod implements Exp {
   }
 
   toString(): string {
-    return `Division(${this.lhs.toString()}, ${this.rhs.toString()})`;
+    return `Mod(${this.lhs.toString()}, ${this.rhs.toString()})`;
   }
 
   unparse(): string {
