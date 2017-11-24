@@ -56,7 +56,6 @@ export class CompareNotEqual implements Exp {
         return false;
       }
     }
-<<<<<<< HEAD
 
     if(lhsEval instanceof String && rhsEval instanceof String){
       if (lhsEval.length != rhsEval.length){
@@ -96,9 +95,5 @@ export class CompareNotEqual implements Exp {
     }
 
     throw new Error("No se reconoce el tipo.");
-=======
-    console.log ('Operandos deben ser de tipo numérico.');
-    throw new Error("Operandos deben ser de tipo numérico.");
->>>>>>> 32a5f6fb1c6245cdd412164d77c2e593fea0fea3
   }
 }
