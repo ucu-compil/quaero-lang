@@ -17,7 +17,8 @@ export class Conjunto implements Exp {
       .filter((exp) => (exp !== undefined))
       .map((exp) => (exp.toString()))
       .join(", ");
-    return `Conjunto(${elementos})`
+    //return `Conjunto(${elementos})`
+    return "nop";
   }
 
   unparse(): string {
@@ -25,7 +26,7 @@ export class Conjunto implements Exp {
       .filter((exp) => (exp !== undefined))
       .map((exp) => (exp.toString()))
       .join(" ");
-    return `{${elementos}}`;
+    return `\{${elementos}\}`;
   }
 
   evaluate(state: Estado): any {

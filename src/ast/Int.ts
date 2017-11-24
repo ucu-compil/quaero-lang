@@ -13,15 +13,15 @@ export class Int implements Exp {
   }
 
   toString(): string {
-    return `Int(${this.value})`;
+    return `Int(${this.value.toString()})`;
   }
 
   unparse(): string {
-    return `${this.value}`;
+    return `${this.value.unparse()}`;
   }
 
   evaluate(state: Estado): any {
-    return undefined;
+    return this.value;
   }
   
 }

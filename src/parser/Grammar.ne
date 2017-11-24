@@ -31,7 +31,11 @@ import {
   Sequence,
   Opposite,
   Enumeracion,
-  ExpCond
+  ExpCond,
+  StatmentExpression,
+  Print,
+  Mod,
+  Div
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -51,11 +55,17 @@ stmt ->
 
 
 stmtelse ->
-    identifier "=" exp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | "while" exp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
-  | "if" exp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+    identifier "=" funcionexp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "while" funcionexp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+  | "if" funcionexp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
-  | exp ";"                               {% ([exp, ]) => (exp) %} 
+  | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp))%}
+  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
+
+funcionexp ->
+   "div" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
+  |"mod" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
+  |exp                                      {% id %}
 
 exp ->
     exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}

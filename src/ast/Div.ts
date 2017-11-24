@@ -2,9 +2,9 @@ import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
 
 /**
-  Representación de sumas.
+  Representación de multiplicaciones.
 */
-export class Addition implements Exp {
+export class Div implements Exp {
 
   lhs: Exp;
   rhs: Exp;
@@ -15,11 +15,11 @@ export class Addition implements Exp {
   }
 
   toString(): string {
-    return `Addition(${this.lhs.toString()}, ${this.rhs.toString()})`;
+    return `Div(${this.lhs.toString()}, ${this.rhs.toString()})`;
   }
 
   unparse(): string {
-    return `(${this.lhs.unparse()} + ${this.rhs.unparse()})`;
+    return `(${this.lhs.unparse()} / ${this.rhs.unparse()})`;
   }
 
   evaluate(state: Estado): any {
@@ -27,9 +27,13 @@ export class Addition implements Exp {
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
-
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      return lhsEval + rhsEval;
+      console.log ('Los operandos son del tipo numérico.');
+      try {
+        return Math.round(lhsEval / rhsEval);
+      } catch (error) {
+        throw new Error(error.description);
+      }
     }
     console.log ('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");

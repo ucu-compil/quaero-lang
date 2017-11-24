@@ -25,6 +25,7 @@ export const tokens = {
   '==':         '==',
   '=':          '=',
   '!':          '!',
+  'print':      'print',
 
   // Keywords
   'do':         'do',
