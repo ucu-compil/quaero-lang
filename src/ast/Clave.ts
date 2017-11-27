@@ -25,7 +25,7 @@ export class Clave implements Exp {
   evaluate(state: Estado): any {
     let clave = this.id;
     let valorEval = this.value.evaluate(state);
-    return { clave: valorEval };
+    return { clave: this.id, valor: valorEval };
   }
 
 }

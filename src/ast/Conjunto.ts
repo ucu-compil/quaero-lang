@@ -30,10 +30,18 @@ export class Conjunto implements Exp {
   }
 
   evaluate(state: Estado): any {
-    const elementos = this.elementos
-    .filter((exp) => (exp !== undefined))
-    .map((exp) => (exp.evaluate(state)));
-    return elementos;
+    var objects = [];
+
+    this.elementos.forEach((elem) => {
+      let elemEval = elem.evaluate(state);
+
+      if (typeof elemEval == 'object') {
+        objects[elemEval.clave] = elemEval.valor;
+      } else {
+        objects.push(elemEval);
+      }
+    });
+    return objects;
   }
 
 }
