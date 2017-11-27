@@ -30,26 +30,31 @@ export class CompareEqual implements Exp {
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
 
+
+
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      if (lhsEval === NaN || rhsEval === NaN ) {
+      if (lhsEval === NaN || rhsEval === NaN) {
         return false;
-      }else{
+      } else {
         return lhsEval == rhsEval;
       }
     }
 
-    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean' ){
+
+
+    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean') {
       return lhsEval == rhsEval;
     }
 
-    if(lhsEval instanceof Lista && rhsEval instanceof Lista){
-      if (lhsEval.elementos.length != rhsEval.elementos.length){
+
+
+    if (lhsEval instanceof Lista && rhsEval instanceof Lista) {
+      if (lhsEval.elementos.length != rhsEval.elementos.length) {
         return false;
-      }else{
-        for (var x=0;x<lhsEval.elementos.length;x++) 
-        { 
-          if (lhsEval.elementos[x] != rhsEval.elementos[x]) 
-          { 
+      } 
+      else {
+        for (var x = 0; x < lhsEval.elementos.length; x++) {
+          if (lhsEval.elementos[x] != rhsEval.elementos[x]) {
             return false;
           }
         }
@@ -57,14 +62,12 @@ export class CompareEqual implements Exp {
       }
     }
 
-    if(lhsEval instanceof String && rhsEval instanceof String){
-      if (lhsEval.length != rhsEval.length){
+    if (lhsEval instanceof String && rhsEval instanceof String) {
+      if (lhsEval.length != rhsEval.length) {
         return false;
-      }else{
-        for (var x=0;x<lhsEval.length;x++) 
-        { 
-          if (lhsEval.charAt(x) != rhsEval.charAt(x))
-          { 
+      } else {
+        for (var x = 0; x < lhsEval.length; x++) {
+          if (lhsEval.charAt(x) != rhsEval.charAt(x)) {
             return false;
           }
         }
@@ -73,19 +76,17 @@ export class CompareEqual implements Exp {
     }
 
     var pertenece = false;
-    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
-      if(lhsEval.elementos.length == rhsEval.elementos.length){
-        for (var x=0;x<lhsEval.elementos.length;x++) 
-        { 
+    if (lhsEval instanceof Conjunto && rhsEval instanceof Conjunto) {
+      if (lhsEval.elementos.length == rhsEval.elementos.length) {
+        for (var x = 0; x < lhsEval.elementos.length; x++) {
           pertenece = false;
-          for(var y=0;y<rhsEval.elementos.length;y++){
-            if (lhsEval.elementos[x] == rhsEval.elementos[y]) 
-            { 
+          for (var y = 0; y < rhsEval.elementos.length; y++) {
+            if (lhsEval.elementos[x] == rhsEval.elementos[y]) {
               pertenece = true;
               break;
             }
           }
-          if(!pertenece){
+          if (!pertenece) {
             return false;
           }
         }

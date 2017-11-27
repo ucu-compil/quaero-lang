@@ -5,7 +5,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de usos de variable en expresiones.
 */
-export class Print implements Stmt {
+export class ParseNumber implements Exp {
     exp: Exp;
 
     constructor(exp: Exp) {
@@ -14,16 +14,25 @@ export class Print implements Stmt {
 
     toString(): string {
         console.log(this.exp);
-        return `Print(${this.exp.toString()})`;
+        return `ParseInt(${this.exp.toString()})`;
     }
-1
+    1
     unparse(): string {
         return this.exp.unparse();
     }
 
     evaluate(state: Estado): any {
-        console.log(this.exp.evaluate(state));
-        //return state;
+        const exp = this.exp.evaluate(state);
+        if(typeof exp === 'number'){
+            return exp;
+        }
+        else{
+            return parseFloat(exp);
+        }
     }
 
+
+
+    //console.log(this.exp.evaluate(state).toString());
+    //return this.exp.evaluate(state).toString();
 }

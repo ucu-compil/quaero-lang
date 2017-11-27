@@ -35,7 +35,11 @@ import {
   StatmentExpression,
   Print,
   Mod,
-  Div
+  Div,
+  ParseString,
+  ParseBoolean,
+  ParseInt,
+  ParseNumber
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -61,6 +65,10 @@ stmtelse ->
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
   | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp))%}
   | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
+  | "string" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseString(exp)) %}
+  | "boolean" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
+  | "number" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
+  | "int" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseInt(exp)) %}
 
 funcionexp ->
    "div" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
