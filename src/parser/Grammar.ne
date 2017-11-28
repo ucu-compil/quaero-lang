@@ -122,7 +122,7 @@ elemento ->
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
-  | conjunto "/\" conjunto  {% ([conjuntoA,,conjuntoB]) => (new ConjuntoInterseccion(conjuntoA,conjuntoB)) %}
+
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
