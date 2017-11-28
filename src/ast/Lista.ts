@@ -28,8 +28,19 @@ export class Lista implements Exp {
     return `[ ${elementos} ]`;
   }
 
-  evaluate(state: Estado): Estado {
-    return undefined;
+  evaluate(state: Estado): any {
+    var objects = [];
+
+    this.elementos.forEach((elem) => {
+      let elemEval = elem.evaluate(state);
+
+      if (typeof elemEval == 'object') {
+        objects[elemEval.clave] = elemEval.valor;
+      } else {
+        objects.push(elemEval);
+      }
+    });
+    return objects;
   }
 
 }
