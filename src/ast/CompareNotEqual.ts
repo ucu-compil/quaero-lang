@@ -42,44 +42,73 @@ export class CompareNotEqual implements Exp {
       return lhsEval != rhsEval;
     }
 
+    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
+      return this.compareConjunto(lhsEval, rhsEval);
+    }
+
     if(lhsEval instanceof Lista && rhsEval instanceof Lista){
-      if (lhsEval.elementos.length != rhsEval.elementos.length){
-        return true;
-      }else{
-        for (var x=0;x<lhsEval.elementos.length;x++) 
-        { 
-          if (lhsEval.elementos[x] != rhsEval.elementos[x]) 
-          { 
-            return true;
-          }
-        }
-        return false;
-      }
+      return this.compareLista(lhsEval, rhsEval);
     }
 
     if(lhsEval instanceof String && rhsEval instanceof String){
-      if (lhsEval.length != rhsEval.length){
-        return true;
-      }else{
-        for (var x=0;x<lhsEval.length;x++) 
-        { 
-          if (lhsEval.charAt(x) != rhsEval.charAt(x))
-          { 
-            return true;
-          }
-        }
-        return false;
-      }
+      return lhsEval != rhsEval;
     }
 
+    throw new Error("No se reconoce el tipo.");
+  }
+  
+  compareLista(lhsList:Lista, rhsList:Lista):Boolean
+  {
+    for (var x=0;x<lhsList.elementos.length;x++) 
+    { 
+      var lhsEvalLista = lhsList.elementos[x].evaluate;
+      var rhsEvalLista = rhsList.elementos[x].evaluate;
+
+      if(lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista){
+        return this.compareLista(lhsEvalLista,rhsEvalLista);
+      }
+
+      if(lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto){
+        return this.compareConjunto(lhsEvalLista,rhsEvalLista);
+      }
+
+      if(lhsEvalLista instanceof String && rhsEvalLista instanceof String)
+      {
+        if (lhsEvalLista == rhsEvalLista) 
+        { 
+          return false;
+        }
+      }
+
+      if (typeof lhsEvalLista === 'number' && typeof rhsEvalLista === 'number') {
+        if (lhsEvalLista === NaN || rhsEvalLista === NaN ) {
+           return false;
+        }else{
+          if(lhsEvalLista == rhsEvalLista){
+            return false;
+          }
+        }
+      }
+
+      if (typeof lhsEvalLista === 'boolean' && typeof rhsEvalLista === 'boolean' ){
+        if (lhsEvalLista == rhsEvalLista){
+          return false
+        }
+      }
+    }
+    return true;
+  }
+
+  compareConjunto(lhsList:Conjunto, rhsList:Conjunto):Boolean
+  {
     var pertenece = false;
-    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
-      if(lhsEval.elementos.length == rhsEval.elementos.length){
-        for (var x=0;x<lhsEval.elementos.length;x++) 
+    if(lhsList instanceof Conjunto && rhsList instanceof Conjunto){
+      if(lhsList.elementos.length == rhsList.elementos.length){
+        for (var x=0;x<lhsList.elementos.length;x++) 
         { 
           pertenece = false;
-          for(var y=0;y<rhsEval.elementos.length;y++){
-            if (lhsEval.elementos[x] == rhsEval.elementos[y]) 
+          for(var y=0;y<rhsList.elementos.length;y++){
+            if (lhsList.elementos[x] == rhsList.elementos[y]) 
             { 
               pertenece = true;
               break;
@@ -93,7 +122,5 @@ export class CompareNotEqual implements Exp {
       }
       return true;
     }
-
-    throw new Error("No se reconoce el tipo.");
   }
 }
