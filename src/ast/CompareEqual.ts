@@ -49,8 +49,7 @@ export class CompareEqual implements Exp {
     if(lhsEval instanceof Lista && rhsEval instanceof Lista){
       return this.compareLista(lhsEval, rhsEval);
     }
-
-    if (lhsEval instanceof String && rhsEval instanceof String) {
+    if (typeof lhsEval === 'string' && typeof rhsEval === 'string') {
       return lhsEval == rhsEval;
     }
     
