@@ -28,37 +28,35 @@ export class CompareLess implements Exp {
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
-    
+
     if (typeof lhsEval === 'number' && rhsEval === NaN) {
       return false;
     }
     if (lhsEval === NaN && typeof rhsEval === 'number') {
       return false;
     }
-    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean' ){
-      if (rhsEval == true && lhsEval == false){
+    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean') {
+      if (rhsEval == true && lhsEval == false) {
         return true;
-      }else{
+      } else {
         return false
       }
     }
 
     var pertenece = false;
-    if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
-        for (var x=0;x<rhsEval.elementos.length;x++) 
-        { 
-          pertenece = false;
-          for(var y=0;y<lhsEval.elementos.length;y++){
-            if (lhsEval.elementos[y] == rhsEval.elementos[x]) 
-            { 
-              pertenece = true;
-              break;
-            }
-          }
-          if (!pertenece) {
-            return false;
+    if (lhsEval instanceof Conjunto && rhsEval instanceof Conjunto) {
+      for (var x = 0; x < rhsEval.elementos.length; x++) {
+        pertenece = false;
+        for (var y = 0; y < lhsEval.elementos.length; y++) {
+          if (lhsEval.elementos[y] == rhsEval.elementos[x]) {
+            pertenece = true;
+            break;
           }
         }
+        if (!pertenece) {
+          return false;
+        }
+      }
       return true;
     }
 

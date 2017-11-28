@@ -29,10 +29,10 @@ export class CompareGreatOrEqual implements Exp {
     console.log(typeof rhsEval)
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log ('Los operandos son del tipo numérico.');
+      console.log('Los operandos son del tipo numérico.');
       return lhsEval >= rhsEval;
     }
-    console.log ('Operandos deben ser de tipo numérico.');
+    console.log('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
 }
