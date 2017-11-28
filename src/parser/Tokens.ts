@@ -26,7 +26,7 @@ export const tokens = {
   '=':          '=',
   '!':          '!',
   'print':      'print',
-  '/\\':         /\/\\/,
+  'pico':         /\/\\/,
 
   // Keywords
   'do':         'do',
@@ -40,6 +40,7 @@ export const tokens = {
   'string':     'string',
   'boolean':    'boolean',
   'number':      'number',
+  'function':    'function',
 
   // Atoms
   float:        { match: /[0-9]+\.[0-9]+(?:[eE][-+]?[0-9]+)?/, value: (x: string) => (parseFloat(x)) },
