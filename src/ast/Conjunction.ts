@@ -23,19 +23,7 @@ export class Conjunction implements Exp {
   }
 
   evaluate(state: Estado): any {
-    var lhsEval = this.lhs.evaluate(state);
-    var rhsEval = this.rhs.evaluate(state);
-    console.log(typeof lhsEval)
-    console.log(typeof rhsEval)
-    
-    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean') {
-      try {
-        return lhsEval && rhsEval;
-      } catch (error) {
-        throw new Error(error.description);
-      }
-    }
-    throw new Error("Operandos deben ser de tipo boolean.");
+    return undefined;
   }
 
 }
