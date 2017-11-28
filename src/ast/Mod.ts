@@ -19,23 +19,23 @@ export class Mod implements Exp {
   }
 
   unparse(): string {
-    return `(${this.lhs.unparse()} / ${this.rhs.unparse()})`;
+    return `Mod(${this.lhs.unparse()},${this.rhs.unparse()})`;
   }
 
   evaluate(state: Estado): any {
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
-    console.log(typeof lhsEval)
-    console.log(typeof rhsEval)
+    //console.log(typeof lhsEval)
+    //console.log(typeof rhsEval)
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log ('Los operandos son del tipo numérico.');
       try {
-        return (lhsEval % rhsEval);
+        //console.log(lhsEval%rhsEval)        
+        return (lhsEval % rhsEval );
       } catch (error) {
         throw new Error(error.description);
       }
     }
-    console.log ('Operandos deben ser de tipo numérico.');
+    //console.log ('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
 }

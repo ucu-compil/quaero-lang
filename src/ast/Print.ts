@@ -16,14 +16,14 @@ export class Print implements Stmt {
         console.log(this.exp);
         return `Print(${this.exp.toString()})`;
     }
-1
+
     unparse(): string {
         return this.exp.unparse();
     }
 
     evaluate(state: Estado): any {
         console.log(this.exp.evaluate(state));
-        //return state;
+        return state;
     }
 
 }

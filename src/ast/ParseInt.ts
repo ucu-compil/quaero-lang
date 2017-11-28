@@ -1,6 +1,8 @@
 import { Exp } from './ASTNode';
 import { Stmt } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
+import { Numeral } from './Numeral';
+
 
 /**
   Representación de usos de variable en expresiones.
@@ -22,8 +24,8 @@ export class ParseInt implements Exp {
     }
 
     evaluate(state: Estado): any {
-        const exp = this.exp.evaluate(state);
-        return parseInt(exp);
+        var expev = this.exp.evaluate(state);
+        return parseInt(expev);
     }
 
 

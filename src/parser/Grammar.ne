@@ -57,7 +57,6 @@ stmt ->
     stmtelse                              {% id %}
   | "if" exp "then" stmt                  {% ([, cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
 
-
 stmtelse ->
     identifier "=" funcionexp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
   | "while" funcionexp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
@@ -65,14 +64,15 @@ stmtelse ->
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
   | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp))%}
   | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
-  | "string" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseString(exp)) %}
-  | "boolean" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
-  | "number" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
-  | "int" "(" funcionexp ")" ";"               {% ([,,exp,]) => (new ParseInt(exp)) %}
+  
 
 funcionexp ->
-   "div" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
-  |"mod" "(" number ","  number ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
+   "div" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
+  |"mod" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
+  | "string" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseString(exp)) %}
+  | "boolean" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
+  | "number" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
+  | "int" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseInt(exp)) %}
   |exp                                      {% id %}
 
 exp ->
@@ -114,7 +114,7 @@ elemento ->
   | conjunto                {% id %}
   | enumeracion             {% id %}
   | clave                   {% id %}
-  | "(" exp ")"             {% ([, exp, ]) => (exp) %} 
+#| "(" exp ")"             {% ([, exp, ]) => (exp) %} 
 
 # Colecciones
 conjunto -> 
@@ -145,6 +145,8 @@ value ->
   | "true"                  {% () => (new TruthValue(true)) %}
   | "false"                 {% () => (new TruthValue(false)) %}
   | identifier              {% ([id]) => (new Variable(id)) %}
+  | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %} 
+
 
 
 # Atoms
@@ -152,7 +154,7 @@ identifier ->
     %identifier             {% ([id]) => (id.value) %}
 
 string->
-    %string                 {% ([id]) => (id.value) %}
+    %characters                 {% ([id]) => (id.value) %}
 
 number ->
     %integer                {% ([id]) => (id.value) %}
