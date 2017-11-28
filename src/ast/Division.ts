@@ -27,6 +27,7 @@ export class Division implements Exp {
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
+    
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       console.log ('Los operandos son del tipo numérico.');
       try {

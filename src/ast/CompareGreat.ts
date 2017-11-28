@@ -55,12 +55,7 @@ export class CompareGreat implements Exp {
     }
 
     if (lhsEval instanceof String && rhsEval instanceof String) {
-      for (var x = 0; x < lhsEval.length; x++) {
-        if (lhsEval.charAt(x) <= rhsEval.charAt(x)) {
-          return false;
-        }
-      }
-      return true;
+      return lhsEval > rhsEval;
     }
 
     throw new Error("No se reconoce el tipo.");

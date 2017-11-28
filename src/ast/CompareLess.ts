@@ -1,6 +1,8 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
 import { Conjunto } from './Conjunto';
+import { Lista } from './Lista';
+
 
 /**
   Representación de las comparaciones por menor o igual.
@@ -29,43 +31,92 @@ export class CompareLess implements Exp {
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
 
-    if (typeof lhsEval === 'number' && rhsEval === NaN) {
-      return false;
+    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
+      if (lhsEval === NaN || rhsEval === NaN) {
+        return false;
+      } else {
+        return lhsEval < rhsEval;
+      }
     }
-    if (lhsEval === NaN && typeof rhsEval === 'number') {
-      return false;
-    }
+
     if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean') {
-      if (rhsEval == true && lhsEval == false) {
+      if (lhsEval == false && rhsEval == true) {
         return true;
       } else {
         return false
       }
     }
 
-    var pertenece = false;
     if (lhsEval instanceof Conjunto && rhsEval instanceof Conjunto) {
-      for (var x = 0; x < rhsEval.elementos.length; x++) {
-        pertenece = false;
-        for (var y = 0; y < lhsEval.elementos.length; y++) {
-          if (lhsEval.elementos[y] == rhsEval.elementos[x]) {
-            pertenece = true;
-            break;
-          }
-        }
-        if (!pertenece) {
+      return this.compareConjunto(lhsEval, rhsEval);
+    }
+
+    if (lhsEval instanceof Lista && rhsEval instanceof Lista) {
+      return this.compareLista(lhsEval, rhsEval);
+    }
+
+    if (lhsEval instanceof String && rhsEval instanceof String) {
+      return lhsEval < rhsEval;
+    }
+
+    throw new Error("No se reconoce el tipo.");
+  }
+
+  compareLista(lhsList: Lista, rhsList: Lista): Boolean {
+    for (var x = 0; x < lhsList.elementos.length; x++) {
+      var lhsEvalLista = lhsList.elementos[x].evaluate;
+      var rhsEvalLista = rhsList.elementos[x].evaluate;
+
+      if (lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista) {
+        return this.compareLista(lhsEvalLista, rhsEvalLista);
+      }
+
+      if (lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto) {
+        return this.compareConjunto(lhsEvalLista, rhsEvalLista);
+      }
+
+      if (lhsEvalLista instanceof String && rhsEvalLista instanceof String) {
+        if (lhsEvalLista >= rhsEvalLista) {
           return false;
         }
       }
-      return true;
-    }
 
-    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log('Los operandos son del tipo numérico.');
-      return lhsEval < rhsEval;
+      if (typeof lhsEvalLista === 'number' && typeof rhsEvalLista === 'number') {
+        if (lhsEvalLista === NaN || rhsEvalLista === NaN) {
+          return false;
+        } else {
+          if (lhsEvalLista >= rhsEvalLista) {
+            return false;
+          }
+        }
+      }
+
+      if (typeof lhsEvalLista === 'boolean' && typeof rhsEvalLista === 'boolean') {
+        if (lhsEvalLista == false && rhsEvalLista == true) {
+
+        } else {
+          return false
+        }
+      }
     }
-    console.log('Operandos deben ser de tipo numérico.');
-    throw new Error("Operandos deben ser de tipo numérico.");
+    return true;
+  }
+
+  compareConjunto(lhsList: Conjunto, rhsList: Conjunto): Boolean {
+    var pertenece = false;
+    for (var x = 0; x < lhsList.elementos.length; x++) {
+      pertenece = false;
+      for (var y = 0; y < rhsList.elementos.length; y++) {
+        if (lhsList.elementos[x] == rhsList.elementos[y]) {
+          pertenece = true;
+          break;
+        }
+      }
+      if (!pertenece) {
+        return false;
+      }
+    }
+    return true;
   }
 }
 

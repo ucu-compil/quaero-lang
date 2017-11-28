@@ -41,8 +41,10 @@ export * from './StatmentExpression';
 export * from './Div';
 export * from './Mod';
 export * from './Print';
-
-
+export * from './ParseString';
+export * from './ParseBoolean';
+export * from './ParseInt';
+export * from './ParseNumber';
 
 
 // Statements

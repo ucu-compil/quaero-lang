@@ -34,7 +34,11 @@ while (true) {
         const node = nodes[0];
         console.log(node);
         state = node.evaluate(state);
+        console.log(state);
+        if(state!=undefined)
+        {
         console.log(`\n${state.toString()}`);
+        }
 
         break;
       }

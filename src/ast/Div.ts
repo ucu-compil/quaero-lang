@@ -19,23 +19,24 @@ export class Div implements Exp {
   }
 
   unparse(): string {
-    return `(${this.lhs.unparse()} / ${this.rhs.unparse()})`;
+    return `Div(${this.lhs.unparse()},${this.rhs.unparse()})`;
   }
 
   evaluate(state: Estado): any {
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
-    console.log(typeof lhsEval)
-    console.log(typeof rhsEval)
+
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      console.log ('Los operandos son del tipo numérico.');
       try {
-        return Math.round(lhsEval / rhsEval);
+
+        //console.log(Math.floor(lhsEval/rhsEval))
+        return Math.floor(lhsEval / rhsEval);
+        
       } catch (error) {
         throw new Error(error.description);
       }
     }
-    console.log ('Operandos deben ser de tipo numérico.');
+    //console.log ('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
 }
