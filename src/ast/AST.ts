@@ -45,7 +45,7 @@ export * from './ParseString';
 export * from './ParseBoolean';
 export * from './ParseInt';
 export * from './ParseNumber';
-
+export * from './ConjuntoInterseccion';
 
 // Statements
 

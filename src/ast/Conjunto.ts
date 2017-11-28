@@ -7,7 +7,6 @@ import { Estado } from '../interpreter/Estado';
 export class Conjunto implements Exp {
 
   elementos: Exp[];
-
   constructor(elementos: Exp[] = null) {
     this.elementos = elementos;
   }

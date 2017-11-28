@@ -39,7 +39,9 @@ import {
   ParseString,
   ParseBoolean,
   ParseInt,
-  ParseNumber
+  ParseNumber,
+  ConjuntoInterseccion,
+  ConjuntoUnion
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -120,6 +122,7 @@ elemento ->
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
+  | conjunto "/\" conjunto  {% ([conjuntoA,,conjuntoB]) => (new ConjuntoInterseccion(conjuntoA,conjuntoB)) %}
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
