@@ -66,7 +66,7 @@ stmtelse ->
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
   | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp))%}
   | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
-  | "function" identifier "(" funcionexp:* ")" "{" stmt:* "}"     {% ([,id,,expresiones,,statements,]) => (new Function(id,expresiones,statements))% }
+  #| "function" identifier "(" funcionexp:* ")" "{" stmt:* "}"     {% ([,id,,expresiones,,statements,]) => (new Function(id,expresiones,statements))% }
   
 
 funcionexp ->
@@ -123,7 +123,10 @@ elemento ->
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
+<<<<<<< HEAD
   | conjunto "pico" conjunto  {% ([conjuntoA,,conjuntoB]) => (new ConjuntoInterseccion(conjuntoA,conjuntoB)) %}
+=======
+>>>>>>> 4329c8dfefb35b0da293dc70f4a1bb9160ff6370
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
