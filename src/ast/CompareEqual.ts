@@ -49,27 +49,33 @@ export class CompareEqual implements Exp {
     if(lhsEval instanceof Lista && rhsEval instanceof Lista){
       return this.compareLista(lhsEval, rhsEval);
     }
-
-    if (lhsEval instanceof String && rhsEval instanceof String) {
+    if (typeof lhsEval === 'string' && typeof rhsEval === 'string') {
       return lhsEval == rhsEval;
     }
     
     throw new Error("No se reconoce el tipo.");
   }
-
-  compareLista(lhsList:Lista, rhsList:Lista):Boolean
+  
+  compareLista(lhsList:Lista, rhsList:Lista):boolean
   {
+    var flag = true;
     for (var x=0;x<lhsList.elementos.length;x++) 
     { 
       var lhsEvalLista = lhsList.elementos[x].evaluate;
       var rhsEvalLista = rhsList.elementos[x].evaluate;
 
       if(lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista){
-        return this.compareLista(lhsEvalLista,rhsEvalLista);
+       flag = this.compareLista(lhsEvalLista,rhsEvalLista);
+       if (flag == false){
+         return false;
+       }
       }
 
       if(lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto){
-        return this.compareConjunto(lhsEvalLista,rhsEvalLista);
+        flag = this.compareConjunto(lhsEvalLista,rhsEvalLista);
+        if(flag == false){
+          return false;
+        }
       }
 
       if(lhsEvalLista instanceof String && rhsEvalLista instanceof String)
@@ -99,7 +105,7 @@ export class CompareEqual implements Exp {
     return true;
   }
 
-  compareConjunto(lhsList:Conjunto, rhsList:Conjunto):Boolean
+  compareConjunto(lhsList:Conjunto, rhsList:Conjunto):boolean
   {
     var pertenece = false;
     if (lhsList.elementos.length == rhsList.elementos.length) {
