@@ -29,6 +29,17 @@ export class CompareEqual implements Exp {
     var rhsEval = this.rhs.evaluate(state);
     console.log(typeof lhsEval)
     console.log(typeof rhsEval)
+    console.log(lhsEval)
+    console.log(rhsEval)
+    console.log(JSON.stringify(lhsEval))
+    console.log(JSON.stringify(rhsEval))
+    console.log(lhsEval == rhsEval)
+    console.log(lhsEval === rhsEval)
+    console.log(JSON.stringify(lhsEval) == JSON.stringify(rhsEval))
+    console.log(JSON.stringify(lhsEval) == JSON.stringify(rhsEval))
+    console.log(lhsEval.toString())
+    console.log(rhsEval.toString())
+    console.log(lhsEval.toString() == rhsEval.toString())
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       if (lhsEval === NaN || rhsEval === NaN) {
@@ -42,6 +53,10 @@ export class CompareEqual implements Exp {
       return lhsEval == rhsEval;
     }
 
+    if (lhsEval instanceof Array && rhsEval instanceof Array){
+      return this.compareArray(lhsEval, rhsEval);
+    }
+    /*
     if(lhsEval instanceof Conjunto && rhsEval instanceof Conjunto){
       return this.compareConjunto(lhsEval, rhsEval);
     }
@@ -49,6 +64,7 @@ export class CompareEqual implements Exp {
     if(lhsEval instanceof Lista && rhsEval instanceof Lista){
       return this.compareLista(lhsEval, rhsEval);
     }
+    */
     if (typeof lhsEval === 'string' && typeof rhsEval === 'string') {
       return lhsEval == rhsEval;
     }
@@ -124,5 +140,49 @@ export class CompareEqual implements Exp {
       return true;
     }
     return false;
+  }
+
+  //No toma en cuenta si los conjuntos tienen los mismos elementos en diferente orden.
+  compareArray(lhsArray:Array<any>, rhsArray:Array<any>):boolean
+  {
+    var flag = true;
+    for (var x=0;x<lhsArray.length;x++) 
+    { 
+      var lhsEvalLista = lhsArray[x].evaluate;
+      var rhsEvalLista = rhsArray[x].evaluate;
+
+      if (lhsEvalLista instanceof Array && rhsArray instanceof Array)
+      {
+        flag = this.compareArray(lhsEvalLista,rhsEvalLista);
+        if(flag == false){
+          return false;
+        }
+      }
+
+      if(lhsEvalLista instanceof String && rhsEvalLista instanceof String)
+      {
+        if (lhsEvalLista != rhsEvalLista) 
+        { 
+          return false;
+        }
+      }
+
+      if (typeof lhsEvalLista === 'number' && typeof rhsEvalLista === 'number') {
+        if (lhsEvalLista === NaN || rhsEvalLista === NaN ) {
+           return false;
+        }else{
+          if(lhsEvalLista != rhsEvalLista){
+            return false;
+          }
+        }
+      }
+
+      if (typeof lhsEvalLista === 'boolean' && typeof rhsEvalLista === 'boolean' ){
+        if (lhsEvalLista != rhsEvalLista){
+          return false
+        }
+      }
+    }
+    return true;
   }
 }
