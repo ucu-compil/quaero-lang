@@ -20,6 +20,7 @@ export interface Exp extends ASTNode {
   construcciones del lenguaje que modifican (potencialmente) los
   valores de las variables en el estado del programa.
 */
+
 export interface Stmt extends ASTNode {
 
   evaluate(state: Estado): Estado;

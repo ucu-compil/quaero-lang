@@ -4,6 +4,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de las asignaciones de valores a variables.
 */
+
 export class Assignment implements Stmt {
 
   id: string;

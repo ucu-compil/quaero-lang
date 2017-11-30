@@ -45,7 +45,6 @@ if (opcion == '1') {
           if (state != undefined) {
             console.log(`\n${state.toString()}`);
           }
-
           break;
         }
         default: {
