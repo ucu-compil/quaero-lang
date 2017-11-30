@@ -136,11 +136,7 @@ elemento ->
 # Colecciones
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
-<<<<<<< HEAD
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
-=======
-  | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %}
->>>>>>> 96725e95545119bf5e9cba2c2c6ef85c846b41e8
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
