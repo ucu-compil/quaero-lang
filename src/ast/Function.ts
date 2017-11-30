@@ -48,7 +48,7 @@ export class Function implements Exp {
         sequence.forEach(element => {
           if(element instanceof Return)
           {
-            //console.log("es instance of return")
+            console.log("es instance of return")
             auxReturn =  element.evaluate(estadoAux);
           }
           else

@@ -45,29 +45,25 @@ export * from './ParseBoolean';
 export * from './ParseInt';
 export * from './ParseNumber';
 export * from './ConjuntoInterseccion';
-<<<<<<< HEAD
 export * from './DeclarationFunction';
 export * from './Function';
 export * from './ConjuntoUnion';
 export * from './Return';
-
-
-
-=======
-<<<<<<< HEAD
 export * from './ConjuntoUnion';
 export * from './ConjuntoCardinalidad';
 export * from './ConjuntoPertenencia';
 export * from './Indizacion';
 export * from './IndizacionComp'
-=======
-export * from './For';
-export * from './Pertenencia';
-export * from './ListaComprension';
-export * from './ConjuntoUnion';
->>>>>>> 57c7c4bd3785adf124cd255a2f16c182ea433528
 
->>>>>>> a36768a51baa4556db2c410fb400d0cda1d1ed8e
+export * from './ConjuntoUnion';
+export * from './ConjuntoPertenencia';
+export * from './ConjuntoCardinalidad';
+export * from './ConjuntoPertenencia';
+export * from './Indizacion';
+export * from './IndizacionComp';
+
+
+
 // Statements
 
 // AExp
