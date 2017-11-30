@@ -30,13 +30,15 @@ export class Lista implements Exp {
   }
 
   evaluate(state: Estado): any {
+    console.log(this.elementos);
     var objects = [];
-
     this.elementos.forEach((elem) => {
+      
       let elemEval = elem.evaluate(state);
 
       if (elem instanceof Clave) {
         objects[elemEval.clave] = elemEval.valor;
+        objects.push(elemEval.valor);
       } else {
         objects.push(elemEval);
       }

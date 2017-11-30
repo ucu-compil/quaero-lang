@@ -158,7 +158,7 @@ enumeracion ->
 
 elementos ->
     elemento                  {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
-  | elementos "," elemento    {% ([elementos, ,elemento]) => { elementos.push(elemento); return elementos; } %} 
+  | elementos "," elemento    {% ([elementos, ,elemento]) => elementos.concat(elemento) %} 
 
 # Clave
 clave ->
