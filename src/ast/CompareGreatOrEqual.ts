@@ -25,101 +25,55 @@ export class CompareGreatOrEqual implements Exp {
   }
 
   evaluate(state: Estado): any {
-    var lhsEval = this.lhs.evaluate(state);
-    var rhsEval = this.rhs.evaluate(state);
-    console.log(typeof lhsEval)
-    console.log(typeof rhsEval)
-
-    if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
-      if (lhsEval === NaN || rhsEval === NaN) {
-        return false;
-      } else {
-        return lhsEval >= rhsEval;
-      }
+    if (this.lhs instanceof Conjunto && this.rhs instanceof Conjunto) {
+      return this.compareConjunto(this.lhs, this.rhs, state);
     }
 
-    if (typeof lhsEval === 'boolean' && typeof rhsEval === 'boolean') {
-      if (lhsEval == true && rhsEval == false) {
-        return true;
-      } else {
-        return lhsEval == rhsEval;
-      }
+    if (this.lhs instanceof Lista && this.rhs instanceof Lista) {
+      return this.compareLista(this.lhs, this.rhs, state);
     }
 
-    if (lhsEval instanceof Conjunto && rhsEval instanceof Conjunto) {
-      return this.compareConjunto(lhsEval, rhsEval);
-    }
-
-    if (lhsEval instanceof Lista && rhsEval instanceof Lista) {
-      return this.compareLista(lhsEval, rhsEval);
-    }
-
-    if (lhsEval instanceof String && rhsEval instanceof String) {
-      return lhsEval >= rhsEval;
-    }
-
-    throw new Error("No se reconoce el tipo.");
+    return this.lhs.evaluate(state) >= this.rhs.evaluate(state);
   }
 
-  compareLista(lhsList: Lista, rhsList: Lista): boolean {
+  compareLista(lhsList: Lista, rhsList: Lista, state: Estado): boolean {
     var flag = true;
-    for (var x=0;x<lhsList.elementos.length;x++) 
-    { 
-      var lhsEvalLista = lhsList.elementos[x].evaluate;
-      var rhsEvalLista = rhsList.elementos[x].evaluate;
+    for (var x = 0; x < lhsList.evaluate(state).length; x++) {
+      var lhsEvalLista = lhsList.evaluate(state)[x];
+      var rhsEvalLista = rhsList.evaluate(state)[x];
 
-      if(lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista){
-       flag = this.compareLista(lhsEvalLista,rhsEvalLista);
-       if (flag == false){
-         return false;
-       }
-      }
-
-      if(lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto){
-        flag = this.compareConjunto(lhsEvalLista,rhsEvalLista);
-        if(flag == false){
+      if (lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista) {
+        flag = this.compareLista(lhsEvalLista, rhsEvalLista, state);
+        if (flag == false) {
           return false;
         }
       }
 
-      if (lhsEvalLista instanceof String && rhsEvalLista instanceof String) {
-        if (lhsEvalLista < rhsEvalLista) {
+      if (lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto) {
+        flag = this.compareConjunto(lhsEvalLista, rhsEvalLista, state);
+        if (flag == false) {
           return false;
         }
       }
 
-      if (typeof lhsEvalLista === 'number' && typeof rhsEvalLista === 'number') {
-        if (lhsEvalLista === NaN || rhsEvalLista === NaN) {
-          return false;
-        } else {
-          if (lhsEvalLista < rhsEvalLista) {
-            return false;
-          }
-        }
-      }
-
-      if (typeof lhsEvalLista === 'boolean' && typeof rhsEvalLista === 'boolean') {
-        if (lhsEvalLista == true && rhsEvalLista == false || lhsEvalLista == rhsEvalLista) {
-
-        } else {
-          return false
-        }
+      if (lhsEvalLista < rhsEvalLista) {
+        return false;
       }
     }
     return true;
   }
 
-  compareConjunto(lhsList: Conjunto, rhsList: Conjunto): boolean {
+  compareConjunto(lhsList: Conjunto, rhsList: Conjunto, state:Estado): boolean {
     var pertenece = false;
-    for (var x = 0; x < lhsList.elementos.length; x++) {
+    for (var x = 0; x < lhsList.evaluate(state).length; x++) {
       pertenece = false;
-      for (var y = 0; y < rhsList.elementos.length; y++) {
-        if (lhsList.elementos[x] == rhsList.elementos[y]) {
+      for (var y = 0; y < rhsList.evaluate(state).length; y++) {
+        if (rhsList.evaluate(state)[x] == lhsList.evaluate(state)[y]) {
           pertenece = true;
           break;
         }
       }
-      if (!pertenece) {
+      if (pertenece == false) {
         return false;
       }
     }
