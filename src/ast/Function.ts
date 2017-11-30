@@ -37,7 +37,7 @@ export class Function implements Exp {
         var funcion = state.get(this.id);
         if(funcion instanceof DeclarationFunction)
         {
-          console.log("Es Declaration function")
+          //console.log("Es Declaration function")
           var nameargs = funcion.args;
           nameargs.forEach(element => 
             {
@@ -48,12 +48,12 @@ export class Function implements Exp {
         sequence.forEach(element => {
           if(element instanceof Return)
           {
-            console.log("es instance of return")
+            //console.log("es instance of return")
             auxReturn =  element.evaluate(estadoAux);
           }
           else
           {
-          console.log("no es instance of return")
+          //console.log("no es instance of return")
           element.evaluate(estadoAux);
           }
         });
