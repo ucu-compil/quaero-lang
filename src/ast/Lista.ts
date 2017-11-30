@@ -33,13 +33,9 @@ export class Lista implements Exp {
 
     this.elementos.forEach((elem) => {
       let elemEval = elem.evaluate(state);
-
-      if (typeof elemEval == 'object') {
-        objects[elemEval.clave] = elemEval.valor;
-      } else {
-        objects.push(elemEval);
-      }
+      objects.push(elemEval);
     });
+    
     return objects;
   }
 

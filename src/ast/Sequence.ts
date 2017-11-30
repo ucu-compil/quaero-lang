@@ -25,11 +25,14 @@ export class Sequence implements Stmt {
       .filter((stmt) => (stmt !== undefined))
       .map((stmt) => (stmt.toString()))
       .join(" ");
-    return `{ ${statements} }`
+    return `{ ${statements} }`;
   }
 
   evaluate(state: Estado): Estado {
-    return undefined;
+    this.statements.forEach(element => {
+      element.evaluate(state);
+    });
+    return state;
   }
 
 }

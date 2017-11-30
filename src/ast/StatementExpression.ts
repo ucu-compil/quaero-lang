@@ -13,7 +13,6 @@ export class StatementExpression implements Stmt {
     }
 
     toString(): string {
-        console.log(this.exp);
         return `StatementExpression(${this.exp.toString()})`;
     }
 
