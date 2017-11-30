@@ -3,6 +3,8 @@ import { Estado } from '../interpreter/Estado';
 import { Sequence } from './Sequence';
 import { Stmt } from './ASTNode';
 import { DeclarationFunction } from './DeclarationFunction';
+import { Return } from './Return';
+
 
 export class Function implements Exp {
       id: string;
@@ -24,6 +26,8 @@ export class Function implements Exp {
     
       evaluate(state: Estado): Estado {
         var evaluatedargs=[];
+        var estadoAux: Estado = new Estado();
+        
         this.args.forEach(element => {
           evaluatedargs.push(element.evaluate(state));
           evaluatedargs.reverse();
@@ -31,15 +35,21 @@ export class Function implements Exp {
         var funcion = state.get(this.id);
         if(funcion instanceof DeclarationFunction)
         {
-          var estadoAux: Estado = new Estado();
           var nameargs = funcion.args;
           nameargs.forEach(element => 
             {
               estadoAux.set(element,evaluatedargs.pop());
             });
         }
-        var evaluatedStatement = funcion.body.evaluate(estadoAux);
+        var sequence = funcion.body;        
+        sequence.forEach(element => {
+          if(element instanceof Return)
+          {
+            return element.evaluate(state);
+          }
+          element.evaluate(state);
+        });
 
-        return state;
+        return undefined;
       }
     }
