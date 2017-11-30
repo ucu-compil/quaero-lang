@@ -139,9 +139,8 @@ conjunto ->
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
 
 lista -> 
-    "[" number "]"                 {% ([,]) => (new Lista()) %} 
-  | "[" elementos "]"              {% ([,elementos,]) => (new Lista(elementos)) %} 
- # | "[" exp "for" exp "]"              {% ([,elementos,,el]) => (new ListaComprension(elementos, el)) %} 
+    "[" elementos "]"                   {% ([,elementos,]) => (new Lista(elementos)) %} 
+  | "[" exp "for" exp "]"               {% ([,elementos,,el]) => (new ListaComprension(elementos, el)) %} 
 
 # Enumeración
 enumeracion ->
@@ -152,7 +151,7 @@ elementos ->
     elemento                  {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
   | elementos "," elemento    {% ([elementos, ,elemento]) => { elementos.push(elemento); return elementos; } %} 
 
-#Clave
+# Clave
 clave ->
     identifier ":" value        {% ([id,,valor]) => (new Clave(id,valor)) %}
   | string ":" value            {% ([id,,valor]) => (new Clave(id,valor)) %}
