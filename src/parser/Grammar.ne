@@ -123,10 +123,6 @@ elemento ->
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
-<<<<<<< HEAD
-  | conjunto "pico" conjunto  {% ([conjuntoA,,conjuntoB]) => (new ConjuntoInterseccion(conjuntoA,conjuntoB)) %}
-=======
->>>>>>> 4329c8dfefb35b0da293dc70f4a1bb9160ff6370
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
