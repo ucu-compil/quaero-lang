@@ -16,7 +16,7 @@ export class ParseInt implements Exp {
 
     toString(): string {
         console.log(this.exp);
-        return `ParseInt(${this.exp.toString()})`;
+        return `Int(${this.exp.toString()})`;
     }
     1
     unparse(): string {

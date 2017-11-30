@@ -14,7 +14,7 @@ export class ParseBoolean implements Exp {
 
     toString(): string {
         console.log(this.exp);
-        return `ParseBoolean(${this.exp.toString()})`;
+        return `Boolean(${this.exp.toString()})`;
     }
 1
     unparse(): string {

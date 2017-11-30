@@ -1,6 +1,8 @@
 import { Exp, Stmt } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
 import { Conjunto } from './Conjunto';
+import { Lista } from './Lista';
+
 
 /**
   Representación de 

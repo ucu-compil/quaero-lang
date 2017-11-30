@@ -36,7 +36,10 @@ export class Conjunto implements Exp {
       if (typeof elemEval == 'object') {
         objects[elemEval.clave] = elemEval.valor;
       } else {
+        if(objects.find(myObj => myObj == elemEval)==undefined)  
+        {
         objects.push(elemEval);
+        }
       }
     });
     return objects;

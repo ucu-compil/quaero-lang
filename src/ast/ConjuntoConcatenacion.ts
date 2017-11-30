@@ -4,7 +4,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de las comparaciones por igual.
 */
-export class ConjuntoDiferencia implements Exp {
+export class ConjuntoConcatenacion implements Exp {
 
     cjIzq: Exp;
     cjDer: Exp;
