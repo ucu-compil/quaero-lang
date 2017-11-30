@@ -64,6 +64,7 @@ export * from './ConjuntoPertenencia';
 export * from './ConjuntoCardinalidad';
 export * from './ConjuntoPertenencia';
 export * from './Null';
+export * from './For';
 
 
 // Statements

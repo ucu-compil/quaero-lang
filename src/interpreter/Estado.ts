@@ -8,7 +8,8 @@ export class Estado {
 
   toString(): string {
     console.log("Estado:");
-    return `{ ${Array.from(this.vars.entries()).map(([key, value]) => (`${key} = ${value} }`;
+    // return `{ ${Array.from(this.vars.entries()).map(([key, value]) => {`${key} = ${value} }`})};
+    return `{ ${(Array.from(this.vars.entries())).map(([key, value]) => (`${key} = ${value}`)).join("; ")} }`;
   }
 
   get(id: string): any {

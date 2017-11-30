@@ -39,6 +39,7 @@ export const tokens = {
   // Keywords
   'do':         'do',
   'while':      'while',
+  'for':        'for',
   'if':         'if',
   'then':       'then',
   'else':       'else',
