@@ -50,8 +50,7 @@ lista_id ->
 # Expressions
 
 exp ->
-    exp "if" exp "else" exp                 {% ([exp, ,cond, ,expElse]) => (new ExpCond(cond, exp, expElse)) %}
-  | identifier "(" exp_list ")"             {% ([name, , ids,]) => (new Call(name,ids)) %}
+    identifier "(" exp_list ")"             {% ([name, , ids,]) => (new Call(name,ids)) %}
   | identifier "(" ")"                      {% ([name, ,]) => (new Call(name,new Array<any>())) %}
   | exp "[" condisj "]"                     {% ([str, ,ind, ]) => (new Index(str,ind)) %}
   | "#" exp                                 {% ([, exp]) => (new Cardinality(exp)) %}
@@ -94,6 +93,7 @@ neg ->
 
 value ->
     "(" exp ")"                             {% ([, exp, ]) => (exp) %}
+  | "(" exp "if" exp "else" exp ")"         {% ([,exp, ,cond, ,expElse,]) => (new ExpCond(cond, exp, expElse)) %}
   | "null"                                  {% () => (new Null()) %}
   | number                                  {% ([num]) => (new Numeral(+num)) %}
   | "true"                                  {% () => (new TruthValue(true)) %}
@@ -107,8 +107,10 @@ lists ->
   | "{" elems "}"                           {% ([, elems,]) => (new QSet(elems)) %}
   | "[" "]"                                 {% ([,]) => (new List([])) %}
   | "{" "}"                                 {% ([,]) => (new QSet([])) %}
-  | "[" exp ".." exp "]"                    {% ([, low, , high,]) => (new Enumeration(low,high)) %}
-  | "[" exp "," exp ".." exp "]"            {% ([, low, ,step, ,high,]) => (new Enumeration(low,high,step)) %}
+  | "[" exp ".." exp "]"                    {% ([, low, , high,]) => (new Enumeration(false,low,high)) %}
+  | "[" exp "," exp ".." exp "]"            {% ([, low, ,step, ,high,]) => (new Enumeration(false,low,high,step)) %}
+  | "{" exp ".." exp "}"                    {% ([, low, , high,]) => (new Enumeration(true,low,high)) %}
+  | "{" exp "," exp ".." exp "}"            {% ([, low, ,step, ,high,]) => (new Enumeration(true,low,high,step)) %}
   | "[" exp "for" exp_list "]"              {% ([,exp,,list,]) => (new ListComprehension(exp, list)) %}
   | "{" exp "for" exp_list "}"              {% ([,exp,,list,]) => (new ListComprehension(exp, list, true)) %}
 

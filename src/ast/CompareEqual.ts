@@ -26,17 +26,29 @@ export class CompareEqual extends Exp {
   evaluate(state: State): any {
     var lhs = this.lhs.evaluate(state);
     var rhs = this.rhs.evaluate(state);
+
+    function cmpList(lhs,rhs){
+      if(lhs.length != rhs.length) return false;
+      for(var i=0;i<lhs.length;i++){
+        if(lhs[i] instanceof Array || Set){
+          if(lhs[i] instanceof Array && !cmpList(lhs[i],rhs[i])) return false;
+          if(lhs[i] instanceof Set && !cmpSet(lhs[i],rhs[i])) return false;
+        }
+        else { if(lhs[i] != rhs[i]) return false; }
+      }
+      return true;
+    }
+
+    function cmpSet(lhs,rhs){
+      return cmpList([...lhs].sort(),[...rhs].sort());
+    }
+
     if (lhs.constructor == rhs.constructor){
       if(lhs instanceof Array){
-        if(lhs.length != rhs.length) return false;
-        for(var i=0;i<lhs.length;i++){
-          if(lhs[i] != rhs[i]) return false;
-        }
-        return true;
+        return cmpList(lhs,rhs);
       }
       if(lhs instanceof Set){
-        var isSetsEqual = (a, b) => a.size === b.size && [...a].every(value => b.has(value));
-        return isSetsEqual(lhs,rhs);
+        return cmpSet(lhs,rhs);
       }
       else return lhs === rhs;
     }

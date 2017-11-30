@@ -26,17 +26,32 @@ export class CompareGreatOrEqual extends Exp {
   evaluate(state: State): any {
     var lhs = this.lhs.evaluate(state);
     var rhs = this.rhs.evaluate(state);
+
+    function cmpList(lhs,rhs){
+      if(lhs.length < rhs.length) return false;
+      for(var i=0;i<rhs.length;i++){
+        if(lhs[i] instanceof Array || Set){
+          if(lhs[i] instanceof Array && !cmpList(lhs[i],rhs[i])) { return false; }
+          if(lhs[i] instanceof Set && !cmpSet(lhs[i],rhs[i])) { return false; }
+        }
+        else{
+          if(lhs[i] < rhs[i]) { return false; }
+        }
+      }
+      return true;
+    }
+
+    function cmpSet(lhs,rhs){
+      var _ = require('underscore');
+      return _.every(_.map([...rhs],function(elem){ return _.contains([...lhs],elem); }), function(bool) { return bool; });
+    }
+
     if (lhs.constructor == rhs.constructor){
       if(lhs instanceof Array){
-        if(lhs.length < rhs.length) return false;
-        for(var i=0;i<rhs.length;i++){
-          if(lhs[i] < rhs[i]) return false;
-        }
-        return true;
+        return cmpList(lhs,rhs);
       }
       if(lhs instanceof Set){
-        var isSetsGreatOrEqual = (a, b) => a.size >= b.size && [...b].every(value => a.has(value));
-        return isSetsGreatOrEqual(lhs,rhs);
+        return cmpSet(lhs,rhs);
       }
       else return lhs >= rhs;
     }

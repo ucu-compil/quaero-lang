@@ -26,11 +26,13 @@ export class KeyVal extends Exp {
   evaluate(state: State): any {
     if(typeof this.key === 'string'){
       var k;
-      if(/[a-zA-Z_][a-zA-Z0-9_]*/.test(this.key)) k = this.key.slice(1,this.key.length-1);
-      else k = this.key;
+      if(/\"[a-zA-Z_][a-zA-Z0-9_]*\"/.test(this.key)) { k = this.key.slice(1,this.key.length-1); }
+      else { k = this.key; }
       return [k,this.value.evaluate(state)];
     }
-    else return [this.key.evaluate(state),this.value.evaluate(state)];
+    else {
+      return [this.key.evaluate(state),this.value.evaluate(state)];
+    }
   }
 
   evaluateLC(state: State, exp_list: Exp[]): any{

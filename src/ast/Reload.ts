@@ -33,7 +33,7 @@ export class Reload implements Stmt {
         input = fs.readFileSync(path, 'utf8', function(err) {
           if(err) return console.log(err);
         });
-        parser.feed(input);
+        parser.feed("{" + input + "}");
         // Print result
         const nodes: Stmt[] = parser.results;
         switch (nodes.length) {

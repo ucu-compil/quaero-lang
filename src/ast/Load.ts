@@ -13,6 +13,9 @@ export class Load implements Stmt {
   path: string;
 
   constructor(path: string) {
+    console.log(path);
+    if(path.startsWith("\"")) path = path.slice(1);
+    if(path.endsWith("\"")) path = path.slice(0,path.length-1)
     if(path.endsWith(".qr")) this.path = path;
     else this.path = `${path}.qr`;
   }
@@ -28,6 +31,7 @@ export class Load implements Stmt {
   evaluate(state: State): State {
     const lexer = new MyLexer(tokens);
     const parser = new Parser(ParserRules, ParserStart, { lexer });
+    state.setFile(this.path);
 
     try {
       // Parse user input
@@ -36,7 +40,7 @@ export class Load implements Stmt {
       input = fs.readFileSync(this.path, 'utf8', function(err) {
         if(err) return console.log(err);
       });
-      parser.feed(input);
+      parser.feed("{" + input + "}");
       // Print result
       const nodes: Stmt[] = parser.results;
       switch (nodes.length) {
@@ -47,7 +51,6 @@ export class Load implements Stmt {
         case 1: {
           const node = nodes[0];
           state = node.evaluate(state);
-          state.setFile(this.path);
           break;
         }
         default: {

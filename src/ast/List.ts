@@ -33,7 +33,7 @@ export class List extends Exp {
     return list;
   }
 
-  evaluateLC(state: State, exp_list: Exp[]): any{
+evaluateLC(state: State, exp_list: Exp[]): any{
     throw new Error("LC error 16");
   }
 

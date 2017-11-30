@@ -20,3 +20,7 @@ gulp.task("default", ["gen-grammar"], function () {
 gulp.task("gen-grammar", function () {
   return run("nearleyc src/parser/Grammar.ne -o src/parser/Grammar.ts").exec()
 });
+
+gulp.task("run", function(){
+    return run("node bin/main.js").exec()
+});
