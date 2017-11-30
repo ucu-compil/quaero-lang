@@ -22,9 +22,7 @@ import {
   Multiplication,
   Division,
   Lista,
-  For,
   Conjunto,
-  Pertenencia,
   Clave,
   IfElse,
   Assignment,
@@ -71,15 +69,14 @@ stmt ->
   | "if" "(" exp ")" stmt                           {% ([,, cond, , body]) => (new IfElse(cond, body)) %}
 
 stmtelse ->
-    identifier "=" funcionexp ";"                               {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | "while" funcionexp "do" stmt                                {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+    identifier "=" funcionexp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "while" funcionexp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   #| "if" funcionexp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
-  | "{" stmt:* "}"                                              {% ([, statements, ]) => (new Sequence(statements)) %}
-  | funcionexp ";"                                              {% ([exp, ]) => (new StatementExpression(exp)) %}
-  | "print" "(" funcionexp ")" ";"                              {% ([,,exp,]) => (new Print(exp)) %}
-  | "function" identifier "(" variables ")" "{" stmt:* "}"      {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
-  | "return" funcionexp ";"                                     {% ([,exp,]) => (new Return(exp)) %}
-  | "for" "(" elementos ")"  stmt                               {%  ([,, elementos, , stmt])  =>  (new For(elementos, stmt)) %}
+  | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
+  | funcionexp ";"                                {% ([exp, ]) => (new StatementExpression(exp)) %}
+  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp)) %}
+  | "function" identifier "(" variables ")" "{" stmt:* "}"     {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
+  | "return" funcionexp ";"                          {% ([,exp,]) => (new Return(exp)) %}
 
 funcionexp ->
    "div" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
@@ -101,7 +98,7 @@ exp ->
     exp "&&" comp             {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
   | exp "||" comp             {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
   | exp "if" exp "else" exp   {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
-  | exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
+  #| exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
   | comp                      {% id %}
 
 
@@ -143,6 +140,7 @@ elemento ->
   | enumeracion             {% id %}
   | clave                   {% id %} 
 
+
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %}   
@@ -151,6 +149,8 @@ lista ->
     "[" "]"                 {% ([,]) => (new Lista()) %} 
   |  "[" elementos "]"                   {% ([,elementos,]) => (new Lista(elementos)) %} 
  #{} | "[" exp "for" exp "]"               {% ([,elementos,,el]) => (new ListaComprension(elementos, el)) %} 
+
+
 
 
 # Enumeración
