@@ -39,39 +39,64 @@ export class CompareLess implements Exp {
 
   compareLista(lhsList: Lista, rhsList: Lista, state: Estado): boolean {
     var flag = true;
-    for (var x = 0; x < lhsList.evaluate(state).length; x++) {
-      var lhsEvalLista = lhsList.evaluate(state)[x];
-      var rhsEvalLista = rhsList.evaluate(state)[x];
+    for (var x = 0; x < lhsList.elementos.length; x++) {
+      var lhsEvalLista = lhsList.elementos[x];
+      var rhsEvalLista = rhsList.elementos[x];
 
       if (lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista) {
         flag = this.compareLista(lhsEvalLista, rhsEvalLista, state);
         if (flag == false) {
           return false;
         }
-      }
-
-      if (lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto) {
-        flag = this.compareConjunto(lhsEvalLista, rhsEvalLista, state);
-        if (flag == false) {
-          return false;
+      } else {
+        if (lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto) {
+          flag = this.compareConjunto(lhsEvalLista, rhsEvalLista, state);
+          if (flag == false) {
+            return false;
+          }
+        } else {
+          if (lhsEvalLista.evaluate(state) >= rhsEvalLista.evaluate(state)) {
+            return false;
+          }
         }
-      }
-
-      if (lhsEvalLista >= rhsEvalLista) {
-        return false;
       }
     }
     return true;
   }
 
-  compareConjunto(lhsList: Conjunto, rhsList: Conjunto, state:Estado): boolean {
+  compareConjunto(lhsList: Conjunto, rhsList: Conjunto, state: Estado): boolean {
+    var flag = true;
     var pertenece = false;
-    for (var x = 0; x < lhsList.evaluate(state).length; x++) {
+    for (var x = 0; x < lhsList.elementos.length; x++) {
       pertenece = false;
-      for (var y = 0; y < rhsList.evaluate(state).length; y++) {
-        if (lhsList.evaluate(state)[x] == rhsList.evaluate(state)[y]) {
-          pertenece = true;
-          break;
+      for (var y = 0; y < rhsList.elementos.length; y++) {
+
+        var lhsEvalLista = lhsList.elementos[x];
+        var rhsEvalLista = rhsList.elementos[y];
+
+        if (lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista) {
+          flag = this.compareLista(lhsEvalLista, rhsEvalLista, state);
+          if (flag == false) {
+            return false;
+          } else {
+            pertenece = true;
+            break;
+          }
+        } else {
+          if (lhsEvalLista instanceof Conjunto && rhsEvalLista instanceof Conjunto) {
+            flag = this.compareConjunto(lhsEvalLista, rhsEvalLista, state);
+            if (flag == false) {
+              return false;
+            } else {
+              pertenece = true;
+              break;
+            }
+          } else {
+            if (lhsEvalLista.evaluate(state) == rhsEvalLista.evaluate(state)) {
+              pertenece = true;
+              break;
+            }
+          }
         }
       }
       if (pertenece == false) {
