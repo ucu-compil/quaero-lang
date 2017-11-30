@@ -45,11 +45,13 @@ export class Function implements Exp {
             });
         
         var sequence = funcion.statements;        
-        sequence.forEach(element => {
+        
+        sequence.some(function(element) {
           if(element instanceof Return)
           {
             console.log("es instance of return")
             auxReturn =  element.evaluate(estadoAux);
+            return true;
           }
           else
           {
@@ -57,6 +59,21 @@ export class Function implements Exp {
           element.evaluate(estadoAux);
           }
         });
+        /*
+        sequence.forEach(element => {
+          if(element instanceof Return)
+          {
+            console.log("es instance of return")
+            auxReturn =  element.evaluate(estadoAux);
+            return;
+          }
+          else
+          {
+          //console.log("no es instance of return")
+          element.evaluate(estadoAux);
+          }
+        });
+        */
       }
         return auxReturn;
     }
