@@ -11,11 +11,10 @@ export * from './String';
 export * from './Enumeracion';
 
 export * from './Assignment';
-export * from './IfThen';
+export * from './IfElse';
 export * from './Assignment';
 export * from './Sequence';
 export * from './WhileDo';
-export * from './IfThenElse';
 ////
 export * from './Conjunction';
 export * from './Disjunction';
@@ -36,7 +35,7 @@ export * from './Division';
 export * from './Clave';
 export * from './CompareLess';
 export * from './ExpCond';
-export * from './StatmentExpression';
+export * from './StatementExpression';
 
 export * from './Div';
 export * from './Mod';
@@ -46,6 +45,11 @@ export * from './ParseBoolean';
 export * from './ParseInt';
 export * from './ParseNumber';
 export * from './ConjuntoInterseccion';
+export * from './DeclarationFunction';
+export * from './Function';
+export * from './ConjuntoUnion';
+export * from './Return';
+
 
 // Statements
 

@@ -24,15 +24,15 @@ import {
   Lista,
   Conjunto,
   Clave,
-  IfThen,
+  IfElse,
   Assignment,
   WhileDo,
-  IfThenElse,
   Sequence,
   Opposite,
   Enumeracion,
   ExpCond,
-  StatmentExpression,
+  StatementExpression,
+  ListaComprension,
   Print,
   Mod,
   Div,
@@ -41,7 +41,10 @@ import {
   ParseInt,
   ParseNumber,
   ConjuntoInterseccion,
-  ConjuntoUnion
+  ConjuntoUnion,
+  DeclarationFunction,
+  Function,
+  Return
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -56,18 +59,19 @@ const lexer = new MyLexer(tokens);
 
 
 stmt ->
-    stmtelse                              {% id %}
-  | "if" exp "then" stmt                  {% ([, cond, , thenBody]) => (new IfThen(cond, thenBody)) %}
+    stmtelse                                        {% id %}
+  | "if" "(" exp ")" stmt                           {% ([,, cond, , body]) => (new IfElse(cond, body)) %}
 
 stmtelse ->
+<<<<<<< HEAD
     identifier "=" funcionexp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
   | "while" funcionexp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "if" funcionexp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
-  | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp))%}
-  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
-  #| "function" identifier "(" funcionexp:* ")" "{" stmt:* "}"     {% ([,id,,expresiones,,statements,]) => (new Function(id,expresiones,statements))% }
-  
+  | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp)) %}
+  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp)) %}
+  | "function" identifier "(" variables ")" "{" stmt:* "}"     {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
+  | "return" funcionexp ";"                          {% ([,exp,]) => (new Return(exp)) %}
 
 funcionexp ->
    "div" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
@@ -76,13 +80,40 @@ funcionexp ->
   | "boolean" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
   | "number" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
   | "int" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseInt(exp)) %}
+  | identifier "(" listaExp ")"              {% ([id,,exp,]) => (new Function(id,exp)) %}
   |exp                                      {% id %}
+=======
+    identifier "=" funcionexp ";"                               {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "while" funcionexp "do" stmt                                {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
+  | "if" "(" exp ")" stmtelse "else" stmt                       {% ([,, cond, , body, , elseBody]) => (new IfElse(cond, body, elseBody)) %}
+  | "{" stmt:* "}"                                              {% ([, statements, ]) => (new Sequence(statements)) %}
+  | funcionexp ";"                                              {% ([exp, ]) => (new StatementExpression(exp))%}
+  | "print" "(" funcionexp ")" ";"                              {% ([,,exp,]) => (new Print(exp))%}
+  #| "for" "(" elementos ")" stmt                                {% ([,,exps,,statements]) => (new For(exps, statements)) %}
+  #| "function" identifier "(" funcionexp:* ")" "{" stmt:* "}"     {% ([,id,,expresiones,,statements,]) => (new Function(id,expresiones,statements))% }
+  
+funcionexp ->
+    "div" "(" funcionexp ","  funcionexp ")"        {% ([,,a,,b,]) => (new Div(a, b)) %}
+  | "mod" "(" funcionexp ","  funcionexp ")"        {% ([,,a,,b,]) => (new Mod(a, b)) %}
+  | "string" "(" funcionexp ")"                     {% ([,,exp,]) => (new ParseString(exp)) %}
+  | "boolean" "(" funcionexp ")"                    {% ([,,exp,]) => (new ParseBoolean(exp)) %}
+  | "number" "(" funcionexp ")"                     {% ([,,exp,]) => (new ParseNumber(exp)) %}
+  | "int" "(" funcionexp ")"                        {% ([,,exp,]) => (new ParseInt(exp)) %}
+  | exp                                             {% id %}
+
+forexp ->
+    exp                     {% ([exp]) => { const arr: Exp[] = []; arr.push(exp); return arr; } %} 
+  | forexp "," exp          {% ([forexp, ,exp]) => {forexp.push(exp); return forexp;} %} 
+>>>>>>> 57c7c4bd3785adf124cd255a2f16c182ea433528
+
 
 exp ->
-    exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
-  | exp "||" comp           {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
-  | exp "if" exp "else" exp {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
-  | comp                    {% id %}
+    exp "&&" comp             {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
+  | exp "||" comp             {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
+  | exp "if" exp "else" exp   {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
+  | exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
+  | comp                      {% id %}
+
 
 comp ->
     comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
@@ -116,17 +147,25 @@ elemento ->
   | lista                   {% id %}
   | conjunto                {% id %}
   | enumeracion             {% id %}
-  | clave                   {% id %}
-#| "(" exp ")"             {% ([, exp, ]) => (exp) %} 
+  | clave                   {% id %} 
+  | "#" elemento            {% ([,conjunto]) => (new ConjuntoCardinalidad(conjunto)) %}
+  | value "<-" elemento     {% ([valor, ,conjunto]) => (new ConjuntoPertenencia(conjunto,valor)) %}
+  | elemento "[" value "]"  {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
+  | elemento "." value  {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
 
 # Colecciones
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
+<<<<<<< HEAD
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
+=======
+  | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %}
+>>>>>>> 96725e95545119bf5e9cba2c2c6ef85c846b41e8
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
   | "[" elementos "]"              {% ([,elementos,]) => (new Lista(elementos)) %} 
+  | "[" exp "for" exp "]"              {% ([,elementos,,el]) => (new ListaComprension(elementos, el)) %} 
 
 # Enumeración
 enumeracion ->
@@ -135,7 +174,7 @@ enumeracion ->
 
 elementos ->
     elemento                  {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
-  | elementos "," elemento    {% ([elementos, ,elemento]) => {elementos.push(elemento); return elementos;} %} 
+  | elementos "," elemento    {% ([elementos, ,elemento]) => { elementos.push(elemento); return elementos; } %} 
 
 #Clave
 clave ->
@@ -148,13 +187,20 @@ value ->
   | "true"                  {% () => (new TruthValue(true)) %}
   | "false"                 {% () => (new TruthValue(false)) %}
   | identifier              {% ([id]) => (new Variable(id)) %}
-  | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %} 
+  | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %}
 
+variables ->
+    identifier                  {% ([identifier]) => { const arr: string[] = []; arr.push(identifier); return arr; } %} 
+  | variables "," identifier    {% ([variables, ,identifier]) => {variables.push(identifier); return variables;} %} 
+
+listaExp ->
+   funcionexp                  {% ([exp]) => { const arr: Exp[] = []; arr.push(exp); return arr; } %} 
+  | listaExp "," funcionexp    {% ([listaExp, ,exp]) => {listaExp.push(exp); return listaExp;} %} 
 
 
 # Atoms
 identifier ->
-    %identifier             {% ([id]) => (id.value) %}
+    %identifier                 {% ([id]) => (id.value) %}
 
 string->
     %characters                 {% ([id]) => (id.value) %}

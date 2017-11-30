@@ -5,7 +5,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de usos de variable en expresiones.
 */
-export class StatmentExpression implements Stmt {
+export class StatementExpression implements Stmt {
     exp: Exp;
 
     constructor(exp: Exp) {
@@ -13,8 +13,7 @@ export class StatmentExpression implements Stmt {
     }
 
     toString(): string {
-        console.log(this.exp);
-        return `StatmentExpression(${this.exp.toString()})`;
+        return `StatementExpression(${this.exp.toString()})`;
     }
 
     unparse(): string {
