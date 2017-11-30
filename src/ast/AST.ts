@@ -11,7 +11,7 @@ export * from './String';
 export * from './Enumeracion';
 
 export * from './Assignment';
-export * from './IfThen';
+export * from './IfElse';
 export * from './Assignment';
 export * from './Sequence';
 export * from './WhileDo';
