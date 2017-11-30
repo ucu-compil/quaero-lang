@@ -14,7 +14,6 @@ export * from './Assignment';
 export * from './IfElse';
 export * from './Assignment';
 export * from './Sequence';
-export * from './WhileDo';
 ////
 export * from './Conjunction';
 export * from './Disjunction';

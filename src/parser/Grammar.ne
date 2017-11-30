@@ -26,7 +26,6 @@ import {
   Clave,
   IfElse,
   Assignment,
-  WhileDo,
   Sequence,
   Opposite,
   Enumeracion,
@@ -69,28 +68,27 @@ stmt ->
   | "if" "(" exp ")" stmt                           {% ([,, cond, , body]) => (new IfElse(cond, body)) %}
 
 stmtelse ->
-    identifier "=" funcionexp ";"                {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | "while" funcionexp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
-  #| "if" funcionexp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
-  | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
-  | funcionexp ";"                                {% ([exp, ]) => (new StatementExpression(exp)) %}
-  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp)) %}
-  | "function" identifier "(" variables ")" "{" stmt:* "}"     {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
-  | "return" funcionexp ";"                          {% ([,exp,]) => (new Return(exp)) %}
+    identifier "=" funcionexp ";"                               {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
+  | "if" "(" exp ")" stmtelse "else" stmt                       {% ([,, cond, , thenBody, , elseBody]) => (new IfElse(cond, thenBody, elseBody)) %}
+  | "{" stmt:* "}"                                              {% ([, statements, ]) => (new Sequence(statements)) %}
+  | funcionexp ";"                                              {% ([exp, ]) => (new StatementExpression(exp)) %}
+  | "print" "(" funcionexp ")" ";"                              {% ([,,exp,]) => (new Print(exp)) %}
+  | "function" identifier "(" variables ")" "{" stmt:* "}"      {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
+  | "return" funcionexp ";"                                     {% ([,exp,]) => (new Return(exp)) %}
+  | "for" "(" elementos ")"  stmt                               {%  ([,, elementos, , stmt])  =>  (new For(elementos, stmt)) %}
 
 funcionexp ->
-   "div" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
-  |"mod" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
-  | "string" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseString(exp)) %}
-  | "boolean" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
-  | "number" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
-  | "int" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseInt(exp)) %}
-  | identifier "(" listaExp ")"              {% ([id,,exp,]) => (new Function(id,exp)) %}
-  | "#" elemento            {% ([,conjunto]) => (new ConjuntoCardinalidad(conjunto)) %}
-  | value "<-" elemento     {% ([valor, ,conjunto]) => (new ConjuntoPertenencia(conjunto,valor)) %}
-  | elemento "[" value "]"  {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
-  | elemento "." value  {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
-  |exp                                      {% id %}
+    "div" "(" funcionexp ","  funcionexp ")"       {% ([,,a,,b,]) => (new Div(a, b)) %}
+  | "mod" "(" funcionexp ","  funcionexp ")"      {% ([,,a,,b,]) => (new Mod(a, b)) %}
+  | "string" "(" funcionexp ")"                   {% ([,,exp,]) => (new ParseString(exp)) %}
+  | "boolean" "(" funcionexp ")"                  {% ([,,exp,]) => (new ParseBoolean(exp)) %}
+  | "number" "(" funcionexp ")"                   {% ([,,exp,]) => (new ParseNumber(exp)) %}
+  | "int" "(" funcionexp ")"                      {% ([,,exp,]) => (new ParseInt(exp)) %}
+  | identifier "(" listaExp ")"                   {% ([id,,exp,]) => (new Function(id,exp)) %}
+  | "#" elemento                                  {% ([,conjunto]) => (new ConjuntoCardinalidad(conjunto)) %}
+  | elemento "[" value "]"                        {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
+  | elemento "." value                            {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
+  | exp                                           {% id %}
 
 
 
