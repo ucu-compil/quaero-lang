@@ -40,8 +40,9 @@ export class Enumeracion implements Exp {
         }
 
         var arr = [];
-        while (ini < fin) {
-            arr.push(ini += salto);
+        while (ini <= fin) {
+            arr.push(ini);
+            ini += salto;
         }
 
         return arr;
