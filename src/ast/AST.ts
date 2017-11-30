@@ -64,7 +64,7 @@ export * from './ConjuntoCardinalidad';
 export * from './ConjuntoPertenencia';
 export * from './Indizacion';
 export * from './IndizacionComp';
-
+export * from './Null';
 
 
 // Statements

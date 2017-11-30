@@ -50,6 +50,7 @@ import {
   ConjuntoPertenencia,
   Indizacion,
   IndizacionComp,
+  Null,
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -152,7 +153,6 @@ lista ->
 
 
 
-
 # Enumeración
 enumeracion ->
     "[" value ".." value "]"                {% ([,inicio,,fin,]) => (new Enumeracion(inicio, fin)) %} 
@@ -174,6 +174,8 @@ value ->
   | "false"                 {% () => (new TruthValue(false)) %}
   | identifier              {% ([id]) => (new Variable(id)) %}
   | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %}
+  | "null"                  {%  () =>  (new Null()) %}
+
 
 variables ->
     identifier                  {% ([identifier]) => { const arr: string[] = []; arr.push(identifier); return arr; } %} 

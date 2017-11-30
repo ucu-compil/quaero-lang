@@ -33,6 +33,7 @@ export const tokens = {
   '=':          '=',
   '!':          '!',
   'print':      'print',
+  'null':      'null',
   '#':         '#',
 
   // Keywords
