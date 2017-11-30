@@ -1,0 +1,4 @@
+function b(a){return a*2;}
+A = 3;B=5;
+p =0;
+if(A==3) c = b(A) ;else c = 1;

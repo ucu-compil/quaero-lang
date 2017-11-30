@@ -21,7 +21,7 @@ export class String implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return `\'${this.value}\'`;
+    return `${this.value}`;
   }
 
 }

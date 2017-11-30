@@ -4,6 +4,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de las comparaciones por igual.
 */
+
 export class ConjuntoInterseccion implements Exp {
 
     cjIzq: Exp;
