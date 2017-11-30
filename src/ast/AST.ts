@@ -49,6 +49,19 @@ export * from './DeclarationFunction';
 export * from './Function';
 export * from './ConjuntoUnion';
 export * from './Return';
+export * from './ConjuntoUnion';
+export * from './ConjuntoCardinalidad';
+export * from './ConjuntoPertenencia';
+export * from './Indizacion';
+export * from './IndizacionComp'
+
+export * from './ConjuntoUnion';
+export * from './ConjuntoPertenencia';
+export * from './ConjuntoCardinalidad';
+export * from './ConjuntoPertenencia';
+export * from './Indizacion';
+export * from './IndizacionComp';
+
 
 
 // Statements
