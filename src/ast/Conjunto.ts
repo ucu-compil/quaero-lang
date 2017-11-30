@@ -16,8 +16,7 @@ export class Conjunto implements Exp {
       .filter((exp) => (exp !== undefined))
       .map((exp) => (exp.toString()))
       .join(", ");
-    //return `Conjunto(${elementos})`
-    return "nop";
+    return `Conjunto(${elementos})`;
   }
 
   unparse(): string {
