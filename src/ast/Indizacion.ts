@@ -31,7 +31,7 @@ export class Indizacion implements Exp {
     evaluate(state: Estado): any {
         const conjuntoE = this.conjunto.evaluate(state);
         const indiceE = this.indice.evaluate(state);
-        return (conjuntoE[indiceE]);
+        return (conjuntoE[indiceE]);//
          
     }
 }

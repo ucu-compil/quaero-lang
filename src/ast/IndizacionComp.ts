@@ -16,7 +16,7 @@ export class IndizacionComp implements Exp {
         this.indice = indice;
     }
 
-    toString(): string {
+    toString(): string {//
         const conjunto = this.conjunto
         return `Indizacion(${conjunto})`
     }
