@@ -4,7 +4,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de 
 */
-export class ConjuntoCardinalidad implements Exp {
+export class Cardinalidad implements Exp {
 
   conjunto: Exp;
 
@@ -14,7 +14,7 @@ export class ConjuntoCardinalidad implements Exp {
 
   toString(): string {
     const conjunto = this.conjunto
-    return `ConjuntoCardinalidad(${conjunto})`
+    return `Cardinalidad(${conjunto})`
   }
 
   unparse(): string {
@@ -28,8 +28,8 @@ export class ConjuntoCardinalidad implements Exp {
      return conjuntoE.length;
     }
     else{
-      return undefined;
-      //tengo que tirar error aca
+      throw new Error("Solo se pueden hacer cardinalidad sobre conjuntos o listas");
+            //tengo que tirar error aca
     }
     
     

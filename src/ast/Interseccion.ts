@@ -1,10 +1,11 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
-
+import { Lista } from './Lista';
+import { Conjunto } from './Conjunto';
 /**
   Representación de las comparaciones por igual.
 */
-export class ConjuntoInterseccion implements Exp {
+export class Interseccion implements Exp {
 
     cjIzq: Exp;
     cjDer: Exp;
@@ -17,15 +18,24 @@ export class ConjuntoInterseccion implements Exp {
     toString(): string {
         const cjIzq = this.cjIzq.toString();
         const cjDer = this.cjDer.toString();
-        return `ConjuntoInterseccion(${cjIzq}, ${cjDer})`;
+        return `Interseccion(${cjIzq}, ${cjDer})`;
     }
 
     unparse(): string {
-        return `(${this.cjIzq.unparse()} /\ ${this.cjDer.unparse()})`;
+        return `(${this.cjIzq.unparse()} /\\ ${this.cjDer.unparse()})`;
 
     }
 
     evaluate(state: Estado): any {
+
+        if(!(this.cjIzq instanceof Lista && this.cjDer instanceof Lista))
+        {
+            if(!(this.cjIzq instanceof Conjunto && this.cjDer instanceof Conjunto))
+            {
+                throw new Error("Solo se pueden hacer Diferencia sobre conjuntos o listas");                
+                
+            }
+        }
         const cjIzq = this.cjIzq.evaluate(state);
         const cjDer = this.cjDer.evaluate(state);
         const interseccion = [];

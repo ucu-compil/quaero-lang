@@ -38,14 +38,14 @@ import {
   ParseBoolean,
   ParseInt,
   ParseNumber,
-  ConjuntoInterseccion,
-  ConjuntoConcatenacion,
-  ConjuntoDiferencia,
-  ConjuntoUnion,
+  Interseccion,
+  Concatenacion,
+  Diferencia,
+  Union,
   DeclarationFunction,
   Function,
   Return,
-  ConjuntoCardinalidad,
+  Cardinalidad,
   ConjuntoPertenencia,
   Indizacion,
   IndizacionComp,
@@ -85,7 +85,7 @@ funcionexp ->
   | "number" "(" funcionexp ")"                   {% ([,,exp,]) => (new ParseNumber(exp)) %}
   | "int" "(" funcionexp ")"                      {% ([,,exp,]) => (new ParseInt(exp)) %}
   | identifier "(" listaExp ")"                   {% ([id,,exp,]) => (new Function(id,exp)) %}
-  | "#" elemento                                  {% ([,conjunto]) => (new ConjuntoCardinalidad(conjunto)) %}
+  | "#" elemento                                  {% ([,conjunto]) => (new Cardinalidad(conjunto)) %}
   | elemento "[" value "]"                        {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
   | elemento "." value                            {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
   | exp                                           {% id %}
@@ -112,8 +112,8 @@ comp ->
 addsub ->
     addsub "+" opposite       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
   | addsub "-" opposite       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
-  | addsub "++" opposite        {% ([lhs, , rhs]) => (new ConjuntoConcatenacion(lhs, rhs)) %}
-  | addsub "--" opposite        {% ([lhs, , rhs]) => (new ConjuntoDiferencia(lhs, rhs)) %}
+  | addsub "++" opposite        {% ([lhs, , rhs]) => (new Concatenacion(lhs, rhs)) %}
+  | addsub "--" opposite        {% ([lhs, , rhs]) => (new Diferencia(lhs, rhs)) %}
   | opposite                  {% id %}
 
 opposite ->
@@ -123,8 +123,8 @@ opposite ->
 muldiv ->
     muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
   | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
-  | muldiv "/\\" neg        {% ([lhs, , rhs]) => (new ConjuntoInterseccion(lhs, rhs)) %}
-  | muldiv "\\/" neg        {% ([lhs, , rhs]) => (new ConjuntoUnion(lhs, rhs)) %}
+  | muldiv "/\\" neg        {% ([lhs, , rhs]) => (new Interseccion(lhs, rhs)) %}
+  | muldiv "\\/" neg        {% ([lhs, , rhs]) => (new Union(lhs, rhs)) %}
   | neg                     {% id %}
 
 neg ->
