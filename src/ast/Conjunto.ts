@@ -32,13 +32,11 @@ export class Conjunto implements Exp {
 
     this.elementos.forEach((elem) => {
       let elemEval = elem.evaluate(state);
-
       if (typeof elemEval == 'object') {
         objects[elemEval.clave] = elemEval.valor;
       } else {
-        if(objects.find(myObj => myObj == elemEval)==undefined)  
-        {
-        objects.push(elemEval);
+        if (objects.find(myObj => myObj == elemEval) == undefined) {
+          objects.push(elemEval);
         }
       }
     });

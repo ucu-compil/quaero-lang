@@ -27,34 +27,17 @@ export class CompareNotEqual implements Exp {
     return `(${this.lhs.unparse()} /= ${this.rhs.unparse()})`;
   }
 
-  evaluate(state: Estado): any {
-
-    if (this.lhs instanceof Numeral && this.rhs instanceof Numeral) {
-      if (this.lhs.evaluate(state) === NaN || this.rhs.evaluate(state) === NaN) {
-        return false;
-      } else {
+  evaluate(state: Estado): any {  
+        if (this.lhs instanceof Conjunto && this.rhs instanceof Conjunto) {
+          return this.compareConjunto(this.lhs, this.rhs, state);
+        }
+    
+        if (this.lhs instanceof Lista && this.rhs instanceof Lista) {
+          return this.compareLista(this.lhs, this.rhs, state);
+        }
+    
         return this.lhs.evaluate(state) != this.rhs.evaluate(state);
       }
-    }
-
-    if (this.lhs instanceof TruthValue && this.rhs instanceof TruthValue) {
-      return this.lhs.evaluate(state) != this.rhs.evaluate(state);
-    }
-
-    if (this.lhs instanceof Conjunto && this.rhs instanceof Conjunto) {
-      return this.compareConjunto(this.lhs, this.rhs, state);
-    }
-
-    if (this.lhs instanceof Lista && this.rhs instanceof Lista) {
-      return this.compareLista(this.lhs, this.rhs, state);
-    }
-
-    if (this.lhs instanceof String && this.rhs instanceof String) {
-      return this.lhs.evaluate(state) != this.rhs.evaluate(state);
-    }
-
-    throw new Error("No se reconoce el tipo.");
-  }
 
   compareLista(lhsList: Lista, rhsList: Lista, state: Estado): boolean {
     var flag = true;
@@ -92,7 +75,7 @@ export class CompareNotEqual implements Exp {
         for (var y = 0; y < rhsList.elementos.length; y++) {
           
           var lhsEvalLista = lhsList.elementos[x];
-          var rhsEvalLista = rhsList.elementos[x];
+          var rhsEvalLista = rhsList.elementos[y];
     
           if (lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista) {
             flag = this.compareLista(lhsEvalLista, rhsEvalLista, state);

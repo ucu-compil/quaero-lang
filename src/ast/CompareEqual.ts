@@ -95,7 +95,7 @@ export class CompareEqual implements Exp {
         for (var y = 0; y < rhsList.elementos.length; y++) {
           
           var lhsEvalLista = lhsList.elementos[x];
-          var rhsEvalLista = rhsList.elementos[x];
+          var rhsEvalLista = rhsList.elementos[y];
     
           if (lhsEvalLista instanceof Lista && rhsEvalLista instanceof Lista) {
             flag = this.compareLista(lhsEvalLista, rhsEvalLista, state);

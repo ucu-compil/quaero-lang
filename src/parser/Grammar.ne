@@ -75,10 +75,10 @@ stmtelse ->
   | "print" "(" funcionexp ")" ";"                              {% ([,,exp,]) => (new Print(exp)) %}
   | "function" identifier "(" variables ")" "{" stmt:* "}"      {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
   | "return" funcionexp ";"                                     {% ([,exp,]) => (new Return(exp)) %}
-  | "for" "(" elementos ")"  stmt                               {%  ([,, elementos, , stmt])  =>  (new For(elementos, stmt)) %}
+  | "for" "(" listapertenencias ")"  stmt                       {%  ([,, elementos, , stmt])  =>  (new For(elementos, stmt)) %}
 
 funcionexp ->
-    "div" "(" funcionexp ","  funcionexp ")"       {% ([,,a,,b,]) => (new Div(a, b)) %}
+    "div" "(" funcionexp ","  funcionexp ")"      {% ([,,a,,b,]) => (new Div(a, b)) %}
   | "mod" "(" funcionexp ","  funcionexp ")"      {% ([,,a,,b,]) => (new Mod(a, b)) %}
   | "string" "(" funcionexp ")"                   {% ([,,exp,]) => (new ParseString(exp)) %}
   | "boolean" "(" funcionexp ")"                  {% ([,,exp,]) => (new ParseBoolean(exp)) %}
@@ -90,19 +90,23 @@ funcionexp ->
   | elemento "." value                            {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
   | exp                                           {% id %}
 
+listapertenencias ->
+    pertenencia                                   {% ([elemento]) => { const arr: Exp[] = []; arr.push(elemento); return arr; } %} 
+  | listapertenencias "," pertenencia             {% ([elementos, ,elemento]) => { elementos.push(elemento); return elementos; } %} 
 
+pertenencia -> 
+    identifier "<-" elemento                      {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
 
 exp ->
     exp "&&" comp             {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
   | exp "||" comp             {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
   | exp "if" exp "else" exp   {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
-  #| exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
   | comp                      {% id %}
 
 
 comp ->
     comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
-  | comp "/" "=" addsub        {% ([lhs, , , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
+  | comp "/" "=" addsub     {% ([lhs, , , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
   | comp "<=" addsub        {% ([lhs, , rhs]) => (new CompareLessOrEqual(lhs, rhs)) %}
   | comp "<" addsub         {% ([lhs, , rhs]) => (new CompareLess(lhs, rhs)) %}
   | comp ">=" addsub        {% ([lhs, , rhs]) => (new CompareGreatOrEqual(lhs, rhs)) %}
@@ -144,8 +148,8 @@ conjunto ->
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %}   
 
 lista -> 
-    "[" "]"                 {% ([,]) => (new Lista()) %} 
-  |  "[" elementos "]"                   {% ([,elementos,]) => (new Lista(elementos)) %} 
+    "[" "]"                             {% ([,]) => (new Lista()) %} 
+  | "[" elementos "]"                   {% ([,elementos,]) => (new Lista(elementos)) %} 
  #{} | "[" exp "for" exp "]"               {% ([,elementos,,el]) => (new ListaComprension(elementos, el)) %} 
 
 
@@ -162,8 +166,8 @@ elementos ->
 
 # Clave
 clave ->
-    identifier ":" value        {% ([id,,valor]) => (new Clave(id,valor)) %}
-  | string ":" value            {% ([id,,valor]) => (new Clave(id,valor)) %}
+    identifier ":" elemento        {% ([id,,valor]) => (new Clave(id,valor)) %}
+  | string ":" elemento            {% ([id,,valor]) => (new Clave(id,valor)) %}
 
 value ->
     string                  {% ([string]) => (new String(string)) %}

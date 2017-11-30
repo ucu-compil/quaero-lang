@@ -25,7 +25,7 @@ export class For implements Stmt {
 
   evaluate(state: Estado): any {
 
-    if (this.exp.length != 0) {
+    if (this.exp.length > 0) {
       var head = this.exp[0];
       var last = this.exp[this.exp.length - 1];
 
@@ -46,7 +46,6 @@ export class For implements Stmt {
           }
         });
       }
-
     }
 
     return state;
