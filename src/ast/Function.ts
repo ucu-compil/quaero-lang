@@ -10,7 +10,7 @@ export class Function implements Exp {
       id: string;
       args:Exp[];
       
-      constructor(id: string, args: Exp[], body: Sequence) {
+      constructor(id: string, args: Exp[]) {
         this.id = id;
         this.args = args;
       }
@@ -27,29 +27,37 @@ export class Function implements Exp {
       evaluate(state: Estado): Estado {
         var evaluatedargs=[];
         var estadoAux: Estado = new Estado();
+        var auxReturn;
         
         this.args.forEach(element => {
           evaluatedargs.push(element.evaluate(state));
-          evaluatedargs.reverse();
         });
+        evaluatedargs.reverse();
+                
         var funcion = state.get(this.id);
         if(funcion instanceof DeclarationFunction)
         {
+          console.log("Es Declaration function")
           var nameargs = funcion.args;
           nameargs.forEach(element => 
             {
               estadoAux.set(element,evaluatedargs.pop());
             });
-        }
-        var sequence = funcion.body;        
+        
+        var sequence = funcion.statements;        
         sequence.forEach(element => {
           if(element instanceof Return)
           {
-            return element.evaluate(state);
+            console.log("es instance of return")
+            auxReturn =  element.evaluate(estadoAux);
           }
-          element.evaluate(state);
+          else
+          {
+          console.log("no es instance of return")
+          element.evaluate(estadoAux);
+          }
         });
-
-        return undefined;
       }
+        return auxReturn;
     }
+  }

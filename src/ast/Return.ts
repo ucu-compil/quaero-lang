@@ -20,7 +20,11 @@ export class Return implements Exp {
   }
 
   evaluate(state: Estado): any {
-    return this.exp.evaluate(state);
+    var expeva = this.exp.evaluate(state);
+    console.log("return evaluado")
+    console.log(expeva);
+    return expeva;
+    
   }
 
 }

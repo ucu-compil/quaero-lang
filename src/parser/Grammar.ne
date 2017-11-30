@@ -41,7 +41,10 @@ import {
   ParseInt,
   ParseNumber,
   ConjuntoInterseccion,
-  ConjuntoUnion
+  ConjuntoUnion,
+  DeclarationFunction,
+  Function,
+  Return
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -64,10 +67,10 @@ stmtelse ->
   | "while" funcionexp "do" stmt                 {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
   | "if" funcionexp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
   | "{" stmt:* "}"                        {% ([, statements, ]) => (new Sequence(statements)) %}
-  | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp))%}
-  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp))%}
-  #| "function" identifier "(" funcionexp:* ")" "{" stmt:* "}"     {% ([,id,,expresiones,,statements,]) => (new Function(id,expresiones,statements))% }
-  
+  | funcionexp ";"                                {% ([exp, ]) => (new StatmentExpression(exp)) %}
+  | "print" "(" funcionexp ")" ";"                  {% ([,,exp,]) => (new Print(exp)) %}
+  | "function" identifier "(" variables ")" "{" stmt:* "}"     {% ([,id,,variables,,,statements,]) => (new DeclarationFunction(id,variables,statements)) %}
+  | "return" funcionexp ";"                          {% ([,exp,]) => (new Return(exp)) %}
 
 funcionexp ->
    "div" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
@@ -76,7 +79,9 @@ funcionexp ->
   | "boolean" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
   | "number" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
   | "int" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseInt(exp)) %}
+  | identifier "(" listaExp ")"              {% ([id,,exp,]) => (new Function(id,exp)) %}
   |exp                                      {% id %}
+
 
 exp ->
     exp "&&" comp           {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
@@ -150,6 +155,15 @@ value ->
   | identifier              {% ([id]) => (new Variable(id)) %}
   | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %} 
 
+
+
+variables ->
+    identifier                  {% ([identifier]) => { const arr: string[] = []; arr.push(identifier); return arr; } %} 
+  | variables "," identifier    {% ([variables, ,identifier]) => {variables.push(identifier); return variables;} %} 
+
+listaExp ->
+   funcionexp                  {% ([exp]) => { const arr: Exp[] = []; arr.push(exp); return arr; } %} 
+  | listaExp "," funcionexp    {% ([listaExp, ,exp]) => {listaExp.push(exp); return listaExp;} %} 
 
 
 # Atoms

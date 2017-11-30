@@ -46,6 +46,13 @@ export * from './ParseBoolean';
 export * from './ParseInt';
 export * from './ParseNumber';
 export * from './ConjuntoInterseccion';
+export * from './DeclarationFunction';
+export * from './Function';
+export * from './ConjuntoUnion';
+export * from './Return';
+
+
+
 
 // Statements
 
