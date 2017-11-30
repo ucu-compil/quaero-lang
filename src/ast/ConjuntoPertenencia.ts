@@ -1,5 +1,6 @@
 import { Exp, Stmt } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
+import { Conjunto } from './Conjunto';
 
 /**
   Representación de 
@@ -26,13 +27,28 @@ export class ConjuntoPertenencia implements Exp {
 
   evaluate(state: Estado): any {
     var expresionE = this.expresion.evaluate(state);
+    console.log("Expresion:");
+    console.log(expresionE);
     var conjuntoE = this.conjunto.evaluate(state);
-    if(this.conjunto instanceof Array){
-        conjuntoE.include(expresionE);
+    console.log("Conjunto:");
+    console.log(conjuntoE);
+    console.log(conjuntoE.length);
+
+    if(this.conjunto instanceof Conjunto || this.conjunto instanceof Lista){
+      var r = false;
+      conjuntoE.forEach(element => {
+        console.log("element:");
+        console.log(element);
+        if(element == expresionE){
+          console.log("a");
+          r = true;
+        }
+      });
+      return r;
     }
     else{
-        //tiro un error
-        return undefined;
+      console.log(this.expresion+" Debe ser una lista o un conjunto");
+      return undefined;
     }
   }
 

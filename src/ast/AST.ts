@@ -46,7 +46,11 @@ export * from './ParseBoolean';
 export * from './ParseInt';
 export * from './ParseNumber';
 export * from './ConjuntoInterseccion';
-
+export * from './ConjuntoUnion';
+export * from './ConjuntoCardinalidad';
+export * from './ConjuntoPertenencia';
+export * from './Indizacion';
+export * from './IndizacionComp'
 // Statements
 
 // AExp

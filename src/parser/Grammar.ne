@@ -41,7 +41,11 @@ import {
   ParseInt,
   ParseNumber,
   ConjuntoInterseccion,
-  ConjuntoUnion
+  ConjuntoUnion,
+  ConjuntoCardinalidad,
+  ConjuntoPertenencia,
+  Indizacion,
+  IndizacionComp
 } from '../ast/AST';
 
 import { tokens } from './Tokens';
@@ -84,6 +88,7 @@ exp ->
   | exp "if" exp "else" exp {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
   | comp                    {% id %}
 
+
 comp ->
     comp "==" addsub        {% ([lhs, , rhs]) => (new CompareEqual(lhs, rhs)) %}
   | comp "!=" addsub        {% ([lhs, , rhs]) => (new CompareNotEqual(lhs, rhs)) %}
@@ -116,17 +121,16 @@ elemento ->
   | lista                   {% id %}
   | conjunto                {% id %}
   | enumeracion             {% id %}
-  | clave                   {% id %}
-#| "(" exp ")"             {% ([, exp, ]) => (exp) %} 
+  | clave                   {% id %} 
+  | "#" elemento            {% ([,conjunto]) => (new ConjuntoCardinalidad(conjunto)) %}
+  | value "<-" elemento     {% ([valor, ,conjunto]) => (new ConjuntoPertenencia(conjunto,valor)) %}
+  | elemento "[" value "]"  {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
+  | elemento "." value  {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
 
 # Colecciones
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %} 
-<<<<<<< HEAD
-  | conjunto "pico" conjunto  {% ([conjuntoA,,conjuntoB]) => (new ConjuntoInterseccion(conjuntoA,conjuntoB)) %}
-=======
->>>>>>> 4329c8dfefb35b0da293dc70f4a1bb9160ff6370
 
 lista -> 
     "[" number "]"                 {% ([,]) => (new Lista()) %} 
@@ -152,7 +156,8 @@ value ->
   | "true"                  {% () => (new TruthValue(true)) %}
   | "false"                 {% () => (new TruthValue(false)) %}
   | identifier              {% ([id]) => (new Variable(id)) %}
-  | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %} 
+  | "(" funcionexp ")"      {% ([, funcionexp, ]) => (funcionexp) %}
+
 
 
 
