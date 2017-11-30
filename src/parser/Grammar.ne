@@ -23,6 +23,7 @@ import {
   Division,
   Lista,
   Conjunto,
+  Pertenencia,
   Clave,
   IfElse,
   Assignment,
@@ -98,7 +99,7 @@ exp ->
     exp "&&" comp             {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
   | exp "||" comp             {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
   | exp "if" exp "else" exp   {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
-  #| exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
+  | exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
   | comp                      {% id %}
 
 
@@ -139,7 +140,6 @@ elemento ->
   | conjunto                {% id %}
   | enumeracion             {% id %}
   | clave                   {% id %} 
-
 
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 

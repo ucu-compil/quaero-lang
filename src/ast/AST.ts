@@ -56,14 +56,13 @@ export * from './ConjuntoConcatenacion';
 export * from './ConjuntoDiferencia';
 
 export * from './Indizacion';
-export * from './IndizacionComp'
+export * from './IndizacionComp';
+export * from './Pertenencia';
 
 export * from './ConjuntoUnion';
 export * from './ConjuntoPertenencia';
 export * from './ConjuntoCardinalidad';
 export * from './ConjuntoPertenencia';
-export * from './Indizacion';
-export * from './IndizacionComp';
 export * from './Null';
 
 

@@ -1,5 +1,6 @@
 import { Exp } from './ASTNode';
 import { Estado } from '../interpreter/Estado';
+import { Clave } from './AST';
 
 /**
   Representación de las listas.
@@ -33,9 +34,14 @@ export class Lista implements Exp {
 
     this.elementos.forEach((elem) => {
       let elemEval = elem.evaluate(state);
-      objects.push(elemEval);
+
+      if (elem instanceof Clave) {
+        objects[elemEval.clave] = elemEval.valor;
+      } else {
+        objects.push(elemEval);
+      }
     });
-    
+
     return objects;
   }
 
