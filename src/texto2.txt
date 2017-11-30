@@ -1,2 +1,2 @@
 Textodeprueba=2;A = 3;B=5;
-Function b(a){return a*2;}
+function b(a){return a*2;}
