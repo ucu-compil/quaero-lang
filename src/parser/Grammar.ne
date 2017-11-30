@@ -22,13 +22,10 @@ import {
   Multiplication,
   Division,
   Lista,
-  For,
   Conjunto,
-  Pertenencia,
   Clave,
   IfElse,
   Assignment,
-  WhileDo,
   Sequence,
   Opposite,
   Enumeracion,
@@ -41,14 +38,14 @@ import {
   ParseBoolean,
   ParseInt,
   ParseNumber,
-  ConjuntoInterseccion,
-  ConjuntoConcatenacion,
-  ConjuntoDiferencia,
-  ConjuntoUnion,
+  Interseccion,
+  Concatenacion,
+  Diferencia,
+  Union,
   DeclarationFunction,
   Function,
   Return,
-  ConjuntoCardinalidad,
+  Cardinalidad,
   ConjuntoPertenencia,
   Indizacion,
   IndizacionComp,
@@ -72,8 +69,7 @@ stmt ->
 
 stmtelse ->
     identifier "=" funcionexp ";"                               {% ([id, , exp, ]) => (new Assignment(id, exp)) %}
-  | "while" funcionexp "do" stmt                                {% ([, cond, , body]) => (new WhileDo(cond, body)) %}
-  #| "if" funcionexp "then" stmtelse "else" stmt  {% ([, cond, , thenBody, , elseBody]) => (new IfThenElse(cond, thenBody, elseBody)) %}
+  | "if" "(" exp ")" stmtelse "else" stmt                       {% ([,, cond, , thenBody, , elseBody]) => (new IfElse(cond, thenBody, elseBody)) %}
   | "{" stmt:* "}"                                              {% ([, statements, ]) => (new Sequence(statements)) %}
   | funcionexp ";"                                              {% ([exp, ]) => (new StatementExpression(exp)) %}
   | "print" "(" funcionexp ")" ";"                              {% ([,,exp,]) => (new Print(exp)) %}
@@ -82,18 +78,17 @@ stmtelse ->
   | "for" "(" elementos ")"  stmt                               {%  ([,, elementos, , stmt])  =>  (new For(elementos, stmt)) %}
 
 funcionexp ->
-   "div" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Div(a, b)) %}
-  |"mod" "(" funcionexp ","  funcionexp ")"     {% ([,,a,,b,]) => (new Mod(a, b)) %}
-  | "string" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseString(exp)) %}
-  | "boolean" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseBoolean(exp)) %}
-  | "number" "(" funcionexp ")"               {% ([,,exp,]) => (new ParseNumber(exp)) %}
-  | "int" "(" funcionexp ")"              {% ([,,exp,]) => (new ParseInt(exp)) %}
-  | identifier "(" listaExp ")"              {% ([id,,exp,]) => (new Function(id,exp)) %}
-  | "#" elemento            {% ([,conjunto]) => (new ConjuntoCardinalidad(conjunto)) %}
-  | value "<-" elemento     {% ([valor, ,conjunto]) => (new ConjuntoPertenencia(conjunto,valor)) %}
-  | elemento "[" value "]"  {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
-  | elemento "." value  {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
-  |exp                                      {% id %}
+    "div" "(" funcionexp ","  funcionexp ")"       {% ([,,a,,b,]) => (new Div(a, b)) %}
+  | "mod" "(" funcionexp ","  funcionexp ")"      {% ([,,a,,b,]) => (new Mod(a, b)) %}
+  | "string" "(" funcionexp ")"                   {% ([,,exp,]) => (new ParseString(exp)) %}
+  | "boolean" "(" funcionexp ")"                  {% ([,,exp,]) => (new ParseBoolean(exp)) %}
+  | "number" "(" funcionexp ")"                   {% ([,,exp,]) => (new ParseNumber(exp)) %}
+  | "int" "(" funcionexp ")"                      {% ([,,exp,]) => (new ParseInt(exp)) %}
+  | identifier "(" listaExp ")"                   {% ([id,,exp,]) => (new Function(id,exp)) %}
+  | "#" elemento                                  {% ([,conjunto]) => (new Cardinalidad(conjunto)) %}
+  | elemento "[" value "]"                        {% ([conjunto, ,valor,]) => (new Indizacion(conjunto,valor)) %}
+  | elemento "." value                            {% ([conjunto, ,valor,]) => (new IndizacionComp(conjunto,valor)) %}
+  | exp                                           {% id %}
 
 
 
@@ -101,7 +96,7 @@ exp ->
     exp "&&" comp             {% ([lhs, , rhs]) => (new Conjunction(lhs, rhs)) %}
   | exp "||" comp             {% ([lhs, , rhs]) => (new Disjunction(lhs, rhs)) %}
   | exp "if" exp "else" exp   {% ([vt , ,b, ,vf]) => (new ExpCond(vt,b,vf)) %}
-  | exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
+  #| exp "<-" lista            {% ([exp, ,elems]) => (new Pertenencia(exp,elems)) %}
   | comp                      {% id %}
 
 
@@ -117,8 +112,8 @@ comp ->
 addsub ->
     addsub "+" opposite       {% ([lhs, , rhs]) => (new Addition(lhs, rhs)) %}
   | addsub "-" opposite       {% ([lhs, , rhs]) => (new Substraction(lhs, rhs)) %}
-  | addsub "++" opposite        {% ([lhs, , rhs]) => (new ConjuntoConcatenacion(lhs, rhs)) %}
-  | addsub "--" opposite        {% ([lhs, , rhs]) => (new ConjuntoDiferencia(lhs, rhs)) %}
+  | addsub "++" opposite        {% ([lhs, , rhs]) => (new Concatenacion(lhs, rhs)) %}
+  | addsub "--" opposite        {% ([lhs, , rhs]) => (new Diferencia(lhs, rhs)) %}
   | opposite                  {% id %}
 
 opposite ->
@@ -128,8 +123,8 @@ opposite ->
 muldiv ->
     muldiv "*" neg          {% ([lhs, , rhs]) => (new Multiplication(lhs, rhs)) %}
   | muldiv "/" neg          {% ([lhs, , rhs]) => (new Division(lhs, rhs)) %}
-  | muldiv "/\\" neg        {% ([lhs, , rhs]) => (new ConjuntoInterseccion(lhs, rhs)) %}
-  | muldiv "\\/" neg        {% ([lhs, , rhs]) => (new ConjuntoUnion(lhs, rhs)) %}
+  | muldiv "/\\" neg        {% ([lhs, , rhs]) => (new Interseccion(lhs, rhs)) %}
+  | muldiv "\\/" neg        {% ([lhs, , rhs]) => (new Union(lhs, rhs)) %}
   | neg                     {% id %}
 
 neg ->
@@ -143,6 +138,7 @@ elemento ->
   | enumeracion             {% id %}
   | clave                   {% id %} 
 
+
 conjunto -> 
     "{" "}"                 {% ([,]) => (new Conjunto()) %} 
   | "{" elementos "}"       {% ([,elementos,]) => (new Conjunto(elementos)) %}   
@@ -151,6 +147,8 @@ lista ->
     "[" "]"                 {% ([,]) => (new Lista()) %} 
   |  "[" elementos "]"                   {% ([,elementos,]) => (new Lista(elementos)) %} 
  #{} | "[" exp "for" exp "]"               {% ([,elementos,,el]) => (new ListaComprension(elementos, el)) %} 
+
+
 
 
 # Enumeración

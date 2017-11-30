@@ -4,6 +4,7 @@ import { Estado } from '../interpreter/Estado';
 /**
   Representación de sumas.
 */
+
 export class Addition implements Exp {
 
   lhs: Exp;
@@ -25,13 +26,12 @@ export class Addition implements Exp {
   evaluate(state: Estado): any {
     var lhsEval = this.lhs.evaluate(state);
     var rhsEval = this.rhs.evaluate(state);
-    console.log(typeof lhsEval)
-    console.log(typeof rhsEval)
+    //console.log(typeof lhsEval)
+    //console.log(typeof rhsEval)
 
     if (typeof lhsEval === 'number' && typeof rhsEval === 'number') {
       return lhsEval + rhsEval;
     }
-    console.log ('Operandos deben ser de tipo numérico.');
     throw new Error("Operandos deben ser de tipo numérico.");
   }
 }

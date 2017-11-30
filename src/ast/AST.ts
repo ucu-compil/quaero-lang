@@ -14,7 +14,6 @@ export * from './Assignment';
 export * from './IfElse';
 export * from './Assignment';
 export * from './Sequence';
-export * from './WhileDo';
 ////
 export * from './Conjunction';
 export * from './Disjunction';
@@ -44,24 +43,21 @@ export * from './ParseString';
 export * from './ParseBoolean';
 export * from './ParseInt';
 export * from './ParseNumber';
-export * from './ConjuntoInterseccion';
+export * from './Interseccion';
 export * from './DeclarationFunction';
 export * from './Function';
-export * from './ConjuntoUnion';
 export * from './Return';
-export * from './ConjuntoUnion';
-export * from './ConjuntoCardinalidad';
+export * from './Union';
+export * from './Cardinalidad';
 export * from './ConjuntoPertenencia';
-export * from './ConjuntoConcatenacion';
-export * from './ConjuntoDiferencia';
+export * from './Concatenacion';
+export * from './Diferencia';
 
 export * from './Indizacion';
 export * from './IndizacionComp';
 export * from './Pertenencia';
 
-export * from './ConjuntoUnion';
 export * from './ConjuntoPertenencia';
-export * from './ConjuntoCardinalidad';
 export * from './ConjuntoPertenencia';
 export * from './Null';
 export * from './For';
